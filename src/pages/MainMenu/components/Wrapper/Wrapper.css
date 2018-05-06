@@ -1,0 +1,14 @@
+.bt-main-menu__wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	background-color: #ccc;
+}
+
+.bt-main-menu__wrapper-content {
+	padding: 60px 30px 100px;
+	min-height: 500px;
+	width: 100%;
+	max-width: 600px;
+}

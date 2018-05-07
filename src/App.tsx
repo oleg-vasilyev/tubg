@@ -9,7 +9,7 @@ import MainMenuPage from './pages/MainMenu/MainMenu';
 class App extends React.Component {
  	public render() {
     return (
-			<div>
+			<React.Fragment>
 				<BrowserRouter>
 					<Switch>
 						<Redirect exact={true} from='/' to='/main-menu' />
@@ -17,7 +17,7 @@ class App extends React.Component {
 						<Route path='/game' component={GamePage} />
 					</Switch>
 				</BrowserRouter>
-			</div>
+			</React.Fragment>
 		);
   }
 }

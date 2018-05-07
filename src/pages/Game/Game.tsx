@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-
 class GamePage extends React.Component {
   public render() {
     return (

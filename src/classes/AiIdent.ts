@@ -1,4 +1,4 @@
-function getRandomId(): number {
+export function getRandomId(): number {
   let idRandomString: string = (new Date()).getTime().toString();
   idRandomString = idRandomString.substr(idRandomString.length - 6, 6) + "" + Math.round(10000000 * Math.random());
   return Number(idRandomString);

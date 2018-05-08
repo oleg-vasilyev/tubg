@@ -1,5 +1,5 @@
 import { Tank } from "./Tank";
-
+import {getRandomId} from './AiIdent';
 /**
  * 
  * `Class of Bullet

@@ -1,4 +1,5 @@
 import {AiIdent} from './AiIdent';
+import {getRandomId} from './AiIdent';
 import {Bullet} from './Bullet';
 
 /**
@@ -21,7 +22,7 @@ export class Tank {
   public state: {};
   public wallDistance: boolean;
   public enemyDistance: boolean;
-  public bullets: [Bullet];
+  public bullets: Array<Bullet>;
 
 
   /**
@@ -99,11 +100,11 @@ export class Tank {
   }
 
   shoot(): void {
-    let bullet: Bullet = new Bullet(this, this.id, 1);
+    let bullet: Bullet = new Bullet(this, getRandomId(), 1);
     if (this.bullets == []) {
       this.bullets = [bullet];
     } else {
-      this.bullets[this.bullets.length] = bullet;
+      this.bullets = [...this.bullets, bullet];
     }
   }
 

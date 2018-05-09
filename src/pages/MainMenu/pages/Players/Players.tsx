@@ -12,14 +12,14 @@ interface IPlayers {
 }
 
 class Players extends React.Component<IPlayers, IPlayers> {
-	public state = {
+	public state: IPlayers = {
 		players: []
 	}
 
 	public addPlayer = () => {
 		const name = getUniqPlayerName();
 		const tankType = getPlayerTankType();
-		const players = Object.assign(this.state.players);
+		const players = [...this.state.players];
 		players.push({name, tankType});
 		this.setState({players});
 	}

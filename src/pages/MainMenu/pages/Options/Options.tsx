@@ -2,12 +2,11 @@ import * as React from 'react';
 // Import components
 import PageTitle from './../../components/PageTitle/PageTitle';
 import SubTitle from './../../components/SubTitle/SubTitle';
-import Wrapper from './../../components/Wrapper/Wrapper';
 
 class Options extends React.Component {
   public render() {
     return (
-			<Wrapper>
+			<React.Fragment>
 				<PageTitle>Options</PageTitle>
 				<SubTitle>Option group</SubTitle>
 				<ul className='bt-main-menu__index-options'>
@@ -45,7 +44,7 @@ class Options extends React.Component {
 						<a className='bt-main-menu__index-options-link'>Options</a>
 					</li>
 				</ul>
-			</Wrapper>
+			</React.Fragment>
 		);
   }
 }

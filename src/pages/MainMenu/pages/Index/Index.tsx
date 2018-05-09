@@ -1,15 +1,12 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
-// Import components
-import Wrapper from './../../components/Wrapper/Wrapper';
-// Import styles
 import './Index.css';
 
 
 class Index extends React.Component {
   public render() {
     return (
-			<Wrapper>
+			<div className='bt-main-menu__index-wrapper'>
 				<h1 className='bt-main-menu__index-title'>Battle Tanks</h1>
 				<ul className='bt-main-menu__index-options'>
 					<li className='bt-main-menu__index-option-item'>
@@ -22,7 +19,7 @@ class Index extends React.Component {
 						<Link to='/main-menu/options' className='bt-main-menu__index-options-link'>Options</Link>
 					</li>
 				</ul>
-			</Wrapper>
+			</div>
 		);
   }
 }

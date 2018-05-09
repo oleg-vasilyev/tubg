@@ -1,6 +1,6 @@
 interface IPlayer {
-	name: string;
-	tankType: number;
+  name: string;
+  tankType: number;
 }
 
 export default IPlayer

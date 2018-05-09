@@ -5,18 +5,18 @@ import GamePage from './pages/Game/Game';
 import MainMenuPage from './pages/MainMenu/MainMenu';
 
 class App extends React.Component {
- 	public render() {
+  public render() {
     return (
-			<div>
-				<BrowserRouter>
-					<Switch>
-						<Redirect exact={true} from='/' to='/main-menu' />
-						<Route path='/main-menu' component={MainMenuPage} />
-						<Route path='/game' component={GamePage} />
-					</Switch>
-				</BrowserRouter>
-			</div>
-		);
+      <div>
+        <BrowserRouter>
+          <Switch>
+            <Redirect exact={true} from='/' to='/main-menu' />
+            <Route path='/main-menu' component={MainMenuPage} />
+            <Route path='/game' component={GamePage} />
+          </Switch>
+        </BrowserRouter>
+      </div>
+    );
   }
 }
 

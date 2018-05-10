@@ -64,13 +64,18 @@ export class Battlefield {
     let count = 0;
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
+        this.fieldArray[count] = {
+          x: 0,
+          y: 0,
+          tank: null,
+          bullet: null,
+          wall: false,
+          collisionTank: false,
+          collisionWall: false
+        };
         this.fieldArray[count].x = j;
         this.fieldArray[count].y = i;
-        this.fieldArray[count].tank = null;
-        this.fieldArray[count].bullet = null;
-        this.fieldArray[count].wall = false;
-        this.fieldArray[count].collisionTank = false;
-        this.fieldArray[count].collisionWall = false;
+        count++;
       }
     }
   }

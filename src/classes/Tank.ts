@@ -52,7 +52,7 @@ export class Tank {
     this.lastX = 0;
     this.lastY = 0;
     this.direction = 0;
-    this.speed = 0;
+    this.speed = 3;
     this.score = 0;
     this.health = 1;
     this.wallCollision = null;
@@ -131,7 +131,7 @@ export class Tank {
     this.health -= 1;
   }
 
-  move(): void {
+  moveForward(): void {
     this.lastX = this.x;
     this.lastY = this.y;
     this.x += Math.round(this.speed*Math.cos(this.direction*(Math.PI/180)));
@@ -140,7 +140,7 @@ export class Tank {
 
   shoot(): void {
     let bullet: Bullet = new Bullet(this, getRandomId(), 1);
-    if (this.bullets == []) {
+    if (this.bullets.length == 0) {
       this.bullets = [bullet];
     } else {
       this.bullets = [...this.bullets, bullet];

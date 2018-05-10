@@ -92,7 +92,7 @@ export class AiConnection {
     }
 
     if(self.commandData.MOVE) {
-      self.tank.move();
+      self.tank.moveForward();
       self.commandData.MOVE = 0;
     }
 

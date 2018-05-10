@@ -18,8 +18,8 @@ export class AiIdent {
   public initData: {} | null;
   public loadingLimit: number;
 
-  constructor() {
-    this.name = "";
+  constructor(name: string) {
+    this.name = name;
     this.id = getRandomId();
     this.initData = null;
     this.loadingLimit = 100;

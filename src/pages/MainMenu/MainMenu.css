@@ -1,0 +1,21 @@
+.dt-main-menu {
+}
+
+.bt-main-menu__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: url(http://backgroundcheckall.com/wp-content/uploads/2017/12/battlefield-background-5.jpg) center / cover;
+}
+
+.bt-main-menu__wrapper-content {
+  margin: 30px 0;
+  padding: 60px 40px 100px;
+  min-height: 500px;
+  width: 100%;
+  max-width: 600px;
+  background-color: #ddd;
+  border-radius: 15px;
+  box-shadow: 0 0 40px rgba(0,0,0,1);
+}

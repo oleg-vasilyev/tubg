@@ -1,0 +1,18 @@
+.bt-game__content {
+  min-height: 100vh;
+  background: url(http://backgroundcheckall.com/wp-content/uploads/2017/12/battlefield-background-5.jpg) center / cover;
+}
+
+.bt-game__content-mm-link {
+  padding: 30px 0;
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.bt-game__content-mm-link:hover {
+  color: #0D2DB2;
+}

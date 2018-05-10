@@ -1,0 +1,94 @@
+.bt-main-menu__players-add-btn-wrapper {
+  text-align: center;
+}
+
+.bt-main-menu__players-add-btn {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 8px 15px;
+  font-size: 20px;
+  background-color: transparent;
+  border: 1px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+}
+.bt-main-menu__players-add-btn:hover {
+  background-color: #265ED1;
+  color: #fff;
+}
+
+.bt-main-menu__players-option-descr {
+  padding: 5px 0;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #ccc;
+}
+
+.bt-main-menu__players-options-descr {
+  display: flex;
+}
+
+.bt-main-menu__players-option-descr_name {
+  width: 100%;
+}
+
+.bt-main-menu__players-option-descr_tankType {
+  width: 200px;
+  white-space: nowrap;
+}
+
+.bt-main-menu__players-option-descr_bot {
+  width: 180px;
+}
+
+.bt-main-menu__players-player {
+  display: flex;
+  align-items: center;
+}
+.bt-main-menu__players-player:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.bt-main-menu__players-player-option {
+  font-size: 18px;
+}
+
+.bt-main-menu__players-player-name {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.bt-main-menu__players-player-tankType-option {
+  display: flex;
+}
+
+.bt-main-menu__players-player-tankType {
+  width: 115px;
+  margin-left: 5px;
+  font-size: inherit;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.bt-main-menu__players-player-bot {
+  display: none;
+  width: auto;
+}
+
+.bt-main-menu__players-player-bot-option-text {
+  padding: 5px 12px;
+  font-size: 18px;
+  background-color: transparent;
+  border: 1px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.bt-main-menu__players-player-bot-option-text:hover {
+  background-color: #265ED1;
+  color: #fff;
+}

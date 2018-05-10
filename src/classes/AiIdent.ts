@@ -4,9 +4,11 @@ export function getRandomId(): number {
   return Number(idRandomString);
 }
 
+
 /**
  * 
- * `Class of AI Identification for Tank
+ * `@class
+ *  @description Ai Identification
  * 
  */
 export class AiIdent {
@@ -52,7 +54,6 @@ export class AiIdent {
   }
 
   /**
-   * It is kept in `/tanks/[tankName].tank.js` files
    * @param {String} tankName - name of the tank.
    * @param {object} initData - optional initial data.
    */

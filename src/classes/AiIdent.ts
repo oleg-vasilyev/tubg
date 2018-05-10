@@ -13,14 +13,12 @@ export class AiIdent {
 
   public name: string;
   public id: number;
-  public code: string;
-  public initData: {};
+  public initData: {} | null;
   public loadingLimit: number;
 
   constructor() {
     this.name = "";
     this.id = getRandomId();
-    this.code = null;
     this.initData = null;
     this.loadingLimit = 100;
   }
@@ -42,14 +40,14 @@ export class AiIdent {
   /**
    * @return path to file with code of Web Worker where the AI will be ran.
    */
-  get pathAi(): string {
-      return `tanks/${this.name}.tank.js`;
+  getPathAi(): string {
+      return `ai/${this.name}.tank.js`;
   }
 
   /**
    * @return optional initial data
    */
-  getInitData(): {} {
+  getInitData(): {} | null {
     return this.initData;
   }
 
@@ -59,8 +57,7 @@ export class AiIdent {
    * @param {object} initData - optional initial data.
    */
 
-  fromFile(tankName, initData): void {
-    if (!tankName) throw "TankName is required";
+  includeAi (tankName: string, initData: {}): void {
     this.name = tankName;
     this.initData = initData !== undefined ? initData : null;
   }

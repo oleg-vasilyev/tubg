@@ -2,9 +2,23 @@ import {AiIdent} from './AiIdent';
 import {getRandomId} from './AiIdent';
 import {Bullet} from './Bullet';
 
+
 /**
+ *  @interface
+ * `@description object of state of tank
  * 
- * `Class of Battle Tank
+ */
+interface IState {
+  x: number;
+  y: number;
+  direction: number;
+  health: number;
+  collisions: { enemy: boolean | null, wall: boolean | null};
+}
+
+/**
+ *  @class
+ * `@description Class of Battle Tank
  * 
  */
 export class Tank {
@@ -19,9 +33,9 @@ export class Tank {
   public direction: number;
   public speed: number;
   public score: number;
-  public state: {};
-  public wallDistance: boolean;
-  public enemyDistance: boolean;
+  public state: IState;
+  public wallCollision: boolean | null;
+  public enemyCollision: boolean | null;
   public bullets: Array<Bullet>;
 
 
@@ -40,20 +54,41 @@ export class Tank {
     this.direction = 0;
     this.speed = 0;
     this.score = 0;
-    this.state = null;
-    this.wallDistance = null;
+    this.health = 1;
+    this.wallCollision = null;
+    this.enemyCollision = null;
+    this.bullets = [];
+    this.state = {
+      x: this.x,
+      y: this.y,
+      direction: this.direction,
+      collisions: {
+        enemy: null,
+        wall: null,
+      },
+      health: 1
+    };
   }
 
   getId(): number {
     return this.id;
   }
 
-  getName() {
+  getName(): string {
     return this.name;
   }
 
-  getState(): {} {
+  getState(): IState {
     return this.state;
+  }
+
+  genState(): void {
+    this.state.x = this.x;
+    this.state.y = this.y;
+    this.state.direction = this.direction;
+    this.state.collisions.enemy = this.enemyCollision;
+    this.state.collisions.wall = this.wallCollision;
+    this.state.health = this.health;
   }
 
   getScore(): number {
@@ -61,11 +96,11 @@ export class Tank {
   }
 
   killsScore(): void {
-    this.score += 1;
+    this.score += 1;  // This config param
   }
 
   surviveScore(): void {
-    this.score += 0.5;
+    this.score += 0.5; // This config param
   }
 
   getX(): number {
@@ -85,7 +120,11 @@ export class Tank {
   }
 
   onWall(): void {
-    this.wallDistance = true;
+    this.wallCollision = true;
+  }
+
+  onEnemy(): void {
+    this.enemyCollision = true;
   }
 
   onEnemyHit(): void {
@@ -106,6 +145,10 @@ export class Tank {
     } else {
       this.bullets = [...this.bullets, bullet];
     }
+  }
+
+  rotate(direction: number): void {
+    this.direction = direction;
   }
 
 }

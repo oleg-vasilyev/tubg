@@ -1,8 +1,8 @@
 import { Tank } from "./Tank";
 import {getRandomId} from './AiIdent';
 /**
- * 
- * `Class of Bullet
+ *  @class
+ * `@description class Bullet
  * 
  */
 export class Bullet {
@@ -15,6 +15,14 @@ export class Bullet {
   public power: number;
   public destroyed: boolean;
 
+
+  /**
+   * 
+   * @param {Tank} owner - owner of this Bullet. 
+   * @param {Number} id - unique id of the tank.
+   * @param {Number} power - power of bullet.
+   * 
+   */
   constructor(owner: Tank, id: number, power: number) {
     this.id = id;
     this.owner = owner;
@@ -51,6 +59,7 @@ export class Bullet {
   getPower(): number {
     return this.power;
   }
+  
   getOwner(): Tank {
     return this.owner;
   }
@@ -63,7 +72,12 @@ export class Bullet {
     this.destroyed = true;
   }
 
-  onEnemy(enemy): void {
+  /**
+   * 
+   * @param {Tank} enemy - enemy atacked. 
+   * 
+   */
+  onEnemy(enemy: Tank): void {
     this.destroyed = true;
     enemy.health -= this.power;
   }

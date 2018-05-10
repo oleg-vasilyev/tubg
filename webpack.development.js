@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const common = require('./webpack.common.js');
 const merge = require('webpack-merge');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = merge(common, {
@@ -17,7 +16,6 @@ module.exports = merge(common, {
     historyApiFallback: true
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
@@ -26,23 +24,11 @@ module.exports = merge(common, {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        loader: 'ts-loader'
-      },
-      {
-        test: /\.css$/,
-        loader: 'style-loader'
-      },
-      {
         test: /\.css$/,
         loader: 'css-loader',
         options: {
           sourceMap: true,
         }
-      },
-      {
-        test: /\.(jpg|png|gif|svg|woff)/,
-        loader: 'file-loader'
       }
     ]
   },

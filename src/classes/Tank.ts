@@ -52,7 +52,8 @@ export class Tank {
   public enemyCollision: boolean | null;
   public bullets: Array<Bullet>;
   public history: Array<IHistoryTank>;
-
+  public enemiesList: Array<Tank>;
+  public bulletList: Array<Bullet>;
   /**
    * @param {identificatorAi} identificatorAi - identification of tank's AI Script
    * @param {Number} id - unique id of the tank
@@ -72,6 +73,8 @@ export class Tank {
     this.wallCollision = null;
     this.enemyCollision = null;
     this.bullets = [];
+    this.enemiesList = [];
+    this.bulletList = [];
     this.state = {
       x: this.x,
       y: this.y,
@@ -142,8 +145,20 @@ export class Tank {
     this.enemyCollision = true;
   }
 
+  getEnemy(enemy: Tank): void {
+    this.enemiesList.push(enemy);
+  }
+
+  getBullet(bullet: Bullet): void {
+    this.bulletList.push(bullet);
+  }
+
   onEnemyHit(): void {
     this.health -= 1;
+  }
+
+  onEnemyKillScore(): void {
+    this.score += 1;
   }
 
   moveForward(): void {

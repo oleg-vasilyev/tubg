@@ -11,7 +11,7 @@ export function getRandomId(): number {
  *  @description Ai Identification
  * 
  */
-export class AiIdent {
+export class IdentificatorAi {
 
   public name: string;
   public id: number;

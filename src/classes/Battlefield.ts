@@ -43,13 +43,13 @@ export class Battlefield {
     this.finishX = this.startX + width - 1;
     this.finishY = this.startY + height - 1;
     this.fieldArray = [];
-    this.genfieldArray();
+    this.genFieldArray();
   }
 
   setSize(width: number, height: number): void {
     this.width = width;
     this.height = height;
-    this.genfieldArray();
+    this.genFieldArray();
   }
 
   getWidth(): number {
@@ -60,7 +60,7 @@ export class Battlefield {
     return this.height;
   }
 
-  genfieldArray(): void {
+  genFieldArray(): void {
     let count = 0;
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
@@ -84,4 +84,5 @@ export class Battlefield {
     let key: number = y*this.width + x;
     return this.fieldArray[key];
   }
+
 }

@@ -1,5 +1,5 @@
 import { Tank } from "./Tank";
-import { AiIdent } from "./AiIdent";
+import { IdentificatorAi } from "./IdentificatorAi";
 
 interface ICommandData {
   MOVE: number;
@@ -14,14 +14,14 @@ interface ICommandData {
 export class AiConnection {
   
   public tank: Tank;
-  public aiIdent: AiIdent;
+  public aiIdent: IdentificatorAi;
   public aiProcessingStart: number;
   public aiProcessingLimit: number;
   public isReady: boolean;
   public commandData: ICommandData;
   public aiWorker: Worker | null;
 
-  constructor(tank: Tank, aiIdent: AiIdent) {
+  constructor(tank: Tank, aiIdent: IdentificatorAi) {
     this.tank = tank;
     this.aiProcessingStart = 0;
     this.aiProcessingLimit = 3000; //from config
@@ -102,7 +102,7 @@ export class AiConnection {
     
   }
 
-  createWorker(aiIdent: AiIdent): Worker {
+  createWorker(aiIdent: IdentificatorAi): Worker {
     return new Worker(aiIdent.getPathAi());
   }
 }

@@ -1,5 +1,5 @@
-import {AiIdent} from './AiIdent';
-import {getRandomId} from './AiIdent';
+import {IdentificatorAi} from './IdentificatorAi';
+import {getRandomId} from './IdentificatorAi';
 import {Bullet} from './Bullet';
 
 
@@ -14,6 +14,20 @@ interface IState {
   direction: number;
   health: number;
   collisions: { enemy: boolean | null, wall: boolean | null};
+}
+
+/**
+ *  @interface
+ * `@description object history of tank
+ * 
+ */
+export interface IHistoryTank {
+  bullets: Array<Bullet>;
+  prevX: null | number;
+  prevY: null | number;
+  x: number;
+  y: number;
+  health: number;
 }
 
 /**
@@ -37,16 +51,16 @@ export class Tank {
   public wallCollision: boolean | null;
   public enemyCollision: boolean | null;
   public bullets: Array<Bullet>;
-
+  public history: Array<IHistoryTank>;
 
   /**
-   * @param {AiIdent} aiIdent - identification of tank's AI Script
+   * @param {identificatorAi} identificatorAi - identification of tank's AI Script
    * @param {Number} id - unique id of the tank
    */
 
-  constructor(aiIdent: AiIdent, id: number) {
+  constructor(identificatorAi: IdentificatorAi, id: number) {
     this.id = id;
-    this.name = aiIdent.name;
+    this.name = identificatorAi.name;
     this.x = 0;
     this.y = 0;
     this.lastX = 0;
@@ -68,6 +82,7 @@ export class Tank {
       },
       health: 1
     };
+    this.history = [];
   }
 
   getId(): number {
@@ -149,6 +164,17 @@ export class Tank {
 
   rotate(direction: number): void {
     this.direction = direction;
+  }
+
+  setRandomDirection(): void {
+    let dirArray: Array<number> = [0, 90, 180, 270];
+    let dirKey: number = Math.floor(Math.random() * (dirArray.length - 0)) + 0;
+    this.direction = dirArray[dirKey];
+  }
+
+  setRandomPos(minX: number, maxX: number, minY: number, maxY: number): void {
+    this.x = Math.floor(Math.random() * (maxX + 1 - minX)) + minX;
+    this.y = Math.floor(Math.random() * (maxY + 1 - minY)) + minY;
   }
 
 }

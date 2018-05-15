@@ -1,5 +1,5 @@
 import { Tank } from "./Tank";
-import {getRandomId} from './AiIdent';
+import {getRandomId} from './identificatorAi';
 /**
  *  @class
  * `@description class Bullet

@@ -8,12 +8,11 @@ module.exports = merge(common, {
   devServer: {
     contentBase: './dist',
     clientLogLevel: 'none',
-    overlay: {
-      errors: true
-    },
+    overlay: true,
     open: true,
     hot: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    publicPath: '/'
   },
   plugins: [
     new HtmlWebpackPlugin({

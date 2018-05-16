@@ -12,5 +12,19 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx']
-  }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        enforce: 'pre',
+        loader: 'tslint-loader',
+        options: {
+          emitErrors: true,
+          failOnHint: true,
+          typeCheck: true,
+        }
+      }
+    ]
+  },
 };

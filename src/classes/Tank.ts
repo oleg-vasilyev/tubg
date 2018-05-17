@@ -1,6 +1,6 @@
 import { IdentificatorAi, getRandomId } from './IdentificatorAi';
 import { Bullet } from './Bullet';
-import { IState, ICommand, ITankTrack, IBulletTrack } from '../interfaces/interfaces';
+import { IState, ICommandAi, ITankTrack, IBulletTrack } from '../interfaces/interfaces';
 import { CONFIG } from './Config';
 
 /**

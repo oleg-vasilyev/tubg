@@ -2,7 +2,6 @@ import { Tank } from './Tank';
 import { IdentificatorAi } from './IdentificatorAi';
 import { ICommandAi, IRejectCallbackArg } from '../interfaces/interfaces';
 import { CONFIG } from './Config'
-import { IState } from '../interfaces/interfaces';
 /**
  * 
  * @class of AI connection
@@ -15,7 +14,7 @@ export class AiConnection {
   public aiProcessingStart: number;
   public aiProcessingLimit: number;
   public aiProcessingCheckInterval: any;
-  public aiProcessingResolveCallback: (()=>void) | null;
+  public aiProcessingResolveCallback: ((arg: IRejectCallbackArg)=>void) | null;
   public aiProcessingRejectCallback: ((arg: IRejectCallbackArg)=>void) | null;
   public isReady: boolean;
   public commandData: ICommandAi;
@@ -81,11 +80,12 @@ export class AiConnection {
     return xhr;
   }
 
-  sendRequest(resolve: (obj: {})=>void, reject: (obj: {})=>void) {
+  sendRequest(resolve: ()=>void, reject: ()=>void) {
     let xhr: XMLHttpRequest = this.xhRequest();
     let stateJSON: string = JSON.stringify(this.tank.state);
     xhr.open("POST", `${this.identificatorAi.getPathAi}`, true);
     xhr.timeout = this.aiProcessingLimit;
+    this.aiProcessingRejectCallback = reject;
     xhr.ontimeout = () => {
       if(this.aiProcessingRejectCallback !== null) {
         this.aiProcessingRejectCallback({
@@ -113,6 +113,7 @@ export class AiConnection {
           this.aiProcessingResolveCallback = null;
           this.aiProcessingRejectCallback = null;
         } else {
+          resolve();
           this.commandData = JSON.parse(xhr.responseText);
         }
       } 
@@ -125,7 +126,7 @@ export class AiConnection {
     } else {
       this.aiProcessingResolveCallback = resolve;
       this.aiProcessingRejectCallback = reject;
-      this.sendRequest(this.aiProcessingResolveCallback, this.aiProcessingRejectCallback);
+      this.sendRequest(resolve, reject);
     }
   }
 
@@ -198,7 +199,6 @@ export class AiConnection {
         callback = this.aiProcessingResolveCallback;
         this.aiProcessingResolveCallback = null;
         this.aiProcessingRejectCallback = null;
-        callback();
       }
     };
     this.aiProcessingStart = (new Date()).getTime();

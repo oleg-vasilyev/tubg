@@ -34,7 +34,12 @@
       true,
       140
     ],
-    "member-access": true,
+    "member-access": [
+      true,
+      "check-accessor",
+      "check-constructor",
+      "check-parameter-property"
+    ],
     "member-ordering": [
       true,
       {
@@ -158,6 +163,7 @@
       "check-operator",
       "check-separator",
       "check-type"
-    ]
+    ],
+    "newline-before-return": true
   }
 }

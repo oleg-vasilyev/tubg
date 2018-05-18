@@ -2,6 +2,7 @@ import { IdentificatorAi, getRandomId } from './IdentificatorAi';
 import { Bullet } from './Bullet';
 import { IState, ICommandAi, ITankTrack, IBulletTrack } from '../interfaces/interfaces';
 import { CONFIG } from './Config';
+import { CollisionSolution } from './CollisionSolution';
 
 /**
  *  @class
@@ -25,7 +26,7 @@ export class Tank {
   public bulletCollision: boolean;
   public bullets: Array<Bullet>;
   public historyState: Array<IState>;
-  public historyCommand: Array<ICommand>;
+  public historyCommand: Array<ICommandAi>;
   public enemyTracks: Array<ITankTrack>;
   public bulletTracks: Array<IBulletTrack>;
   public wall: Array<number>;
@@ -152,8 +153,8 @@ export class Tank {
   moveForward(): void {
     this.lastX = this.x;
     this.lastY = this.y;
-    this.x += Math.round(this.speed*Math.cos(this.direction*(Math.PI/180)));
-    this.y += Math.round(this.speed*Math.sin(this.direction*(Math.PI/180)));
+    this.x += Math.round(Math.cos(this.direction*(Math.PI/180)));
+    this.y += Math.round(Math.sin(this.direction*(Math.PI/180)));
   }
 
   shoot(): void {
@@ -178,6 +179,28 @@ export class Tank {
   setRandomPos(minX: number, maxX: number, minY: number, maxY: number): void {
     this.x = Math.floor(Math.random() * (maxX + 1 - minX)) + minX;
     this.y = Math.floor(Math.random() * (maxY + 1 - minY)) + minY;
+  }
+
+  simulationStep(collisionSolution: CollisionSolution): void {
+    let command: ICommandAi = this.historyCommand[this.historyCommand.length - 1];
+    if (this.health == 0) {
+      return;
+    }
+    if (command.move) {
+      for (let i = 0; i < this.speed; i++) {
+        let hitTest = collisionSolution.checkTank(this);
+        if (!hitTest) {
+          this.moveForward();
+        } else {
+          this.x = this.lastX;
+          this.y = this.lastY;
+        }
+      }
+    } else if (command.shoot) {
+      this.shoot();
+    } else if (command.rotate) {
+      this.direction = command.rotate;
+    } 
   }
 
 }

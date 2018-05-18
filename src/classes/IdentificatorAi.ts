@@ -19,7 +19,7 @@ export class IdentificatorAi {
     this.pathAi = path;
     this.id = getRandomId();
     this.initData = {};
-    this.loadingLimit = CONFIG.loadingLimit;
+    this.loadingLimit = CONFIG.aiProcessingLimit;
   }
 
   /**

@@ -2,7 +2,7 @@ import { Tank } from './Tank';
 import { IdentificatorAi } from './IdentificatorAi';
 import { ICommandAi, IRejectCallbackArg } from '../interfaces/interfaces';
 import { CONFIG } from './Config'
-import { IState } from '../../../\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430/tubg/src/interfaces/interfaces';
+import { IState } from '../interfaces/interfaces';
 /**
  * 
  * @class of AI connection

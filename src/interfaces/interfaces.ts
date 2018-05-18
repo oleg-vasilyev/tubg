@@ -59,3 +59,10 @@ export interface ICommandAi {
   rotate: number;
 }
 
+export interface IRejectCallbackArg {
+  message: string;
+  performanceIssues: boolean;
+  tankName: string;
+  tankId: number;
+}
+

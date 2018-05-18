@@ -2,6 +2,7 @@ import { Tank } from './Tank';
 import { IdentificatorAi } from './IdentificatorAi';
 import { ICommandAi, IRejectCallbackArg } from '../interfaces/interfaces';
 import { CONFIG } from './Config'
+import { IState } from '../../../\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430/tubg/src/interfaces/interfaces';
 /**
  * 
  * @class of AI connection
@@ -14,8 +15,8 @@ export class AiConnection {
   public aiProcessingStart: number;
   public aiProcessingLimit: number;
   public aiProcessingCheckInterval: any;
-  public aiProcessingResolveCallback: ()=>void | null;
-  public aiProcessingRejectCallback: (arg: IRejectCallbackArg)=>void | null;
+  public aiProcessingResolveCallback: (()=>void) | null;
+  public aiProcessingRejectCallback: ((arg: IRejectCallbackArg)=>void) | null;
   public isReady: boolean;
   public commandData: ICommandAi;
   public aiWorker: Worker | null;
@@ -35,6 +36,7 @@ export class AiConnection {
     this.onDectivationCallback = [];
     this.identificatorAi = identificatorAi;
     this.isReady = false;
+    this.aiWorker = null;
     this.commandData = {
       move: false,
       shoot: false,
@@ -48,6 +50,93 @@ export class AiConnection {
 
   getTank(): Tank {
     return this.tank;
+  }
+
+  commandTank(command: ICommandAi): void {
+
+    this.commandData = {
+      move: command.move,
+      shoot: command.shoot,
+      rotate: command.rotate
+    }
+
+    if (this.commandData.shoot) {
+      this.tank.shoot();
+      this.commandData.shoot = false;
+    }
+
+    if (this.commandData.move) {
+      this.tank.moveForward();
+      this.commandData.move = false;
+    }
+
+    if(this.commandData.rotate) {
+      this.tank.rotate(this.commandData.rotate);
+    }
+    
+  }
+
+  xhRequest() { //Connect connect to AI file on XHR request
+    let xhr: XMLHttpRequest = new XMLHttpRequest();
+    return xhr;
+  }
+
+  sendRequest(resolve: (obj: {})=>void, reject: (obj: {})=>void) {
+    let xhr: XMLHttpRequest = this.xhRequest();
+    let stateJSON: string = JSON.stringify(this.tank.state);
+    xhr.open("POST", `${this.identificatorAi.getPathAi}`, true);
+    xhr.timeout = this.aiProcessingLimit;
+    xhr.ontimeout = () => {
+      if(this.aiProcessingRejectCallback !== null) {
+        this.aiProcessingRejectCallback({
+          message: "Simulation cannot be continued because " + this.tank.name + " #" + this.tank.id + " does not respond",
+          performanceIssues: true,
+          tankName: this.tank.name,
+          tankId: this.tank.id
+        });
+        this.aiProcessingResolveCallback = null;
+        this.aiProcessingRejectCallback = null;
+      }
+    }
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(stateJSON));
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState != 4) return;
+      if (xhr.status != 200) {
+        if(this.aiProcessingRejectCallback) {
+          this.aiProcessingRejectCallback({
+            message: "XMLHTTPRequest to '" + this.tank.name + "' is status different from 200",
+            performanceIssues: false,
+            tankName: this.tank.name,
+            tankId: this.tank.id
+          });
+          this.aiProcessingResolveCallback = null;
+          this.aiProcessingRejectCallback = null;
+        } else {
+          this.commandData = JSON.parse(xhr.responseText);
+        }
+      } 
+    }
+  }
+
+  simulationStepXHR(resolve: ()=>void, reject: ()=>void): void {
+    if (this.tank.health == 0) {
+      return;
+    } else {
+      this.aiProcessingResolveCallback = resolve;
+      this.aiProcessingRejectCallback = reject;
+      this.sendRequest(this.aiProcessingResolveCallback, this.aiProcessingRejectCallback);
+    }
+  }
+
+
+  /**
+   * 
+   * Next code for webworker
+   * 
+   */
+  createWorker(aiIdent: IdentificatorAi): Worker { //Connect to ai from file in Webworker
+    return new Worker(aiIdent.getPathAi());
   }
 
   activate(resolve: ()=>{}, reject: ()=>{}): void {
@@ -94,7 +183,7 @@ export class AiConnection {
         let callback;
         let now = (new Date()).getTime();
         let dt = now - this.aiProcessingStart;
-        if (dt > this.identificatorAi.loadingLimit) { 
+        if (dt > this.identificatorAi.loadingLimit && this.aiProcessingRejectCallback !== null) { 
           callback = this.aiProcessingRejectCallback;
           this.aiProcessingResolveCallback = null;
           this.aiProcessingRejectCallback = null;
@@ -140,30 +229,4 @@ export class AiConnection {
     }
   }
 
-  commandTank(value: ICommandAi): void {
-
-    let self = this;
-    self.commandData.MOVE = value.MOVE;
-    self.commandData.ROTATE = value.ROTATE;
-    self.commandData.SHOOT = value.SHOOT;
-
-    if(self.commandData.SHOOT) {
-      self.tank.shoot();
-      self.commandData.SHOOT = 0;
-    }
-
-    if(self.commandData.MOVE) {
-      self.tank.moveForward();
-      self.commandData.MOVE = 0;
-    }
-
-    if(self.commandData.ROTATE) {
-      self.tank.rotate(self.commandData.ROTATE);
-    }
-    
-  }
-
-  createWorker(aiIdent: IdentificatorAi): Worker {
-    return new Worker(aiIdent.getPathAi());
-  }
 }

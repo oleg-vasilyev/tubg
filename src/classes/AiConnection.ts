@@ -21,6 +21,7 @@ export class AiConnection {
   public aiWorker: Worker | null;
   public onActivationCallback: Array<()=>{}>;
   public onDectivationCallback: Array<()=>{}>;
+  public status: string;
   /**
    * @param {identificatorAi} identificatorAi - identification of tank's AI Script
    * @param {Tank} tank - tank
@@ -36,6 +37,7 @@ export class AiConnection {
     this.identificatorAi = identificatorAi;
     this.isReady = false;
     this.aiWorker = null;
+    this.status = "activate";
     this.commandData = {
       move: false,
       shoot: false,
@@ -80,7 +82,7 @@ export class AiConnection {
     return xhr;
   }
 
-  sendRequest(resolve: ()=>void, reject: ()=>void) {
+  sendRequest(resolve: ()=>void, reject?: ()=>void) {
     let xhr: XMLHttpRequest = this.xhRequest();
     let stateJSON: string = JSON.stringify(this.tank.state);
     xhr.open("POST", `${this.identificatorAi.getPathAi}`, true);
@@ -120,7 +122,12 @@ export class AiConnection {
     }
   }
 
-  simulationStepXHR(resolve: ()=>void, reject: ()=>void): void {
+  activateXHR(resolve: ()=>{}, reject?: ()=>{}) {
+    this.simulationStepXHR(resolve, reject);
+    this.status = "simulationStep";
+  }
+
+  simulationStepXHR(resolve: ()=>{}, reject?: ()=>{}): void {
     if (this.tank.health == 0) {
       return;
     } else {
@@ -140,7 +147,7 @@ export class AiConnection {
     return new Worker(aiIdent.getPathAi());
   }
 
-  activate(resolve: ()=>{}, reject: ()=>{}): void {
+  activate(resolve: ()=>{}, reject?: ()=>{}): void {
     this.aiWorker = this.createWorker(this.identificatorAi);
     this.aiWorker.onerror = (err) => {
       console.error(err);
@@ -205,6 +212,7 @@ export class AiConnection {
     this.aiProcessingResolveCallback = resolve;
     this.aiProcessingRejectCallback = reject;
     this.aiWorker.postMessage(this.tank.state);
+    this.status = "simulationStep";
   }
 
   deactivate(): void {
@@ -214,7 +222,7 @@ export class AiConnection {
     }
   }
 
-  simulationStep(resolve: ()=>void, reject: ()=>void): void {
+  simulationStep(resolve: ()=>void, reject?: ()=>void): void {
     if (this.aiWorker && this.tank.health == 0) {
       this.aiWorker.terminate();
       this.aiWorker = null;

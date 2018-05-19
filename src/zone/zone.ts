@@ -2,8 +2,11 @@ import { ShrinkSteps } from './shrinkSteps';
 import { ZoneShape } from "./zoneShape";
 
 /*
-Надо обмозговать:
-  -Все еще пересмотреть способ сжатия единичной зоны, мб что-то можно сделать лучше
+  Note:
+  There are some parameters, marked as "any" type.
+  I'll change this as soon as we decided what these parameters will be.
+  Also I'll change "location" array in parameters to "battlefield" object,
+  when Battlefield class will be ready.
 */
 
 /**
@@ -191,7 +194,7 @@ export class Zone {
   //#region Class functions
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {number} shrinkCoefficient Coefficient of zone shrinking
    * @param {number} lastZoneSide Value of the last zone side
@@ -225,7 +228,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @description Sets game location shape as current zone shape
    */
@@ -242,7 +245,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {number} shrinkCoefficient Coefficient of zone shrinking
    * @param {number} lastZoneSide Value of the last zone side
@@ -271,7 +274,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} cleanerObject Object to clean the border of the zone
    * @description Removes the drawn border of the final zone
@@ -288,7 +291,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {number} shrinkCoefficient Coefficient of zone shrinking
    * @param {number} lastZoneSide Value of the last zone side
    * @description Calculate parameters of the final zone
@@ -316,7 +319,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @description Calculates distances between zones
    */
   private calculateDistances(): void {
@@ -327,7 +330,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @description Calculates the ratio between the vertical distances of zones
    */
   private calculateVerticalDistancesRatio(): void {
@@ -342,7 +345,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @description Calculates the ratio between the horizontal distances of zones
    */
   private calculateHorizontalDistancesRatio(): void {
@@ -357,7 +360,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} borderFillingObject Object to fill a border of the zone
    * @description Fills border cells of the final zone with given object
@@ -374,7 +377,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} fillingObject Object to fill an area outside the zone
    * @param {number} lastZoneSide Value of the last zone side
@@ -410,7 +413,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} fillingObject Object to fill an area outside the zone
    * @param {object} shrinkSteps Values of shrinks for each side
@@ -470,7 +473,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} fillingObject Object to fill an area outside the zone
    * @param {number} initialLoopValue Initial counter value of the loop
@@ -499,7 +502,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} fillingObject Object to fill an area outside the zone
    * @param {number} initialLoopValue Initial counter value of the loop
@@ -523,7 +526,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} fillingObject Object to fill an area outside the zone
    * @param {number} initialLoopValue Initial counter value of the loop
@@ -544,7 +547,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} fillingObject Object to fill an area outside the zone
    * @param {object} shrinkSteps Values of shrinks for each side
@@ -604,7 +607,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} fillingObject Object to fill an area outside the zone
    * @param {number} initialLoopValue Initial counter value of the loop
@@ -633,7 +636,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} fillingObject Object to fill an area outside the zone
    * @param {number} initialLoopValue Initial counter value of the loop
@@ -657,7 +660,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} fillingObject Object to fill an area outside the zone
    * @param {number} initialLoopValue Initial counter value of the loop
@@ -678,7 +681,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {array} location Game location for processing
    * @param {*} fillingObject Object to fill an area outside the zone
    * @param {number} lastZoneSide Value of the last zone side
@@ -691,7 +694,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @param {object} shrinkSteps Values of shrinks for each side
    * @description Calculate parameters of the current zone
    */
@@ -704,7 +707,7 @@ export class Zone {
   }
 
   /**
-   * @function
+   * @method
    * @description Check if the current zone reaches the final zone
    */
   private checkIsFinalZoneReached(): void {

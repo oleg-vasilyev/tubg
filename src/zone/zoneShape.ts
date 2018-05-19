@@ -83,7 +83,7 @@ export class ZoneShape {
   //#region Class functions
 
   /**
-   * @function
+   * @method
    * @description Calculates upper left point coordinates
    */
   public calculateUpperLeftPoint(): void {
@@ -92,7 +92,7 @@ export class ZoneShape {
   }
 
   /**
-   * @function
+   * @method
    * @description Calculates lower right point coordinates
    */
   public calculateLowerRightPoint(): void {
@@ -101,7 +101,7 @@ export class ZoneShape {
   }
 
   /**
-   * @function
+   * @method
    * @description Calculates width and height using upper left and lower right points
    */
   public calculateSides(): void {
@@ -110,7 +110,7 @@ export class ZoneShape {
   }
 
   /**
-   * @function
+   * @method
    * @description Calculates width using upper left and lower right points
    */
   public calculateWidth(): void {
@@ -118,7 +118,7 @@ export class ZoneShape {
   }
 
   /**
-   * @function
+   * @method
    * @description Calculates height using upper left and lower right points
    */
   public calculateHeight(): void {
@@ -126,7 +126,7 @@ export class ZoneShape {
   }
 
   /**
-   * @function
+   * @method
    * @description Returns value of the minimal side
    */
   public getMinimalSide(): number {
@@ -134,7 +134,7 @@ export class ZoneShape {
   }
 
   /**
-   * @function
+   * @method
    * @description Returns value of the maximal side
    */
   public getMaximalSide(): number {

@@ -3,8 +3,12 @@
  * @description Represents coordinate point
  */
 export class Point {
+  //#region Class fields
+
   private _x: number;
   private _y: number;
+
+  //#endregion
 
   //#region Constructor
 
@@ -20,7 +24,7 @@ export class Point {
 
   //#endregion
 
-  //#region Accessor functions declaration
+  //#region Accessor functions
 
   /**
    * Accessor

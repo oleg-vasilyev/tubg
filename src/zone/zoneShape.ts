@@ -5,9 +5,13 @@ import { Point } from "./point";
  * @description Represents square shape of zone
  */
 export class ZoneShape {
+  //#region Class fields
+
   private _upperLeftPoint: Point;
   private _side: number;
   private _lowerRightPoint: Point;
+
+  //#endregion
 
   //#region Constructor
 
@@ -25,7 +29,7 @@ export class ZoneShape {
 
   //#endregion
 
-  //#region Accessor functions declaration
+  //#region Accessor functions
 
   /**
    * Accessor

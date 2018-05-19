@@ -2,7 +2,7 @@ import { Point } from "./point";
 
 /**
  * @class
- * @description Represents square shape of zone
+ * @description Represents rectangular shape of zone
  */
 export class ZoneShape {
   //#region Class fields

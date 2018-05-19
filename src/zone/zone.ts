@@ -4,7 +4,7 @@ import { ZoneShape } from "./zoneShape";
 /*
   Note:
   There are some parameters, marked as "any" type.
-  I'll change this as soon as we decided what these parameters will be.
+  I'll change this as soon as we decide what these parameters will be.
   Also I'll change "location" array in parameters to "battlefield" object,
   when Battlefield class will be ready.
 */

@@ -1,4 +1,4 @@
-import { Point } from "./point";
+import { ShrinkSteps } from './shrinkSteps';
 import { ZoneShape } from "./zoneShape";
 
 /*
@@ -416,7 +416,7 @@ export class Zone {
    * @param {object} shrinkSteps Values of shrinks for each side
    * @description Shrinks location vertically
    */
-  private shrinkVertically(location: Array<any>, fillingObject: any, shrinkSteps: any): void {
+  private shrinkVertically(location: Array<any>, fillingObject: any, shrinkSteps: ShrinkSteps): void {
     const isTopSideReached = (this._currentZoneShape.upperLeftPoint.y === this._finalZoneShape.upperLeftPoint.y);
     const isBottomSideReached = (this._currentZoneShape.lowerRightPoint.y === this._finalZoneShape.lowerRightPoint.y);
     const isCommonStep = (this._verticalStepCount === this._verticalDistancesRatio);
@@ -550,7 +550,7 @@ export class Zone {
    * @param {object} shrinkSteps Values of shrinks for each side
    * @description Shrinks location horizontally
    */
-  private shrinkHorizontally(location: Array<any>, fillingObject: any, shrinkSteps: any): void {
+  private shrinkHorizontally(location: Array<any>, fillingObject: any, shrinkSteps: ShrinkSteps): void {
     const isLeftSideReached = (this._currentZoneShape.upperLeftPoint.x === this._finalZoneShape.upperLeftPoint.x);
     const isRightSideReached = (this._currentZoneShape.lowerRightPoint.x === this._finalZoneShape.lowerRightPoint.x);
     const isCommonStep = (this._horizontalStepCount === this._horizontalDistancesRatio);
@@ -695,7 +695,7 @@ export class Zone {
    * @param {object} shrinkSteps Values of shrinks for each side
    * @description Calculate parameters of the current zone
    */
-  private calculateCurrentZoneShape(shrinkSteps: any): void {
+  private calculateCurrentZoneShape(shrinkSteps: ShrinkSteps): void {
     this._currentZoneShape.upperLeftPoint.x += shrinkSteps.leftStep;
     this._currentZoneShape.upperLeftPoint.y += shrinkSteps.topStep;
     this._currentZoneShape.lowerRightPoint.x -= shrinkSteps.rightStep;

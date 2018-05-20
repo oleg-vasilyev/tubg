@@ -1,9 +1,10 @@
-import { Tank } from "./Tank";
-import {getRandomId} from './identificatorAi';
+import { CONFIG } from './Config';
+import { Tank } from './Tank';
+
+
 /**
  *  @class
  * `@description class Bullet
- * 
  */
 export class Bullet {
   public id: number;
@@ -15,82 +16,83 @@ export class Bullet {
   public power: number;
   public destroyed: boolean;
 
-
   /**
-   * 
-   * @param {Tank} owner - owner of this Bullet. 
+   * @param {Tank} owner - owner of this Bullet.
    * @param {Number} id - unique id of the tank.
    * @param {Number} power - power of bullet.
-   * 
    */
-  constructor(owner: Tank, id: number, power?: number) {
+
+  public constructor(owner: Tank, id: number) {
     this.id = id;
     this.owner = owner;
     this.direction = owner.direction;
-    while(this.direction > 360) this.direction -= 360;
-    while(this.direction < 0) this.direction += 360;
+    while (this.direction > 360) {
+      this.direction -= 360;
+    }
+    while (this.direction < 0) {
+      this.direction += 360;
+    }
     this.x = owner.x;
     this.y = owner.y;
-    this.speed = 5;  //It will setted in config
-    this.power = 1;  //It will setted in config. It shows how many take away health points from the enemy
+    this.speed = CONFIG.bulletSpeed;
+    this.power = CONFIG.bulletPower;
     this.destroyed = false;
   }
 
-  getId(): number {
+  public getId(): number {
     return this.id;
   }
 
-  getX(): number {
+  public getX(): number {
     return this.x;
   }
 
-  getY(): number {
+  public getY(): number {
     return this.y;
   }
 
-  getDirection(): number {
+  public getDirection(): number {
     return this.direction;
   }
 
-  getSpeed(): number {
+  public getSpeed(): number {
     return this.speed;
   }
 
-  getPower(): number {
+  public getPower(): number {
     return this.power;
   }
-  
-  getOwner(): Tank {
+
+  public getOwner(): Tank {
     return this.owner;
   }
 
-  getDestroyed(): boolean {
+  public getDestroyed(): boolean {
     return this.destroyed;
   }
 
-  onWall(): void {
+  public onWall(): void {
     this.destroyed = true;
   }
 
   /**
-   * 
-   * @param {Tank} enemy - enemy atacked. 
-   * 
+   * @param {Tank} enemy - enemy atacked.
    */
-  onEnemy(enemy: Tank): void {
+
+  public onEnemy(enemy: Tank): void {
     this.onDestroy();
     enemy.health -= this.power;
   }
 
-  nextStep(): void {
-    this.x += Math.round(this.speed*Math.cos(this.direction*(Math.PI/180)));
-    this.y += Math.round(this.speed*Math.sin(this.direction*(Math.PI/180)));
+  public moveForward(): void {
+    this.x += Math.round(Math.cos(this.direction * (Math.PI / 180)));
+    this.y += Math.round(Math.sin(this.direction * (Math.PI / 180)));
   }
 
-  onDestroy(): void {
+  public onDestroy(): void {
     this.owner.bullets.filter((b) => {
       if (b.id !== this.id) {
-        return b;  
+        return b;
       }
     });
     this.destroyed = true;

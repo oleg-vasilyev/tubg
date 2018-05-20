@@ -1,11 +1,6 @@
-import { Tank } from "./Tank";
-import { Bullet } from "./Bullet";
-
 /**
- * 
  *  @class
- * `@description Battlefield
- * 
+ *  @description Battlefield
  */
 export class Battlefield {
 
@@ -16,7 +11,7 @@ export class Battlefield {
   public startY: number;
   public finishY: number;
 
-  constructor(width: number, height: number) {
+  public constructor(width: number, height: number) {
     this.width = width;
     this.height = height;
     this.startX = 0;
@@ -25,16 +20,16 @@ export class Battlefield {
     this.finishY = this.startY + height - 1;
   }
 
-  setSize(width: number, height: number): void {
+  public setSize(width: number, height: number): void {
     this.width = width;
     this.height = height;
   }
 
-  getWidth(): number {
+  public getWidth(): number {
     return this.width;
   }
 
-  getHeight(): number {
+  public getHeight(): number {
     return this.height;
   }
 

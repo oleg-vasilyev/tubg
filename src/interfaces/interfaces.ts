@@ -1,31 +1,27 @@
-import { Tank } from "../classes/Tank";
-
 /**
  *  @interface
- * `@description interface of Tank state for AI
- * 
+ *  @description interface of Tank state for AI
  */
 export interface IState {
   x: number;
   y: number;
   direction: number;
   health: number;
-  collisions: { 
+  collisions: {
     enemy: boolean,
     wall: boolean,
     bullet: boolean
   };
   vision: {
-    enemies: Array<ITankTrack>,
-    bullets: Array<IBulletTrack>,
-    walls: Array<number>
-  }
+    enemies: ITankTrack[],
+    bullets: IBulletTrack[],
+    walls: number[]
+  };
 }
 
 /**
  *  @interface
- * `@description interface of TankTrack for AI
- * 
+ *  @description interface of TankTrack for AI
  */
 export interface ITankTrack {
   id: number;
@@ -37,8 +33,7 @@ export interface ITankTrack {
 
 /**
  *  @interface
- * `@description interface of BulletTrack for AI
- * 
+ *  @description interface of BulletTrack for AI
  */
 export interface IBulletTrack {
   id: number;
@@ -47,11 +42,9 @@ export interface IBulletTrack {
   direction: number;
 }
 
-
 /**
  *  @interface
- * `@description interface of Command AI for Tank
- * 
+ *  @description interface of Command AI for Tank
  */
 export interface ICommandAi {
   move: boolean;
@@ -59,7 +52,11 @@ export interface ICommandAi {
   rotate: number;
 }
 
-export interface IRejectCallbackArg {
+/**
+ *  @interface
+ *  @description interface of Command AI for Tank
+ */
+export interface ICallbackArg {
   message: string;
   performanceIssues: boolean;
   tankName: string;

@@ -26,13 +26,13 @@ export class CollisionSolution {
   }
 
   public removeBullet(bullet: Bullet): void {
-    this.bulletList.filter((item) => {
+    this.bulletList = this.bulletList.filter((item) => {
       return item.id !== bullet.id;
     });
   }
 
   public removeTank(tank: Tank): void {
-    this.tankList.filter((item) => {
+    this.tankList = this.tankList.filter((item) => {
       return item.id !== tank.id;
     });
   }

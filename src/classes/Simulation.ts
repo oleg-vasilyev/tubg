@@ -5,7 +5,7 @@ import { CollisionSolution } from './CollisionSolution';
 import { CONFIG } from './Config';
 import { EventStore } from './EventStore';
 import { IdentificatorAi } from './IdentificatorAi';
-import { MonitorPerfomance } from './MonitorPerfomance';
+// import { MonitorPerfomance } from './MonitorPerfomance';
 import { Tank } from './Tank';
 
 export class Simulation {
@@ -31,7 +31,7 @@ export class Simulation {
     public timeEnd: number;
     public timeLimit: number;
     public eventStore: EventStore;
-    public perfMon: MonitorPerfomance;
+    // public perfMon: MonitorPerfomance;
     public callStackLimit: number;
     public callStackCount: number;
     public speedMultiplier: number;
@@ -57,9 +57,9 @@ export class Simulation {
     this.timeEnd = 0;
     this.timeLimit = CONFIG.simulationTimeLimit;
     this.eventStore = new EventStore();
-    this.perfMon = new MonitorPerfomance();
+    // this.perfMon = new MonitorPerfomance();
     this.speedMultiplier = CONFIG.speedMultiplier;
-    this.perfMon.setSimulationStepDuration(this.simulationStepDuration / this.speedMultiplier);
+    // this.perfMon.setSimulationStepDuration(this.simulationStepDuration / this.speedMultiplier);
     this.callStackLimit = Number.MAX_VALUE;
     this.callStackCount = 0;
     this.bulletId = 1;
@@ -98,7 +98,7 @@ export class Simulation {
         if (this.simulationTimeout) {
           clearTimeout(this.simulationTimeout);
         }
-        this.perfMon.start();
+        // this.perfMon.start();
         for (const item of this.onStartCallback) {
           item();
         }
@@ -108,7 +108,7 @@ export class Simulation {
   }
 
   public simulationStep(): void {
-    this.perfMon.onSimulationStep();
+    // this.perfMon.onSimulationStep();
     const startTime: number = (new Date()).getTime();
     this.updateModel();
     this.updateAi(
@@ -169,12 +169,12 @@ export class Simulation {
 
   public setSpeed(v: number): void {
     this.speedMultiplier = Math.max(0.01, Number(v));
-    this.perfMon.setSimulationStepDuration(this.simulationStepDuration / this.speedMultiplier);
+    // this.perfMon.setSimulationStepDuration(this.simulationStepDuration / this.speedMultiplier);
   }
 
   public stop(): void {
     this.isRunning = false;
-    this.perfMon.stop();
+    // this.perfMon.stop();
     if (this.simulationTimeout) {
       clearTimeout(this.simulationTimeout);
       this.simulationTimeout = null;
@@ -346,7 +346,7 @@ export class Simulation {
     for (const item of this.tankList) {
       if (item.health <= 0) {
         killCount++;
-        this.tankList.filter((itemB: Tank) => {
+        this.tankList = this.tankList.filter((itemB: Tank) => {
           return itemB.health > 0;
         });
         this.explodedTankList.push(item);
@@ -359,7 +359,7 @@ export class Simulation {
     }
     for (const item of this.aiList) {
       if (item.tank.health <= 0) {
-        this.aiList.filter((aiDestroy: AiConnection) => {
+        this.aiList = this.aiList.filter((aiDestroy: AiConnection) => {
           return aiDestroy.tank.id !== item.tank.id;
         });
         item.deactivate();

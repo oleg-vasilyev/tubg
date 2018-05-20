@@ -32,10 +32,6 @@ module.exports = {
     ]
   },
   resolve: {
-<<<<<<< HEAD
-    extensions: ['.tsx', '.ts', '.jsx', '.js']
-  }
-=======
     extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
   module: {
@@ -51,6 +47,5 @@ module.exports = {
         }
       }
     ]
-  },
->>>>>>> a07b22a59fa5a2d11ae6ed48546ed6ea5cd7b3c2
+  }
 };

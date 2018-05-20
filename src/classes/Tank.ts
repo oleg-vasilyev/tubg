@@ -1,6 +1,5 @@
 import { IBulletTrack, ICommandAi, IState, ITankTrack  } from '../interfaces/interfaces';
 import { Bullet } from './Bullet';
-import { CollisionSolution } from './CollisionSolution';
 import { CONFIG } from './Config';
 import { IdentificatorAi } from './IdentificatorAi';
 
@@ -23,13 +22,16 @@ export class Tank {
   public wallCollision: boolean;
   public enemyCollision: boolean;
   public bulletCollision: boolean;
+  public deathCollision: boolean;
   public bullets: Bullet[];
   public historyState: IState[];
   public historyCommand: ICommandAi[];
   public enemyTracks: ITankTrack[];
   public bulletTracks: IBulletTrack[];
-  public wall: number[];
+  public wall: number[] | null[];
   public isShooting: boolean;
+  public isMoving: boolean;
+  public isRotating: boolean;
   /**
    * @param {identificatorAi} identificatorAi - identification of tank's AI Script
    * @param {Number} id - unique id of the tank
@@ -48,6 +50,7 @@ export class Tank {
     this.wallCollision = false;
     this.enemyCollision = false;
     this.bulletCollision = false;
+    this.deathCollision = false;
     this.bullets = [];
     this.historyState = [];
     this.historyCommand = [];
@@ -56,6 +59,8 @@ export class Tank {
     this.wall = [];
     this.genState();
     this.isShooting = false;
+    this.isMoving = false;
+    this.isRotating = true;
   }
 
   public getId(): number {
@@ -176,22 +181,9 @@ export class Tank {
     this.y = Math.floor(Math.random() * (maxY + 1 - minY)) + minY;
   }
 
-  public simulationStep(collisionSolution: CollisionSolution): void {
+  public simulationStep(): void {
     const command: ICommandAi = this.historyCommand[this.historyCommand.length - 1];
-    if (this.health === 0) {
-      return;
-    }
-    if (command.move) {
-      for (let i = 0; i < this.speed; i++) {
-        const hitTest = collisionSolution.checkTank(this);
-        if (!hitTest) {
-          this.moveForward();
-        } else {
-          this.x = this.lastX;
-          this.y = this.lastY;
-        }
-      }
-    } else if (command.shoot) {
+    if (command.shoot) {
       this.shoot();
     } else if (command.rotate) {
       this.direction = command.rotate;

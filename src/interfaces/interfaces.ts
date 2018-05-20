@@ -63,3 +63,12 @@ export interface ICallbackArg {
   tankId: number;
 }
 
+/**
+ *  @interface
+ *  @description interface of event store item
+ */
+export interface IEvent {
+  index: string;
+  event: {};
+}
+

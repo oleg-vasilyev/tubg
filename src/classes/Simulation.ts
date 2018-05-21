@@ -201,11 +201,11 @@ export class Simulation {
   }
 
   public activateAi(done: () => void, error?: () => void): void {
-    this.runInSequence(this.aiList, done, error);
+    this.runInSequence(done, error);
   }
 
   public updateAi(done: () => void, error?: () => void): void {
-    this.runInSequence(this.aiList, done, error);
+    this.runInSequence(done, error);
   }
 
   public createAiConnection(tank: Tank, identificatorAi: IdentificatorAi): AiConnection {
@@ -229,29 +229,34 @@ export class Simulation {
     return bul;
   }
 
-  public runInSequence(aiList: AiConnection[], done: () => void, error?: () => void): void {
-    if (aiList.length === 0) {
+  public runInSequence(done: () => void, error?: () => void): void {
+    if (this.aiList.length === 0) {
       done();
     }
-    for (let i: number = 0; i < aiList.length; i++) {
-      let c: (done: () => void, error: () => void) => void;
-      if (this.aiList[i].status === 'activate') {
-        if (this.aiList[aiList.length - 1].aiWorker !== null) {
-          c = this.aiList[aiList.length - 1].activate;
-        } else {
-          c = this.aiList[aiList.length - 1].activateXHR;
-        }
-      } else if (this.aiList[i].status === 'simulationStep') {
-        if (this.aiList[aiList.length - 1].aiWorker !== null) {
-          c = this.aiList[aiList.length - 1].simulationStep;
-        } else {
-          c = this.aiList[aiList.length - 1].simulationStepXHR;
-        }
+    for (const item of this.aiList) {
+      let c: (d: () => void, e: () => void) => void;
+      if (item.status === 'activate') {
+        // if (this.aiList[aiList.length - 1].aiWorker !== null) {
+        //   c = this.aiList[aiList.length - 1].activate;
+        // } else {
+        //   c = this.aiList[aiList.length - 1].activateXHR;
+        // }
+        c = item.activate;
+      } else if (item.status === 'simulationStep') {
+        // if (this.aiList[aiList.length - 1].aiWorker !== null) {
+        //   c = this.aiList[aiList.length - 1].simulationStep;
+        // } else {
+        //   c = this.aiList[aiList.length - 1].simulationStepXHR;
+        // }
+        c = item.simulationStep;
       } else {
         continue;
       }
-      c(done, error);
+      c.call(item, done, error);
     }
+    // tslint:disable-next-line:no-console
+    console.log(error);
+
   }
 
   public moveTank(tank: Tank): void {

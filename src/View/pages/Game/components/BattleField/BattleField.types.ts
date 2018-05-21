@@ -1,4 +1,4 @@
-import IBattleFieldCell from './../Cell/Cell.types';
+import {BattleFieldCell} from './../Cell/Cell.types';
 
 interface IDeth {
   x1: number;
@@ -19,7 +19,7 @@ export interface IBattleFieldProps {
 }
 
 
-export type BattleFieldType = Array<Array<IBattleFieldCell>>
+export type BattleFieldType = Array<Array<BattleFieldCell>>
 export interface IBattleFieldState {
   battleField: BattleFieldType
 }

@@ -3,10 +3,10 @@ import getUniqId from './../../../../helper-functions/getUniqId';
 import './BattleField.css';
 import {IBattleFieldProps, IBattleFieldState, BattleFieldType} from './BattleField.types';
 import Cell from './../Cell/Cell';
-import BattleFieldCell from './../Cell/Cell.types';
+import {BattleFieldCell} from './../Cell/Cell.types';
 
 
-class BattleField extends React.PureComponent<IBattleFieldProps, IBattleFieldState> {
+export class BattleField extends React.PureComponent<IBattleFieldProps, IBattleFieldState> {
   state: IBattleFieldState = {
     battleField: []
   }
@@ -67,5 +67,3 @@ class BattleField extends React.PureComponent<IBattleFieldProps, IBattleFieldSta
     );
   }
 }
-
-export default BattleField

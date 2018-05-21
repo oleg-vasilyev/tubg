@@ -1,6 +1,6 @@
 import * as React from 'react';
 import getUniqId from './../../../../helper-functions/getUniqId';
-import BattleFieldCell from './Cell.types';
+import {BattleFieldCell} from './Cell.types';
 import './Cell.css';
 
 const getCellClass = (type: string) => {
@@ -29,13 +29,8 @@ const Cell = (props: {children: BattleFieldCell}) => {
           rotateStyle = getCellRotateStyle(content.direction);
         }
 
-        let tankTypeClass = '';
-        if (content.tankType){
-          tankTypeClass = ` bt-battle-field__cell-content_tank-${content.tankType}`;
-        }
-
         return (
-          <div style={rotateStyle} className={getCellClass(content.type)+tankTypeClass} key={getUniqId()} />
+          <div style={rotateStyle} className={getCellClass(content.type)} key={getUniqId()} />
         )
       })}
     </div>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
-import BattleField from './components/BattleField/BattleField';
+import {BattleField} from './components/BattleField/BattleField';
 import {IBattleFieldProps} from './components/BattleField/BattleField.types';
 import './Game.css';
 

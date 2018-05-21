@@ -1,8 +1,5 @@
 interface IBattleFieldCellContent {
   type: string,
-  direction?: number,
-  tankType?: number
+  direction?: number
 }
-type BattleFieldCell = Array<IBattleFieldCellContent | undefined>;
-
-export default BattleFieldCell
+export type BattleFieldCell = Array<IBattleFieldCellContent | undefined>;

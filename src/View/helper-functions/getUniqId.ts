@@ -1,2 +1,2 @@
 let nextId = 0;
-export default () => nextId++;
+export const getUniqId = () => nextId++;

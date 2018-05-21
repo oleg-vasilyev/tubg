@@ -1,5 +1,5 @@
 import * as React from 'react';
-import getUniqId from './../../../../helper-functions/getUniqId';
+import {getUniqId} from './../../../../helper-functions/getUniqId';
 import {BattleFieldCell} from './Cell.types';
 import './Cell.css';
 
@@ -16,7 +16,7 @@ const getCellRotateStyle = (direction: number) => {
   return rotateStyle;
 }
 
-const Cell = (props: {children: BattleFieldCell}) => {
+export const Cell = (props: {children: BattleFieldCell}) => {
   return (
     <div className='bt-battle-field__cell'>
       {props.children.map(content => {
@@ -36,5 +36,3 @@ const Cell = (props: {children: BattleFieldCell}) => {
     </div>
   )
 }
-
-export default Cell

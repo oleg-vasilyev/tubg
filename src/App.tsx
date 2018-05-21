@@ -1,17 +1,15 @@
 import * as React from 'react';
 import {Switch, Route} from 'react-router-dom';
-import Game from './View/pages/Game/Game';
+import {GamePage} from './View/pages/Game/Game';
 
-class App extends React.Component {
+export class App extends React.Component {
   public render() {
     return (
       <div>
         <Switch>
-          <Route path='/game' component={Game} />
+          <Route path='/game' component={GamePage} />
         </Switch>
       </div>
     );
   }
 }
-
-export default App

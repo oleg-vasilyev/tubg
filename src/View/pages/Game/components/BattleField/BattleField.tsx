@@ -1,8 +1,8 @@
 import * as React from 'react';
-import getUniqId from './../../../../helper-functions/getUniqId';
+import {getUniqId} from './../../../../helper-functions/getUniqId';
 import './BattleField.css';
 import {IBattleFieldProps, IBattleFieldState, BattleFieldType} from './BattleField.types';
-import Cell from './../Cell/Cell';
+import {Cell} from './../Cell/Cell';
 import {BattleFieldCell} from './../Cell/Cell.types';
 
 

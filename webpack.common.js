@@ -32,25 +32,6 @@ module.exports = {
     ]
   },
   resolve: {
-<<<<<<< HEAD
-    extensions: ['.tsx', '.ts', '.jsx', '.js']
-  }
-=======
     extensions: ['.ts', '.tsx', '.js', '.jsx']
-  },
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        enforce: 'pre',
-        loader: 'tslint-loader',
-        options: {
-          emitErrors: true,
-          failOnHint: true,
-          typeCheck: true,
-        }
-      }
-    ]
-  },
->>>>>>> a07b22a59fa5a2d11ae6ed48546ed6ea5cd7b3c2
+  }
 };

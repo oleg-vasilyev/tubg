@@ -1,0 +1,28 @@
+.bt-battle-field__cell {
+  flex-shrink: 0;
+  position: relative;
+  width: 23px;
+  height: 23px;
+}
+
+.bt-battle-field__cell-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.bt-battle-field__cell-content_tank {
+  background: url(./../../../../media/images/tanks.png) 4% 5% / 316%;
+  background-position: -54% -50%;
+  background-size: 288%;
+}
+
+.bt-battle-field__cell-content_bullet {
+  background: url(https://d30y9cdsu7xlg0.cloudfront.net/png/124582-200.png) no-repeat center / 55%;
+}
+
+.bt-battle-field__cell-content_deth {
+  background-color: rgba(255,0,0,.3);
+}

@@ -20,6 +20,7 @@ export class AiConnection {
   public onActivationCallback: Array<() => void>;
   public onDectivationCallback: Array<() => void>;
   public status: string;
+  public perfomanceIssues: boolean;
   /**
    * @param {identificatorAi} identificatorAi - identification of tank's AI Script
    * @param {Tank} tank - tank
@@ -30,6 +31,7 @@ export class AiConnection {
     this.aiProcessingLimit = CONFIG.aiProcessingLimit;
     this.aiProcessingResolveCallback = null;
     this.aiProcessingRejectCallback = null;
+    this.perfomanceIssues = false;
     this.onActivationCallback = [];
     this.onDectivationCallback = [];
     this.identificatorAi = identificatorAi;
@@ -72,15 +74,18 @@ export class AiConnection {
       if (dt > this.identificatorAi.loadingLimit) {
         // tslint:disable-next-line:no-console
         console.log('Simulation cannot be continued because ' + this.tank.name + ' #' + this.tank.id + ' has performance issues');
+        this.perfomanceIssues = true;
 
         return;
       }
+      this.commandData = commandEvent.data;
       this.tank.historyCommand.push(commandEvent.data);
+      this.tank.madeMove = true;
     };
     this.aiProcessingStart = (new Date()).getTime();
     this.aiProcessingResolveCallback = resolve;
     this.aiProcessingRejectCallback = reject;
-    this.aiWorker.postMessage(this.tank.state);
+    this.aiWorker.postMessage({state: this.tank.state, type: 'init'});
     this.status = 'simulationStep';
 }
 
@@ -92,10 +97,14 @@ export class AiConnection {
   }
 
   public simulationStep(resolve: () => void, reject?: () => void): void {
+    if (this.perfomanceIssues === true) {
+      this.deactivate();
+
+      return;
+    }
     this.isReady = false;
-    if (this.aiWorker && this.tank.health === 0) {
-      this.aiWorker.terminate();
-      this.aiWorker = null;
+    if (this.aiWorker && this.tank.health <= 0) {
+      this.deactivate();
 
       return;
     }
@@ -103,7 +112,7 @@ export class AiConnection {
     if (this.aiWorker) {
       this.aiProcessingResolveCallback = resolve;
       this.aiProcessingRejectCallback = reject;
-      this.aiWorker.postMessage(this.tank.state);
+      this.aiWorker.postMessage({state: this.tank.state, type: 'step'});
     }
   }
 

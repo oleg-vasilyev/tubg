@@ -29,9 +29,7 @@ export class Tank {
   public enemyTracks: ITankTrack[];
   public bulletTracks: IBulletTrack[];
   public wall: number[] | null[];
-  public isShooting: boolean;
-  public isMoving: boolean;
-  public isRotating: boolean;
+  public madeMove: boolean;
   /**
    * @param {identificatorAi} identificatorAi - identification of tank's AI Script
    * @param {Number} id - unique id of the tank
@@ -58,9 +56,7 @@ export class Tank {
     this.bulletTracks = [];
     this.wall = [];
     this.genState();
-    this.isShooting = false;
-    this.isMoving = false;
-    this.isRotating = true;
+    this.madeMove = false;
   }
 
   public getId(): number {
@@ -162,10 +158,6 @@ export class Tank {
     this.y += Math.round(Math.sin(this.direction * (Math.PI / 180)));
   }
 
-  public shoot(): void {
-    this.isShooting = true;
-  }
-
   public rotate(direction: number): void {
     this.direction = direction;
   }
@@ -179,15 +171,6 @@ export class Tank {
   public setRandomPos(minX: number, maxX: number, minY: number, maxY: number): void {
     this.x = Math.floor(Math.random() * (maxX + 1 - minX)) + minX;
     this.y = Math.floor(Math.random() * (maxY + 1 - minY)) + minY;
-  }
-
-  public simulationStep(): void {
-    const command: ICommandAi = this.historyCommand[this.historyCommand.length - 1];
-    if (command.shoot) {
-      this.shoot();
-    } else if (command.rotate) {
-      this.direction = command.rotate;
-    }
   }
 
 }

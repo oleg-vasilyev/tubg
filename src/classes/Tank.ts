@@ -94,7 +94,7 @@ export class Tank {
     return this.score;
   }
 
-  public killsScore(): void {
+  public addKillsScore(): void {
     this.score += CONFIG.killsScore;
   }
 
@@ -163,7 +163,7 @@ export class Tank {
   }
 
   public setRandomDirection(): void {
-    const dirArray: number[] = [0, 90, 180, 270];
+    const dirArray: number[] = [CONFIG.eastAngle, CONFIG.southAngle, CONFIG.westAngle, CONFIG.northAngle];
     const dirKey: number = Math.floor(Math.random() * (dirArray.length - 0)) + 0;
     this.direction = dirArray[dirKey];
   }

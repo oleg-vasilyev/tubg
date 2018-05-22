@@ -16,15 +16,6 @@ export class CollisionSolution {
     this.battlefield = battlefield;
   }
 
-  public updateBattlefield(battlefield: Battlefield): void {
-    this.battlefield = battlefield;
-    const wall: number[] = [];
-    wall[0] = battlefield.startX - 1;
-    wall[1] = battlefield.finishX + 1;
-    wall[2] = battlefield.startY - 1;
-    wall[3] = battlefield.finishY + 1;
-  }
-
   public removeBullet(bullet: Bullet): void {
     this.bulletList = this.bulletList.filter((item) => {
       return item.id !== bullet.id;
@@ -54,7 +45,7 @@ export class CollisionSolution {
           hitEnemyTest = true;
           item.health = item.health - bullet.power;
           if (item.health <= 0) {
-            bullet.owner.killsScore();
+            bullet.owner.addKillsScore();
           }
         }
       }
@@ -106,26 +97,10 @@ export class CollisionSolution {
   }
 
   public scanTanks(tank: Tank): void {
-    const dirThis: number = (tank.direction) * Math.PI / 180;
-    const coefA: number = CONFIG.smallVisionSide;
-    const coefB: number = CONFIG.bigVisionSide;
-    const xA: number = Math.round(coefA * Math.sin(dirThis) - coefA * Math.cos(dirThis) + tank.x);
-    const yA: number = Math.round(coefA * Math.cos(dirThis) - coefA * Math.sin(dirThis) + tank.y);
-    const xB: number = Math.round(coefB * Math.cos(dirThis) + coefA * Math.sin(dirThis) + tank.x);
-    const yB: number = Math.round(coefB * Math.sin(dirThis) + coefA * Math.cos(dirThis) + tank.y);
-    const xC: number = Math.round(coefB * Math.cos(dirThis) - coefA * Math.sin(dirThis) + tank.x);
-    const yC: number = Math.round(coefB * Math.sin(dirThis) - coefA * Math.cos(dirThis) + tank.y);
-    const xD: number = Math.round(-coefA * Math.sin(dirThis) - coefA * Math.cos(dirThis) + tank.x);
-    const yD: number = Math.round(-coefA * Math.cos(dirThis) - coefA * Math.sin(dirThis) + tank.y);
-
-    const maxX: number = Math.max(xA, xB, xC, xD);
-    const maxY: number = Math.max(yA, yB, yC, yD);
-    const minX: number = Math.min(xA, xB, xC, xD);
-    const minY: number = Math.min(yA, yB, yC, yD);
-
+    const vision: number[] = this.getVisionArray(tank);
     for (const item of this.tankList) {
       tank.enemyTracks = [];
-      if (item.x >= minX && item.x <= maxX && item.y >= minY && item.y <= maxY) {
+      if (item.x >= vision[0] && item.x <= vision[1] && item.y >= vision[2] && item.y <= vision[3]) {
         tank.enemyTracks.push({
           id: item.id,
           x: item.x,
@@ -139,26 +114,10 @@ export class CollisionSolution {
   }
 
   public scanBullets(tank: Tank): void {
-    const dirThis: number = (tank.direction) * Math.PI / 180;
-    const coefA: number = CONFIG.smallVisionSide;
-    const coefB: number = CONFIG.bigVisionSide;
-    const xA: number = Math.round(coefA * Math.sin(dirThis) - coefA * Math.cos(dirThis) + tank.x);
-    const yA: number = Math.round(coefA * Math.cos(dirThis) - coefA * Math.sin(dirThis) + tank.y);
-    const xB: number = Math.round(coefB * Math.cos(dirThis) + coefA * Math.sin(dirThis) + tank.x);
-    const yB: number = Math.round(coefB * Math.sin(dirThis) + coefA * Math.cos(dirThis) + tank.y);
-    const xC: number = Math.round(coefB * Math.cos(dirThis) - coefA * Math.sin(dirThis) + tank.x);
-    const yC: number = Math.round(coefB * Math.sin(dirThis) - coefA * Math.cos(dirThis) + tank.y);
-    const xD: number = Math.round(-coefA * Math.sin(dirThis) - coefA * Math.cos(dirThis) + tank.x);
-    const yD: number = Math.round(-coefA * Math.cos(dirThis) - coefA * Math.sin(dirThis) + tank.y);
-
-    const maxX: number = Math.max(xA, xB, xC, xD);
-    const maxY: number = Math.max(yA, yB, yC, yD);
-    const minX: number = Math.min(xA, xB, xC, xD);
-    const minY: number = Math.min(yA, yB, yC, yD);
-
+    const vision: number[] = this.getVisionArray(tank);
     for (const item of this.bulletList) {
       tank.bulletTracks = [];
-      if (item.x >= minX && item.x <= maxX && item.y >= minY && item.y <= maxY) {
+      if (item.x >= vision[0] && item.x <= vision[1] && item.y >= vision[2] && item.y <= vision[3]) {
         tank.bulletTracks.push({
           id: item.id,
           x: item.x,
@@ -170,6 +129,22 @@ export class CollisionSolution {
   }
 
   public scanWalls(tank: Tank): void {
+    const vision: number[] = this.getVisionArray(tank);
+    for (let i = 0; i < this.wallList.length; i++) {
+      tank.wall = [null, null, null, null];
+      if (i === 0 && vision[2] <= this.wallList[i]) {
+        tank.wall[i] = tank.y - vision[2];
+      } else if (i === 1 && vision[1] >= this.wallList[i]) {
+        tank.wall[i] = tank.x - vision[1];
+      } else if (i === 2 && vision[3] <= this.wallList[i]) {
+        tank.wall[i] = tank.y - vision[3];
+      } else if (i === 3 && vision[0] <= this.wallList[i]) {
+        tank.wall[i] = tank.x - vision[0];
+      }
+    }
+  }
+
+  public getVisionArray(tank: Tank): number[] {
     const dirThis: number = (tank.direction) * Math.PI / 180;
     const coefA: number = CONFIG.smallVisionSide;
     const coefB: number = CONFIG.bigVisionSide;
@@ -187,17 +162,6 @@ export class CollisionSolution {
     const minX: number = Math.min(xA, xB, xC, xD);
     const minY: number = Math.min(yA, yB, yC, yD);
 
-    for (let i = 0; i < this.wallList.length; i++) {
-      tank.wall = [null, null, null, null];
-      if (i === 0 && minY <= this.wallList[i]) {
-        tank.wall[i] = tank.y - minY;
-      } else if (i === 1 && maxX >= this.wallList[i]) {
-        tank.wall[i] = tank.x - maxX;
-      } else if (i === 2 && maxY <= this.wallList[i]) {
-        tank.wall[i] = tank.y - maxY;
-      } else if (i === 3 && minX <= this.wallList[i]) {
-        tank.wall[i] = tank.x - minX;
-      }
-    }
+    return [minX, maxX, minY, maxY];
   }
 }

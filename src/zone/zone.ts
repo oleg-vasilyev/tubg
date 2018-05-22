@@ -1,3 +1,4 @@
+import { Point } from './point';
 import { ShrinkSteps } from './shrinkSteps';
 import { ZoneShape } from "./zoneShape";
 
@@ -233,12 +234,10 @@ export class Zone {
    * @description Sets game location shape as current zone shape
    */
   private initializeFirstStage(location: Array<any>): void {
-    this._currentZoneShape.upperLeftPoint.x = 0;
-    this._currentZoneShape.upperLeftPoint.y = 0;
-    this._currentZoneShape.lowerRightPoint.x = location.length - 1;
-    this._currentZoneShape.lowerRightPoint.y = location[0].length - 1;
+    const upperLeftPoint = new Point(0, 0);
+    const lowerRightPoint = new Point(location.length - 1, location[0].length - 1);
 
-    this._currentZoneShape.calculateSides();
+    this._currentZoneShape.defineShape(upperLeftPoint, lowerRightPoint);
 
     this._isFirstStage = false;
     this._isNewStage = true;
@@ -311,11 +310,13 @@ export class Zone {
     const finalZoneX1 = Math.floor(Math.random() * (maxBoundX - minBoundX) + minBoundX);
     const finalZoneY1 = Math.floor(Math.random() * (maxBoundY - minBoundY) + minBoundY);
 
-    this._finalZoneShape.upperLeftPoint.x = finalZoneX1;
-    this._finalZoneShape.upperLeftPoint.y = finalZoneY1;
-    this._finalZoneShape.width = finalZoneSide;
-    this._finalZoneShape.height = finalZoneSide;
-    this._finalZoneShape.calculateLowerRightPoint();
+    const upperLeftPoint = new Point(finalZoneX1, finalZoneY1);
+    const lowerRightPoint = new Point(
+      finalZoneX1 + finalZoneSide - 1,
+      finalZoneY1 + finalZoneSide - 1
+    );
+
+    this._finalZoneShape.defineShape(upperLeftPoint, lowerRightPoint);
   }
 
   /**
@@ -688,8 +689,15 @@ export class Zone {
    * @description Shrinks zone when its size equals one
    */
   private shrinkSingleSizeZone(location: Array<any>, fillingObject: any, lastZoneSide: number): void {
-    if (this._currentZoneShape.width === 1 && this._currentZoneShape.height === 1 && lastZoneSide < 1) {
-      location[this.currentZoneShape.upperLeftPoint.x][this._currentZoneShape.upperLeftPoint.y] = fillingObject;
+    if (
+      this._currentZoneShape.getWidth() === 1 &&
+      this._currentZoneShape.getHeight() === 1 &&
+      lastZoneSide < 1
+    ) {
+      location
+      [this.currentZoneShape.upperLeftPoint.x]
+      [this._currentZoneShape.upperLeftPoint.y]
+      = fillingObject;
     }
   }
 
@@ -703,7 +711,6 @@ export class Zone {
     this._currentZoneShape.upperLeftPoint.y += shrinkSteps.topStep;
     this._currentZoneShape.lowerRightPoint.x -= shrinkSteps.rightStep;
     this._currentZoneShape.lowerRightPoint.y -= shrinkSteps.bottomStep;
-    this._currentZoneShape.calculateSides();
   }
 
   /**
@@ -716,91 +723,10 @@ export class Zone {
       && this._currentZoneShape.upperLeftPoint.y === this._finalZoneShape.upperLeftPoint.y
       && this._currentZoneShape.lowerRightPoint.x === this._finalZoneShape.lowerRightPoint.x
       && this._currentZoneShape.lowerRightPoint.y === this._finalZoneShape.lowerRightPoint.y
-      && this._currentZoneShape.width === this._finalZoneShape.width
-      && this._currentZoneShape.height === this._finalZoneShape.height
     ) {
       this._isNewStage = true;
     }
   }
-
-  //#endregion
-
-  //#region Garbage
-
-  // /**
-  //  * private static field
-  //  *
-  //  * Value of the current zone radius
-  //  */
-  // _zoneRadius: 0,
-
-  // /**
-  //  * private static field
-  //  *
-  //  * Coordinates of the zone center
-  //  */
-  // _zoneCenterPoint: {
-  // 	x: 0,
-  // 	y: 0
-  // }
-
-  // /**
-  //  * private static field
-  //  *
-  //  * Coordinates of the first point inside the zone
-  //  */
-  // _zoneUpperLeftPoint: {
-  // 	x: 0,
-  // 	y:0
-  // }
-
-  // /**
-  //  * private static field
-  //  *
-  //  * Value of the current zone radius
-  //  */
-  // get zoneRadius() {
-  // 	return this._zoneRadius;
-  // }
-  // set zoneRadius(value) {
-  // 	unlockObjectField(this, "_zoneRadius");
-
-  // 	this._zoneRadius = value;
-
-  // 	lockObjectField(this, "_zoneRadius");
-  // }
-
-  // /**
-  //  * private static field
-  //  *
-  //  * Coordinates of the zone center
-  //  */
-  // get zoneCenterPoint() {
-  // 	return this._zoneCenterPoint;
-  // }
-  // set zoneCenterPoint(value) {
-  // 	unlockObjectField(this, "_zoneCenterPoint");
-
-  // 	this._zoneCenterPoint = value;
-
-  // 	lockObjectField(this, "_zoneCenterPoint");
-  // }
-
-  // /**
-  //  * private static field
-  //  *
-  //  * Coordinates of the first point inside the zone
-  //  */
-  // get zoneUpperLeftPoint() {
-  // 	return this._zoneUpperLeftPoint;
-  // }
-  // set zoneUpperLeftPoint(value) {
-  // 	unlockObjectField(this, "_zoneUpperLeftPoint");
-
-  // 	this._zoneUpperLeftPoint = value;
-
-  // 	lockObjectField(this, "_zoneUpperLeftPoint");
-  // }
 
   //#endregion
 };

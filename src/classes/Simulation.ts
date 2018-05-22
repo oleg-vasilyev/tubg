@@ -5,7 +5,6 @@ import { CollisionSolution } from './CollisionSolution';
 import { CONFIG } from './Config';
 import { EventStore } from './EventStore';
 import { IdentificatorAi } from './IdentificatorAi';
-// import { MonitorPerfomance } from './MonitorPerfomance';
 import { Tank } from './Tank';
 
 export class Simulation {
@@ -13,9 +12,6 @@ export class Simulation {
     public aiList: AiConnection[];
     public allTankList: Tank[];
     public tankList: Tank[];
-    public listMovingTank: Tank[];
-    public listRotatingTank: Tank[];
-    public listShootingTank: Tank[];
     public bulletList: Bullet[];
     public explodedTankList: Tank[];
     public explodedBulletList: Bullet[];
@@ -32,7 +28,6 @@ export class Simulation {
     public timeLimit: number;
     public madeMoveCount: number;
     public eventStore: EventStore;
-    // public perfMon: MonitorPerfomance;
     public callStackLimit: number;
     public callStackCount: number;
     public speedMultiplier: number;
@@ -58,9 +53,7 @@ export class Simulation {
     this.timeEnd = 0;
     this.timeLimit = CONFIG.simulationTimeLimit;
     this.eventStore = new EventStore();
-    // this.perfMon = new MonitorPerfomance();
     this.speedMultiplier = CONFIG.speedMultiplier;
-    // this.perfMon.setSimulationStepDuration(this.simulationStepDuration / this.speedMultiplier);
     this.callStackLimit = Number.MAX_VALUE;
     this.callStackCount = 0;
     this.bulletId = 1;
@@ -69,7 +62,6 @@ export class Simulation {
 
   public init(width: number, height: number): void {
     this.battlefield.setSize(width, height);
-    this.collisionSolution.updateBattlefield(this.battlefield);
   }
 
   public getTankList(): Tank[] {
@@ -99,7 +91,6 @@ export class Simulation {
         if (this.simulationTimeout) {
           clearTimeout(this.simulationTimeout);
         }
-        // this.perfMon.start();
         for (const item of this.onStartCallback) {
           item();
         }
@@ -115,14 +106,12 @@ export class Simulation {
         if (this.simulationTimeout) {
           clearTimeout(this.simulationTimeout);
         }
-        // this.perfMon.start();
         this.simulationStep();
       }
     );
   }
 
   public simulationStep(): void {
-    // this.perfMon.onSimulationStep();
     for (const item of this.tankList) {
       item.madeMove = false;
     }
@@ -191,12 +180,10 @@ export class Simulation {
 
   public setSpeed(v: number): void {
     this.speedMultiplier = Math.max(0.01, Number(v));
-    // this.perfMon.setSimulationStepDuration(this.simulationStepDuration / this.speedMultiplier);
   }
 
   public stop(): void {
     this.isRunning = false;
-    // this.perfMon.stop();
     if (this.simulationTimeout) {
       clearTimeout(this.simulationTimeout);
       this.simulationTimeout = null;
@@ -208,7 +195,6 @@ export class Simulation {
 
   public pause(): void {
     this.isRunning = false;
-    // this.perfMon.stop();
     if (this.simulationTimeout) {
       clearTimeout(this.simulationTimeout);
       this.simulationTimeout = null;
@@ -286,8 +272,6 @@ export class Simulation {
       }
       c.call(item, done, error);
     }
-    // tslint:disable-next-line:no-console
-    console.log(error);
 
   }
 
@@ -334,19 +318,11 @@ export class Simulation {
       } else if (hitEnemyTest) {
         bullet.onDestroy();
         this.collisionSolution.removeBullet(bullet);
+        this.eventStore.add('bullet_' + bullet.id, {
+          type: 'explode',
+          bull: bullet
+        });
       }
-    }
-  }
-
-  public moveTanks(): void {
-    for (const item of this.listMovingTank) {
-      this.moveTank(item);
-    }
-  }
-
-  public rotateTanks(): void {
-    for (const item of this.listMovingTank) {
-      this.rotateTank(item);
     }
   }
 

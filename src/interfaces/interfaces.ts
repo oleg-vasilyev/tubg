@@ -72,3 +72,12 @@ export interface IEvent {
   event: {};
 }
 
+/**
+ *  @interface
+ *  @description interface of request for Webworker
+ */
+export interface IMessageToWebWorker {
+  state: IState;
+  type: string;
+}
+

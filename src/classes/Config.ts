@@ -11,5 +11,9 @@ export const CONFIG = {
     simulationStepDuration: 20,
     speedMultiplier: 10,
     smallVisionSide: 5,
-    bigVisionSide: 15
+    bigVisionSide: 15,
+    eastAngle: 0,
+    southAngle: 90,
+    westAngle: 90,
+    northAngle: 270
   };

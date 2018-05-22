@@ -30,6 +30,7 @@ export class Simulation {
     public onStartCallback: Array<(() => void)>;
     public timeEnd: number;
     public timeLimit: number;
+    public madeMoveCount: number;
     public eventStore: EventStore;
     // public perfMon: MonitorPerfomance;
     public callStackLimit: number;
@@ -107,40 +108,61 @@ export class Simulation {
     );
   }
 
-  public simulationStep(): void {
-    // this.perfMon.onSimulationStep();
-    const startTime: number = (new Date()).getTime();
-    this.updateModel();
-    this.updateAi(
+  public run(): void {
+    this.isRunning = true;
+    this.activateAi(
       () => {
         if (this.simulationTimeout) {
           clearTimeout(this.simulationTimeout);
-          this.simulationTimeout = null;
         }
-        if (this.timeEnd === this.timeLimit) {
-          this.stop();
-          this.updateModel();
-          for (const item of this.onFinishCallback) {
+        // this.perfMon.start();
+        this.simulationStep();
+      }
+    );
+  }
+
+  public simulationStep(): void {
+    // this.perfMon.onSimulationStep();
+    for (const item of this.tankList) {
+      item.madeMove = false;
+    }
+    const startTime: number = (new Date()).getTime();
+    const self = this;
+    this.updateModel();
+    this.updateAi(
+      () => {
+        if (self.simulationTimeout) {
+          clearTimeout(self.simulationTimeout);
+          self.simulationTimeout = null;
+        }
+        if (self.timeEnd >= self.timeLimit) {
+          self.stop();
+          for (const item of self.onFinishCallback) {
             item();
           }
         }
-        if (this.isRunning) {
+        for (const item of self.tankList) {
+          if (item.madeMove === true) {
+            self.madeMoveCount++;
+          }
+        }
+        if (self.isRunning && self.madeMoveCount === self.tankList.length) {
           const processingTime = (new Date()).getTime() - startTime;
-          let dt = this.simulationStepDuration - processingTime;
-          dt = dt / this.speedMultiplier;
+          let dt = self.simulationStepDuration - processingTime;
+          dt = dt / self.speedMultiplier;
           dt = Math.round(dt);
-          for (const item of this.onSimulationStepCallback) {
+          for (const item of self.onSimulationStepCallback) {
             item();
           }
-          this.timeEnd = Math.min(this.timeEnd + this.simulationStepDuration, this.timeLimit);
+          self.timeEnd = Math.min(self.timeEnd + self.simulationStepDuration, self.timeLimit);
           if (dt > 0) {
-            this.callStackCount = 0; //
-            this.simulationTimeout = setTimeout(this.simulationStep.bind(this), dt);
-          } else if (this.callStackCount >= this.callStackLimit) {
-            this.simulationTimeout = setTimeout(this.simulationStep.bind(this), 1);
+            self.callStackCount = 0; //
+            self.simulationTimeout = setTimeout(self.simulationStep.bind(self), dt);
+          } else if (self.callStackCount >= self.callStackLimit) {
+            self.simulationTimeout = setTimeout(self.simulationStep.bind(self), 1);
           } else {
-            this.callStackCount++;
-            this.simulationStep();
+            self.callStackCount++;
+            self.simulationStep();
           }
         }
       }
@@ -181,6 +203,15 @@ export class Simulation {
     }
     for (const item of this.aiList) {
       item.deactivate();
+    }
+  }
+
+  public pause(): void {
+    this.isRunning = false;
+    // this.perfMon.stop();
+    if (this.simulationTimeout) {
+      clearTimeout(this.simulationTimeout);
+      this.simulationTimeout = null;
     }
   }
 
@@ -231,8 +262,9 @@ export class Simulation {
 
   public runInSequence(done: () => void, error?: () => void): void {
     if (this.aiList.length === 0) {
-      done();
+      return;
     }
+
     for (const item of this.aiList) {
       let c: (d: () => void, e: () => void) => void;
       if (item.status === 'activate') {
@@ -267,7 +299,7 @@ export class Simulation {
       const hitBulletTest: boolean = this.collisionSolution.hitBulletTestTank(tank);
       const hitDeathTankTest: boolean = this.collisionSolution.hitDeathTankTestTank(tank);
       if (hitWallTest) {
-        tank.health = 0;
+        tank.health -= 1;
         tank.wallCollision = true;
       } else if (hitEnemyTest) {
         tank.onEnemyHit();
@@ -301,6 +333,7 @@ export class Simulation {
         });
       } else if (hitEnemyTest) {
         bullet.onDestroy();
+        this.collisionSolution.removeBullet(bullet);
       }
     }
   }
@@ -323,29 +356,25 @@ export class Simulation {
     }
   }
 
-  public createBullets(): void {
-    for (const item of this.listShootingTank) {
-      const bullet = this.createBullet(item);
-      this.bulletList.push(bullet);
-      this.moveBullet(bullet);
-    }
-  }
-
   public updateModel(): void {
-    for (const item of this.tankList) {
-      if (item.isMoving) {
-        this.listMovingTank.push(item);
-      } else if (item.isRotating) {
-        this.listRotatingTank.push(item);
-      } else if (item.isShooting) {
-        this.listShootingTank.push(item);
+    if (this.tankList.length <= 1) {
+      this.stop();
+      for (const item of this.onFinishCallback) {
+        item();
       }
-    }
 
-    this.moveTanks();
-    this.rotateTanks();
+      return;
+    }
+    for (const item of this.tankList) {
+     if (item.historyCommand[item.historyCommand.length - 1].move === true) {
+        this.moveTank(item);
+     } else if (item.historyCommand[item.historyCommand.length - 1].shoot === true) {
+        this.bulletList.push(this.createBullet(item));
+     } else {
+        this.rotateTank(item);
+     }
+    }
     this.moveBullets();
-    this.createBullets();
 
     let killCount: number = 0;
     for (const item of this.tankList) {

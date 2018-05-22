@@ -61,8 +61,7 @@ export class IdentificatorAi {
 }
 
 export function getRandomId(): number {
-  const thisTime: string = (new Date()).getTime().toString();
-  const idRandom: string = thisTime;
+  const thisTime: number = (new Date()).getTime();
 
-  return Number(idRandom);
+  return Number(thisTime);
 }

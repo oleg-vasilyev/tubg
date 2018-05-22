@@ -26,12 +26,6 @@ export class Bullet {
     this.id = id;
     this.owner = owner;
     this.direction = owner.direction;
-    while (this.direction > 360) {
-      this.direction -= 360;
-    }
-    while (this.direction < 0) {
-      this.direction += 360;
-    }
     this.x = owner.x;
     this.y = owner.y;
     this.speed = CONFIG.bulletSpeed;
@@ -90,7 +84,7 @@ export class Bullet {
   }
 
   public onDestroy(): void {
-    this.owner.bullets.filter((b) => {
+    this.owner.bullets = this.owner.bullets.filter((b) => {
       if (b.id !== this.id) {
         return b;
       }

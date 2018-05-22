@@ -424,7 +424,6 @@ export class Zone {
   private shrinkVertically(location: Array<any>, fillingObject: any, shrinkSteps: ShrinkSteps): void {
     const isTopSideReached = (this._currentZoneShape.upperLeftPoint.y === this._finalZoneShape.upperLeftPoint.y);
     const isBottomSideReached = (this._currentZoneShape.lowerRightPoint.y === this._finalZoneShape.lowerRightPoint.y);
-    const isCommonStep = (this._verticalStepCount === this._verticalDistancesRatio);
 
     const upperX = this._currentZoneShape.upperLeftPoint.x;
     const upperY = this._currentZoneShape.upperLeftPoint.y;
@@ -433,6 +432,8 @@ export class Zone {
 
     if (!isTopSideReached && !isBottomSideReached) {
       this._verticalStepCount++;
+
+      const isCommonStep = (this._verticalStepCount === this._verticalDistancesRatio);
 
       if (this._topDistance > this._bottomDistance) {
         shrinkSteps.topStep++;
@@ -484,7 +485,6 @@ export class Zone {
   private shrinkHorizontally(location: Array<any>, fillingObject: any, shrinkSteps: ShrinkSteps): void {
     const isLeftSideReached = (this._currentZoneShape.upperLeftPoint.x === this._finalZoneShape.upperLeftPoint.x);
     const isRightSideReached = (this._currentZoneShape.lowerRightPoint.x === this._finalZoneShape.lowerRightPoint.x);
-    const isCommonStep = (this._horizontalStepCount === this._horizontalDistancesRatio);
 
     const upperX = this._currentZoneShape.upperLeftPoint.x;
     const upperY = this._currentZoneShape.upperLeftPoint.y;
@@ -493,6 +493,8 @@ export class Zone {
 
     if (!isLeftSideReached && !isRightSideReached) {
       this._horizontalStepCount++;
+
+      const isCommonStep = (this._horizontalStepCount === this._horizontalDistancesRatio);
 
       if (this._leftDistance > this._rightDistance) {
         shrinkSteps.leftStep++;

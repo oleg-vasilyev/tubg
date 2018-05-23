@@ -1,0 +1,25 @@
+.bt-main-menu__index-title {
+  margin-bottom: 70px;
+  font-size: 46px;
+  font-weight: 900;
+  color: #0D2DB2;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 2px 1px #999;
+}
+
+.bt-main-menu__index-options-link {
+  display: block;
+  padding: 15px;
+  font-size: 20px;
+  color: #333;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-bottom: 1.5px solid #333;
+}
+.bt-main-menu__index-options-link:hover {
+  background-color: #265ED1;
+  font-weight: bold;
+  color: #fff;
+}

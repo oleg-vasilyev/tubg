@@ -1,13 +1,17 @@
 import * as React from 'react';
-import {Switch, Route} from 'react-router-dom';
-import {GamePage} from './View/pages/Game/Game';
+import {Switch, Route, Redirect} from 'react-router-dom';
+import './App.css';
+import {MainMenu} from './View/pages/MainMenu/MainMenu';
+import {Game} from './View/pages/Game/Game';
 
 export class App extends React.Component {
   public render() {
     return (
       <div>
         <Switch>
-          <Route path='/game' component={GamePage} />
+          <Route path='/main-menu' component={MainMenu} />
+          <Route exact path='/game' component={Game} />
+          <Redirect from='/' to='/main-menu' />
         </Switch>
       </div>
     );

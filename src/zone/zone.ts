@@ -45,8 +45,8 @@ export class Zone {
   public constructor(shrinkCoefficient: number, lastZoneSide: number) {
     this._isFirstStage = true;
     this._isNewStage = true;
-    this._finalZoneShape = new ZoneShape();
-    this._currentZoneShape = new ZoneShape();
+    this._finalZoneShape = new ZoneShape(new Point(0, 0), new Point(0, 0));
+    this._currentZoneShape = new ZoneShape(new Point(0, 0), new Point(0, 0));
     this._verticalDistancesRatio = 0;
     this._horizontalDistancesRatio = 0;
     this._topDistance = 0;
@@ -69,12 +69,10 @@ export class Zone {
    * upper left point, lower right point
    */
   public get finalZoneShape(): ZoneShape {
-    const zoneShape = new ZoneShape();
-
-    zoneShape.upperLeftPoint.x = this._finalZoneShape.upperLeftPoint.x;
-    zoneShape.upperLeftPoint.y = this._finalZoneShape.upperLeftPoint.y;
-    zoneShape.lowerRightPoint.x = this._finalZoneShape.lowerRightPoint.x;
-    zoneShape.lowerRightPoint.y = this._finalZoneShape.lowerRightPoint.y;
+    const zoneShape = new ZoneShape(
+      this._finalZoneShape.upperLeftPoint,
+      this._finalZoneShape.lowerRightPoint
+    );
 
     return zoneShape;
   }
@@ -85,12 +83,10 @@ export class Zone {
    * upper left point, lower right point
    */
   public get currentZoneShape(): ZoneShape {
-    const zoneShape = new ZoneShape();
-
-    zoneShape.upperLeftPoint.x = this._currentZoneShape.upperLeftPoint.x;
-    zoneShape.upperLeftPoint.y = this._currentZoneShape.upperLeftPoint.y;
-    zoneShape.lowerRightPoint.x = this._currentZoneShape.lowerRightPoint.x;
-    zoneShape.lowerRightPoint.y = this._currentZoneShape.lowerRightPoint.y;
+    const zoneShape = new ZoneShape(
+      this._currentZoneShape.upperLeftPoint,
+      this._currentZoneShape.lowerRightPoint
+    );
 
     return zoneShape;
   }
@@ -486,10 +482,17 @@ export class Zone {
    * @description Calculate parameters of the current zone
    */
   private calculateCurrentZoneShape(shrinkSteps: ShrinkSteps): void {
-    this._currentZoneShape.upperLeftPoint.x += shrinkSteps.leftStep;
-    this._currentZoneShape.upperLeftPoint.y += shrinkSteps.topStep;
-    this._currentZoneShape.lowerRightPoint.x -= shrinkSteps.rightStep;
-    this._currentZoneShape.lowerRightPoint.y -= shrinkSteps.bottomStep;
+    const upperLeftPoint = new Point(
+      this._currentZoneShape.upperLeftPoint.x + shrinkSteps.leftStep,
+      this._currentZoneShape.upperLeftPoint.y + shrinkSteps.topStep
+    );
+
+    const lowerRightPoint = new Point(
+      this._currentZoneShape.lowerRightPoint.x - shrinkSteps.rightStep,
+      this._currentZoneShape.lowerRightPoint.y - shrinkSteps.bottomStep
+    );
+
+    this._currentZoneShape.defineShape(upperLeftPoint, lowerRightPoint);
   }
 
   /**

@@ -1,7 +1,7 @@
 import { Point } from './point';
 import { ShrinkSteps } from './shrinkSteps';
 import { ZoneFilling } from './zoneFilling';
-import { ZoneShape } from "./zoneShape";
+import { ZoneShape } from './zoneShape';
 
 /*
   Note:
@@ -37,11 +37,13 @@ export class Zone {
 
   //#region Constructor
 
-  /** @constructor
+  /**
+   * @constructor
    * @param {number} shrinkCoefficient Coefficient of zone shrinking
    * @param {number} lastZoneSide Value of the last zone side
    * @this {Zone}
-   * @description Constructor of the Zone class */
+   * @description Constructor of the Zone class
+   */
   public constructor(shrinkCoefficient: number, lastZoneSide: number) {
     this._isFirstStage = true;
     this._isNewStage = true;
@@ -100,9 +102,8 @@ export class Zone {
   }
   public set shrinkCoefficient(value: number) {
     if (value <= 0) {
-      throw new Error("Invalid shrinking coefficient. The value should be greater then 0.");
-    }
-    else {
+      throw new Error('Invalid shrinking coefficient. The value should be greater then 0.');
+    } else {
       this._shrinkCoefficient = value;
     }
   }
@@ -116,9 +117,8 @@ export class Zone {
   }
   public set lastZoneSide(value: number) {
     if (value < 0) {
-      throw new Error("Invalid last zone side value. The value should be not less than 0.");
-    }
-    else {
+      throw new Error('Invalid last zone side value. The value should be not less than 0.');
+    } else {
       this._lastZoneSide = Math.floor(value);
     }
   }
@@ -141,18 +141,18 @@ export class Zone {
     borderFillingObject: any,
     cleanerObject: any
   ): void {
-    // Verification of the first stage
+    // verification of the first stage
     if (this._isFirstStage) {
       this.initializeFirstStage(location);
     }
 
-    // Verification of the beginning of the new stage
+    // verification of the beginning of the new stage
 
     if (this._isNewStage) {
       this.beginNewStage(location, borderFillingObject, cleanerObject);
     }
 
-    // Continuation of the current stage
+    // continuation of the current stage
 
     this.continueCurrentStage(location, fillingObject);
   }
@@ -260,8 +260,7 @@ export class Zone {
   private calculateVerticalDistancesRatio(): void {
     if (this._topDistance <= 0 || this._bottomDistance <= 0) {
       this._verticalDistancesRatio = 0;
-    }
-    else {
+    } else {
       const max = Math.max(this._topDistance, this._bottomDistance);
       const min = Math.min(this._topDistance, this._bottomDistance);
       this._verticalDistancesRatio = Math.floor(max / min);
@@ -275,8 +274,7 @@ export class Zone {
   private calculateHorizontalDistancesRatio(): void {
     if (this._leftDistance <= 0 || this._rightDistance <= 0) {
       this._horizontalDistancesRatio = 0;
-    }
-    else {
+    } else {
       const max = Math.max(this._leftDistance, this._rightDistance);
       const min = Math.min(this._leftDistance, this._rightDistance);
       this._horizontalDistancesRatio = Math.floor(max / min);
@@ -314,23 +312,23 @@ export class Zone {
       rightStep: 0
     };
 
-    // Vertical
+    // vertical
 
     this.shrinkVertically(location, fillingObject, shrinkSteps);
 
-    // Horizontal
+    // horizontal
 
     this.shrinkHorizontally(location, fillingObject, shrinkSteps);
 
-    // Shrink single size zone
+    // shrink single size zone
 
     this.shrinkSingleSizeZone(location, fillingObject);
 
-    // Update currentZoneShape
+    // update currentZoneShape
 
     this.calculateCurrentZoneShape(shrinkSteps);
 
-    // Check if current zone reaches final zone
+    // check if current zone reaches final zone
 
     this.checkIsFinalZoneReached();
   }
@@ -365,8 +363,7 @@ export class Zone {
           shrinkSteps.bottomStep++;
           this._verticalStepCount = 0;
         }
-      }
-      else if (this._topDistance < this._bottomDistance) {
+      } else if (this._topDistance < this._bottomDistance) {
         shrinkSteps.bottomStep++;
 
         ZoneFilling.unequalDistancesVerticalLoop(location, fillingObject, upperX, lowerX, lowerY, upperY, isCommonStep);
@@ -375,21 +372,18 @@ export class Zone {
           shrinkSteps.topStep++;
           this._verticalStepCount = 0;
         }
-      }
-      else {
+      } else {
         ZoneFilling.equalDistancesVerticalLoop(location, fillingObject, upperX, lowerX, upperY, lowerY);
 
         shrinkSteps.topStep++;
         shrinkSteps.bottomStep++;
         this._verticalStepCount = 0;
       }
-    }
-    else if (isTopSideReached && !isBottomSideReached) {
+    } else if (isTopSideReached && !isBottomSideReached) {
       ZoneFilling.zeroDistanceVerticalLoop(location, fillingObject, upperX, lowerX, lowerY);
 
       shrinkSteps.bottomStep++;
-    }
-    else if (!isTopSideReached && isBottomSideReached) {
+    } else if (!isTopSideReached && isBottomSideReached) {
       ZoneFilling.zeroDistanceVerticalLoop(location, fillingObject, upperX, lowerX, upperY);
 
       shrinkSteps.topStep++;
@@ -426,8 +420,7 @@ export class Zone {
           shrinkSteps.rightStep++;
           this._horizontalStepCount = 0;
         }
-      }
-      else if (this._leftDistance < this._rightDistance) {
+      } else if (this._leftDistance < this._rightDistance) {
         shrinkSteps.rightStep++;
 
         ZoneFilling.unequalDistancesHorizontalLoop(location, fillingObject, upperY, lowerY, lowerX, upperX, isCommonStep);
@@ -436,21 +429,18 @@ export class Zone {
           shrinkSteps.leftStep++;
           this._horizontalStepCount = 0;
         }
-      }
-      else {
+      } else {
         ZoneFilling.equalDistancesHorizontalLoop(location, fillingObject, upperY, lowerY, upperX, lowerX);
 
         shrinkSteps.leftStep++;
         shrinkSteps.rightStep++;
         this._horizontalStepCount = 0;
       }
-    }
-    else if (isLeftSideReached && !isRightSideReached) {
+    } else if (isLeftSideReached && !isRightSideReached) {
       ZoneFilling.zeroDistanceHorizontalLoop(location, fillingObject, upperY, lowerY, lowerX);
 
       shrinkSteps.rightStep++;
-    }
-    else if (!isLeftSideReached && isRightSideReached) {
+    } else if (!isLeftSideReached && isRightSideReached) {
       ZoneFilling.zeroDistanceHorizontalLoop(location, fillingObject, upperY, lowerY, upperX);
 
       shrinkSteps.leftStep++;

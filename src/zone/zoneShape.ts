@@ -1,4 +1,4 @@
-import { Point } from "./point";
+import { Point } from './point';
 
 /**
  * @class
@@ -14,11 +14,13 @@ export class ZoneShape {
 
   //#region Constructor
 
-  /** @constructor
+  /**
+   * @constructor
    * @param {Point} upperLeftPoint Upper left point of zone shape
    * @param {Point} lowerRightPoint Lower right point of zone shape
    * @this {ZoneShape}
-   * @description Constructor of the ZoneShape class */
+   * @description Constructor of the ZoneShape class
+   */
   public constructor(upperLeftPoint: Point, lowerRightPoint: Point) {
     this._upperLeftPoint = new Point(
       upperLeftPoint.x,
@@ -85,6 +87,7 @@ export class ZoneShape {
    */
   public getWidth(): number {
     const width = this._lowerRightPoint.x - this._upperLeftPoint.x + 1;
+
     return width;
   }
 
@@ -94,6 +97,7 @@ export class ZoneShape {
    */
   public getHeight(): number {
     const height = this._lowerRightPoint.y - this._upperLeftPoint.y + 1;
+
     return height;
   }
 

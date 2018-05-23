@@ -12,11 +12,13 @@ export class Point {
 
   //#region Constructor
 
-  /** @constructor
+  /**
+   * @constructor
    * @param {number} x X coordinate of a point
    * @param {number} y Y coordinate of a point
    * @this {Point}
-   * @description Constructor of the Point class */
+   * @description Constructor of the Point class
+   */
   public constructor(x: number, y: number) {
     this.x = x;
     this.y = y;

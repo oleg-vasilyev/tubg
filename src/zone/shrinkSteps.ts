@@ -2,7 +2,7 @@
  * @interface
  * @description Interface for object, that contains steps counters
  */
-export interface ShrinkSteps {
+export interface IShrinkSteps {
   topStep: number;
   bottomStep: number;
   leftStep: number;

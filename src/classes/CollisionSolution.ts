@@ -30,7 +30,7 @@ export class CollisionSolution {
 
   public hitWallTestBullet(bullet: Bullet): boolean {
     let hitWallTest: boolean = false;
-    if (bullet.y <= this.wallList[0] || bullet.y >= this.wallList[2] || bullet.x <= this.wallList[3] || bullet.x >= this.wallList[1]) {
+    if (bullet.x < this.wallList[0] || bullet.x > this.wallList[2] || bullet.y > this.wallList[3] || bullet.y < this.wallList[1]) {
       hitWallTest = true;
     }
 
@@ -56,7 +56,7 @@ export class CollisionSolution {
 
   public hitWallTestTank(tank: Tank): boolean {
     let hitWallTest: boolean = false;
-    if (tank.y <= this.wallList[0] || tank.y >= this.wallList[2] || tank.x <= this.wallList[3] || tank.x >= this.wallList[1]) {
+    if (tank.x < this.wallList[0] || tank.x > this.wallList[2] || tank.y > this.wallList[3] || tank.y < this.wallList[1]) {
       hitWallTest = true;
     }
 

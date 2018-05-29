@@ -1,3 +1,4 @@
+import { Zone } from '../zone/zone';
 import { AiConnection } from './AiConnection';
 import { Battlefield } from './Battlefield';
 import { Bullet } from './Bullet';
@@ -8,31 +9,31 @@ import { IdentificatorAi } from './IdentificatorAi';
 import { Tank } from './Tank';
 
 export class Simulation {
-
-    public aiList: AiConnection[];
-    public allTankList: Tank[];
-    public tankList: Tank[];
-    public bulletList: Bullet[];
-    public explodedTankList: Tank[];
-    public explodedBulletList: Bullet[];
-    public battlefield: Battlefield;
-    public isRunning: boolean;
-    public simulationTimeout: number | null;
-    public simulationStepDuration: number;
-    public collisionSolution: CollisionSolution;
-    public onSimulationStepCallback: Array<(() => void)>;
-    public onFinishCallback: Array<(() => void)>;
-    public onErrorCallback: Array<(() => void)>;
-    public onStartCallback: Array<(() => void)>;
-    public timeEnd: number;
-    public timeLimit: number;
-    public madeMoveCount: number;
-    public eventStore: EventStore;
-    public callStackLimit: number;
-    public callStackCount: number;
-    public speedMultiplier: number;
-    public bulletId: number;
-    public tankId: number;
+  public aiList: AiConnection[];
+  public allTankList: Tank[];
+  public tankList: Tank[];
+  public bulletList: Bullet[];
+  public explodedTankList: Tank[];
+  public explodedBulletList: Bullet[];
+  public battlefield: Battlefield;
+  public isRunning: boolean;
+  public simulationTimeout: number | null;
+  public simulationStepDuration: number;
+  public collisionSolution: CollisionSolution;
+  public onSimulationStepCallback: Array<(() => void)>;
+  public onFinishCallback: Array<(() => void)>;
+  public onErrorCallback: Array<(() => void)>;
+  public onStartCallback: Array<(() => void)>;
+  public timeEnd: number;
+  public timeLimit: number;
+  public madeMoveCount: number;
+  public eventStore: EventStore;
+  public callStackLimit: number;
+  public callStackCount: number;
+  public speedMultiplier: number;
+  public bulletId: number;
+  public tankId: number;
+  public zone: Zone;
 
   public constructor(width: number, height: number) {
     this.aiList = [];
@@ -58,6 +59,7 @@ export class Simulation {
     this.callStackCount = 0;
     this.bulletId = 1;
     this.tankId = 1;
+    this.zone = new Zone(CONFIG.shrinkCoefficient, CONFIG.lastZoneSide);
   }
 
   public init(width: number, height: number): void {
@@ -389,6 +391,13 @@ export class Simulation {
     for (const item of this.tankList) {
       item.genState();
     }
+    this.zone.shrink(this.battlefield);
+    const zoneShape = this.zone.currentZoneShape;
+    const xMin = zoneShape.upperLeftPoint.x;
+    const yMin = zoneShape.upperLeftPoint.y;
+    const xMax = zoneShape.lowerRightPoint.x;
+    const yMax = zoneShape.lowerRightPoint.y;
+    this.collisionSolution.wallList = [xMin, yMin, xMax, yMax];
   }
 }
 

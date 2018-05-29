@@ -39,8 +39,8 @@ export class Zone {
   public constructor(shrinkCoefficient: number, lastZoneSide: number) {
     this._isFirstStage = true;
     this._isNewStage = true;
-    this._finalZoneShape = new ZoneShape(new Point(0, 0), new Point(0, 0));
-    this._currentZoneShape = new ZoneShape(new Point(0, 0), new Point(0, 0));
+    this._finalZoneShape = new ZoneShape();
+    this._currentZoneShape = new ZoneShape();
     this._verticalDistancesRatio = 0;
     this._horizontalDistancesRatio = 0;
     this._topDistance = 0;
@@ -126,6 +126,7 @@ export class Zone {
    */
   public shrink(battlefield: Battlefield): void {
     // verification of the first stage
+
     if (this._isFirstStage) {
       this.initializeFirstStage(battlefield);
     }
@@ -161,35 +162,16 @@ export class Zone {
    * @description Finds new final zone shape
    */
   private beginNewStage(): void {
-    // this.clearBorder(battlefield, cleanerObject);
     this.calculateFinalZoneShape();
     this.calculateDistances();
     this.calculateVerticalDistancesRatio();
     this.calculateHorizontalDistancesRatio();
-    // this.drawZoneBorderline(battlefield, borderFillingObject);
 
     this._verticalStepCount = 0;
     this._horizontalStepCount = 0;
 
     this._isNewStage = false;
   }
-
-  // /**
-  //  * @method
-  //  * @param {Battlefield} battlefield Game battlefield for processing
-  //  * @param {*} cleanerObject Object to clean the border of the zone
-  //  * @description Removes the drawn border of the final zone
-  //  */
-  // private clearBorder(battlefield: Battlefield, cleanerObject: any): void {
-  //   for (let i = this._finalZoneShape.upperLeftPoint.x; i <= this._finalZoneShape.lowerRightPoint.x; i++) {
-  //     battlefield.location[i][this._finalZoneShape.upperLeftPoint.y] = cleanerObject;
-  //     battlefield.location[i][this._finalZoneShape.lowerRightPoint.y] = cleanerObject;
-  //   }
-  //   for (let i = this._finalZoneShape.upperLeftPoint.y; i <= this._finalZoneShape.lowerRightPoint.y; i++) {
-  //     battlefield.location[this._finalZoneShape.upperLeftPoint.x][i] = cleanerObject;
-  //     battlefield.location[this._finalZoneShape.lowerRightPoint.x][i] = cleanerObject;
-  //   }
-  // }
 
   /**
    * @method
@@ -224,25 +206,10 @@ export class Zone {
    * @description Calculates distances between zones
    */
   private calculateDistances(): void {
-    this._topDistance = Math.abs(
-      this._finalZoneShape.upperLeftPoint.y -
-      this._currentZoneShape.upperLeftPoint.y
-    );
-
-    this._bottomDistance = Math.abs(
-      this._currentZoneShape.lowerRightPoint.y -
-      this._finalZoneShape.lowerRightPoint.y
-    );
-
-    this._leftDistance = Math.abs(
-      this._finalZoneShape.upperLeftPoint.x -
-      this._currentZoneShape.upperLeftPoint.x
-    );
-
-    this._rightDistance = Math.abs(
-      this._currentZoneShape.lowerRightPoint.x -
-      this._finalZoneShape.lowerRightPoint.x
-    );
+    this._topDistance = Math.abs(this._finalZoneShape.upperLeftPoint.y - this._currentZoneShape.upperLeftPoint.y);
+    this._bottomDistance = Math.abs(this._currentZoneShape.lowerRightPoint.y - this._finalZoneShape.lowerRightPoint.y);
+    this._leftDistance = Math.abs(this._finalZoneShape.upperLeftPoint.x - this._currentZoneShape.upperLeftPoint.x);
+    this._rightDistance = Math.abs(this._currentZoneShape.lowerRightPoint.x - this._finalZoneShape.lowerRightPoint.x);
   }
 
   /**
@@ -273,23 +240,6 @@ export class Zone {
     }
   }
 
-  // /**
-  //  * @method
-  //  * @param {Battlefield} battlefield Game battlefield for processing
-  //  * @param {*} borderFillingObject Object to fill a border of the zone
-  //  * @description Fills border cells of the final zone with given object
-  //  */
-  // private drawZoneBorderline(battlefield: Battlefield, borderFillingObject: any): void {
-  //   for (let i = this._finalZoneShape.upperLeftPoint.x; i <= this._finalZoneShape.lowerRightPoint.x; i++) {
-  //     battlefield.location[i][this._finalZoneShape.upperLeftPoint.y] = borderFillingObject;
-  //     battlefield.location[i][this._finalZoneShape.lowerRightPoint.y] = borderFillingObject;
-  //   }
-  //   for (let i = this._finalZoneShape.upperLeftPoint.y; i <= this._finalZoneShape.lowerRightPoint.y; i++) {
-  //     battlefield.location[this._finalZoneShape.upperLeftPoint.x][i] = borderFillingObject;
-  //     battlefield.location[this._finalZoneShape.lowerRightPoint.x][i] = borderFillingObject;
-  //   }
-  // }
-
   /**
    * @method
    * @description Fill an area outside the current zone
@@ -310,10 +260,6 @@ export class Zone {
 
     this.shrinkHorizontally(shrinkSteps);
 
-    // shrink single size zone
-
-    // this.shrinkSingleSizeZone(battlefield);
-
     // update currentZoneShape
 
     this.calculateCurrentZoneShape(shrinkSteps);
@@ -329,14 +275,8 @@ export class Zone {
    * @description Shrinks battlefield vertically
    */
   private shrinkVertically(shrinkSteps: IShrinkSteps): void {
-    const isTopSideReached = (
-      this._currentZoneShape.upperLeftPoint.y ===
-      this._finalZoneShape.upperLeftPoint.y
-    );
-    const isBottomSideReached = (
-      this._currentZoneShape.lowerRightPoint.y ===
-      this._finalZoneShape.lowerRightPoint.y
-    );
+    const isTopSideReached = (this._currentZoneShape.upperLeftPoint.y === this._finalZoneShape.upperLeftPoint.y);
+    const isBottomSideReached = (this._currentZoneShape.lowerRightPoint.y === this._finalZoneShape.lowerRightPoint.y);
 
     const upperX = this._currentZoneShape.upperLeftPoint.x;
     const upperY = this._currentZoneShape.upperLeftPoint.y;
@@ -351,8 +291,6 @@ export class Zone {
       if (this._topDistance > this._bottomDistance) {
         shrinkSteps.topStep++;
 
-        // ZoneFilling.unequalDistancesVerticalLoop(battlefield, fillingObject, upperX, lowerX, upperY, lowerY, isCommonStep);
-
         if (isCommonStep) {
           shrinkSteps.bottomStep++;
           this._verticalStepCount = 0;
@@ -360,25 +298,20 @@ export class Zone {
       } else if (this._topDistance < this._bottomDistance) {
         shrinkSteps.bottomStep++;
 
-        // ZoneFilling.unequalDistancesVerticalLoop(battlefield, fillingObject, upperX, lowerX, lowerY, upperY, isCommonStep);
-
         if (isCommonStep) {
           shrinkSteps.topStep++;
           this._verticalStepCount = 0;
         }
       } else {
-        // ZoneFilling.equalDistancesVerticalLoop(battlefield, fillingObject, upperX, lowerX, upperY, lowerY);
 
         shrinkSteps.topStep++;
         shrinkSteps.bottomStep++;
         this._verticalStepCount = 0;
       }
     } else if (isTopSideReached && !isBottomSideReached) {
-      // ZoneFilling.zeroDistanceVerticalLoop(battlefield, fillingObject, upperX, lowerX, lowerY);
 
       shrinkSteps.bottomStep++;
     } else if (!isTopSideReached && isBottomSideReached) {
-      // ZoneFilling.zeroDistanceVerticalLoop(battlefield, fillingObject, upperX, lowerX, upperY);
 
       shrinkSteps.topStep++;
     }
@@ -390,14 +323,8 @@ export class Zone {
    * @description Shrinks battlefield horizontally
    */
   private shrinkHorizontally(shrinkSteps: IShrinkSteps): void {
-    const isLeftSideReached = (
-      this._currentZoneShape.upperLeftPoint.x ===
-      this._finalZoneShape.upperLeftPoint.x
-    );
-    const isRightSideReached = (
-      this._currentZoneShape.lowerRightPoint.x ===
-      this._finalZoneShape.lowerRightPoint.x
-    );
+    const isLeftSideReached = (this._currentZoneShape.upperLeftPoint.x === this._finalZoneShape.upperLeftPoint.x);
+    const isRightSideReached = (this._currentZoneShape.lowerRightPoint.x === this._finalZoneShape.lowerRightPoint.x);
 
     const upperX = this._currentZoneShape.upperLeftPoint.x;
     const upperY = this._currentZoneShape.upperLeftPoint.y;
@@ -412,8 +339,6 @@ export class Zone {
       if (this._leftDistance > this._rightDistance) {
         shrinkSteps.leftStep++;
 
-        // ZoneFilling.unequalDistancesHorizontalLoop(battlefield, fillingObject, upperY, lowerY, upperX, lowerX, isCommonStep);
-
         if (isCommonStep) {
           shrinkSteps.rightStep++;
           this._horizontalStepCount = 0;
@@ -421,48 +346,24 @@ export class Zone {
       } else if (this._leftDistance < this._rightDistance) {
         shrinkSteps.rightStep++;
 
-        // ZoneFilling.unequalDistancesHorizontalLoop(battlefield, fillingObject, upperY, lowerY, lowerX, upperX, isCommonStep);
-
         if (isCommonStep) {
           shrinkSteps.leftStep++;
           this._horizontalStepCount = 0;
         }
       } else {
-        // ZoneFilling.equalDistancesHorizontalLoop(battlefield, fillingObject, upperY, lowerY, upperX, lowerX);
 
         shrinkSteps.leftStep++;
         shrinkSteps.rightStep++;
         this._horizontalStepCount = 0;
       }
     } else if (isLeftSideReached && !isRightSideReached) {
-      // ZoneFilling.zeroDistanceHorizontalLoop(battlefield, fillingObject, upperY, lowerY, lowerX);
 
       shrinkSteps.rightStep++;
     } else if (!isLeftSideReached && isRightSideReached) {
-      // ZoneFilling.zeroDistanceHorizontalLoop(battlefield, fillingObject, upperY, lowerY, upperX);
 
       shrinkSteps.leftStep++;
     }
   }
-
-  // /**
-  //  * @method
-  //  * @param {Battlefield} battlefield Game battlefield for processing
-  //  * @param {*} fillingObject Object to fill an area outside the zone
-  //  * @description Shrinks zone when its size equals one
-  //  */
-  // private shrinkSingleSizeZone(battlefield: Battlefield, fillingObject: any): void {
-  //   if (
-  //     this._currentZoneShape.getWidth() === 1 &&
-  //     this._currentZoneShape.getHeight() === 1 &&
-  //     this._lastZoneSide < 1
-  //   ) {
-  //     battlefield.location
-  //     [this.currentZoneShape.upperLeftPoint.x]
-  //     [this._currentZoneShape.upperLeftPoint.y]
-  //     = fillingObject;
-  //   }
-  // }
 
   /**
    * @method

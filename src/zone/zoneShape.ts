@@ -21,7 +21,10 @@ export class ZoneShape {
    * @this {ZoneShape}
    * @description Constructor of the ZoneShape class
    */
-  public constructor(upperLeftPoint: Point, lowerRightPoint: Point) {
+  public constructor(
+    upperLeftPoint: Point = new Point(0, 0),
+    lowerRightPoint: Point = new Point(0, 0)
+  ) {
     this._upperLeftPoint = new Point(
       upperLeftPoint.x,
       upperLeftPoint.y

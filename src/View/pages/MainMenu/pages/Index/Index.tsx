@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import './Index.css';
 
 
-export class Index extends React.PureComponent {
+export class Index extends React.Component {
   public render() {
     return (
       <div className='bt-main-menu__index-wrapper'>

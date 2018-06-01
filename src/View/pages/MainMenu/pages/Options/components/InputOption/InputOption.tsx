@@ -5,10 +5,10 @@ interface InputOptionProps {
   title?: string;
   onChange?: (event: any) => void;
   name: string;
-  value: string;
+  value: number;
 }
 
-export class InputOption extends React.PureComponent<InputOptionProps> {
+export class InputOption extends React.Component<InputOptionProps> {
   public render() {
     return (
       <div className='bt-input-option'>

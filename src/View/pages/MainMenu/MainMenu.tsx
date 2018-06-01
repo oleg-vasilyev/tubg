@@ -6,7 +6,7 @@ import {Options} from './pages/Options/Options';
 import {Players} from './pages/Players/Players';
 
 
-export class MainMenu extends React.PureComponent {
+export class MainMenu extends React.Component {
   public render() {
     return (
       <div className='bt-main-menu'>

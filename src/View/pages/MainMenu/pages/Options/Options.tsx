@@ -1,31 +1,22 @@
 import * as React from 'react';
-// Import components
+import {observer} from 'mobx-react';
+
 import {PageTitle} from './../../components/PageTitle/PageTitle';
 import {SubTitle} from './../../components/SubTitle/SubTitle';
 import {InputOption} from './components/InputOption/InputOption';
-import {getOption} from './../../../../../helper-functions/Options';
-import {setOption} from './../../../../../helper-functions/Options';
 
-interface IOptionsState {
-  options: {[name: string]: string}
-}
+import {optionsStore} from 'stores/OptionsStore';
 
-export class Options extends React.PureComponent<null, IOptionsState> {
-  state: IOptionsState = {
-    options: {
-      fieldSize: getOption('fieldSize') || '',
-      dethZoneSpeed: getOption('dethZoneSpeed') || '',
-      dethZoneStopArea: getOption('dethZoneStopArea') || '',
-      tankSpeed: getOption('tankSpeed') || '',
-      bulletSpeed: getOption('bulletSpeed') || ''
-    }
-  }
+import {OptionsInterface} from 'interfaces/OptionsInterface';
 
-  handleOptionChange = (e: any) => {
-    const newOptions: any = {...this.state.options};
-    newOptions[e.target.name] = e.target.value;
-    setOption(e.target.name, e.target.value);
-    this.setState({options: newOptions});
+
+@observer
+export class Options extends React.Component {
+
+  private handleOptionChange = (e: any) => {
+    const optionName = e.target.name;
+    const optionValue = e.target.value;
+    optionsStore.setOption(optionName, optionValue);
   }
 
   public render() {
@@ -35,22 +26,25 @@ export class Options extends React.PureComponent<null, IOptionsState> {
         <SubTitle>Field configurations</SubTitle>
         <ul className='bt-main-menu__options-option-group'>
           <li className='bt-main-menu__options-option'>
-            <InputOption title='Field size' name='fieldSize' value={this.state.options.fieldSize} onChange={this.handleOptionChange} />
+            <InputOption title='Field width' name='battleFieldWidth' value={optionsStore.options.battleFieldWidth} onChange={this.handleOptionChange} />
           </li>
           <li className='bt-main-menu__options-option'>
-            <InputOption title='Deth zone speed' name='dethZoneSpeed' value={this.state.options.dethZoneSpeed} onChange={this.handleOptionChange} />
+            <InputOption title='Field height' name='battleFieldHeight' value={optionsStore.options.battleFieldHeight} onChange={this.handleOptionChange} />
           </li>
           <li className='bt-main-menu__options-option'>
-            <InputOption title='Deth zone stop area' name='dethZoneStopArea' value={this.state.options.dethZoneStopArea} onChange={this.handleOptionChange} />
+            <InputOption title='Deth zone speed' name='speedOfDethZone' value={optionsStore.options.speedOfDethZone} onChange={this.handleOptionChange} />
+          </li>
+          <li className='bt-main-menu__options-option'>
+            <InputOption title='Deth zone stop area' name='dethZoneStopAreaSize' value={optionsStore.options.dethZoneStopAreaSize} onChange={this.handleOptionChange} />
           </li>
         </ul>
         <SubTitle>Objects configurations</SubTitle>
         <ul className='bt-main-menu__options-option-group'>
           <li className='bt-main-menu__options-option'>
-            <InputOption title='Tank speed' name='tankSpeed' value={this.state.options.tankSpeed} onChange={this.handleOptionChange} />
+            <InputOption title='Tank speed' name='tankSpeed' value={optionsStore.options.tankSpeed} onChange={this.handleOptionChange} />
           </li>
           <li className='bt-main-menu__options-option'>
-            <InputOption title='Bullet speed' name='bulletSpeed' value={this.state.options.bulletSpeed} onChange={this.handleOptionChange} />
+            <InputOption title='Bullet speed' name='bulletSpeed' value={optionsStore.options.bulletSpeed} onChange={this.handleOptionChange} />
           </li>
         </ul>
       </div>

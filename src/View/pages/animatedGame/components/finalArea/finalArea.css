@@ -1,0 +1,7 @@
+.final-area {
+  position: absolute;
+  box-sizing: border-box;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  z-index: 3;
+}

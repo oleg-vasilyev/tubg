@@ -32,6 +32,13 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      'helper-functions': path.resolve(__dirname, 'src/helper-functions'),
+      interfaces: path.resolve(__dirname, 'src/interfaces'),
+      model: path.resolve(__dirname, 'src/model'),
+      stores: path.resolve(__dirname, 'src/stores'),
+      View: path.resolve(__dirname, 'src/View')
+    }
   }
 };

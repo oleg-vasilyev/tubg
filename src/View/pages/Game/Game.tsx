@@ -39,7 +39,7 @@ const blankField = () => {
   return battleField
 }
 
-export class GamePage extends React.Component {
+export class Game extends React.Component {
   public render() {
     return (
       <div className='bt-game'>

@@ -6,7 +6,7 @@ import {Cell} from './../Cell/Cell';
 import {BattleFieldCell} from './../Cell/Cell.types';
 
 
-export class BattleField extends React.PureComponent<IBattleFieldProps, IBattleFieldState> {
+export class BattleField extends React.Component<IBattleFieldProps, IBattleFieldState> {
   state: IBattleFieldState = {
     battleField: []
   }

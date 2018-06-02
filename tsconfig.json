@@ -5,7 +5,16 @@
     "noImplicitAny": true,
     "module": "commonjs",
     "target": "es5",
-    "jsx": "react"
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "helper-functions/*": ["./src/helper-functions/*"],
+      "interfaces/*": ["./src/interfaces/*"],
+      "model/*": ["./src/model/*"],
+      "stores/*": ["./src/stores/*"],
+      "View/*": ["./src/View/*"]
+    }
   },
   "exclude": [
     "node_modules",

@@ -93,8 +93,8 @@ export class Zone {
     return this._shrinkCoefficient;
   }
   public set shrinkCoefficient(value: number) {
-    if (value <= 0) {
-      throw new Error('Invalid shrinking coefficient. The value should be greater then 0.');
+    if (value <= 1) {
+      throw new Error('Invalid shrinking coefficient. The value should be greater then 1.');
     } else {
       this._shrinkCoefficient = value;
     }

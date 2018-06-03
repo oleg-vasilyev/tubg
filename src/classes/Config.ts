@@ -14,7 +14,7 @@ export const CONFIG = {
     bigVisionSide: 15,
     eastAngle: 0,
     southAngle: 90,
-    westAngle: 90,
+    westAngle: 180,
     northAngle: 270,
     shrinkCoefficient: 2,
     lastZoneSide: 5

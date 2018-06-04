@@ -126,18 +126,6 @@ class BattlefieldStore {
     this.livingZone = livingZone;
     this.finalZone = finalZone;
   }
-
-  public getZoneWidth(zone: ZoneShape): number {
-    const width = (zone.lowerRightPoint.x - zone.upperLeftPoint.x + 1) * SCALE_COEF.get();
-
-    return width;
-  }
-
-  public getZoneHeight(zone: ZoneShape): number {
-    const height = (zone.lowerRightPoint.y - zone.upperLeftPoint.y + 1) * SCALE_COEF.get();
-
-    return height;
-  }
 }
 
 const parseTanks = (tankList: Tank[], tankStoreList: TankStore[]) => {

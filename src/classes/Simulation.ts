@@ -152,7 +152,6 @@ export class Simulation {
           } else if (self.callStackCount >= self.callStackLimit) {
             self.simulationTimeout = setTimeout(self.simulationStep.bind(self), 1);
           } else {
-            self.callStackCount++;
             self.simulationStep();
           }
         }
@@ -387,17 +386,19 @@ export class Simulation {
 
     this.collisionSolution.tankList = this.tankList;
     this.collisionSolution.bulletList = this.bulletList;
-
+    this.callStackCount++;
     for (const item of this.tankList) {
       item.genState();
     }
-    this.zone.shrink(this.battlefield);
-    const zoneShape = this.zone.currentZoneShape;
-    const xMin = zoneShape.upperLeftPoint.x;
-    const yMin = zoneShape.upperLeftPoint.y;
-    const xMax = zoneShape.lowerRightPoint.x;
-    const yMax = zoneShape.lowerRightPoint.y;
-    this.collisionSolution.wallList = [xMin, yMin, xMax, yMax];
+    if (this.callStackCount % CONFIG.shrinkStep === 0) {
+      this.zone.shrink(this.battlefield);
+      const zoneShape = this.zone.currentZoneShape;
+      const xMin = zoneShape.upperLeftPoint.x;
+      const yMin = zoneShape.upperLeftPoint.y;
+      const xMax = zoneShape.lowerRightPoint.x;
+      const yMax = zoneShape.lowerRightPoint.y;
+      this.collisionSolution.wallList = [xMin, yMin, xMax, yMax];
+    }
   }
 }
 

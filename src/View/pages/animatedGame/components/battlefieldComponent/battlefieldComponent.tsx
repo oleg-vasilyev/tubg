@@ -17,12 +17,12 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
   public constructor(props: IBattlefieldProps) {
     super(props);
 
-    const { bfStore } = props;
+    const { bfStore, options } = props;
 
-    const width = optionsStore.options.battleFieldWidth;
-    const height = optionsStore.options.battleFieldHeight;
-    const shrCoef = optionsStore.options.speedOfDethZone;
-    const lastSide = optionsStore.options.dethZoneStopAreaSize;
+    const width = options.battleFieldWidth;
+    const height = options.battleFieldHeight;
+    const shrCoef = options.speedOfDethZone;
+    const lastSide = options.dethZoneStopAreaSize;
 
     bfStore.setBattlefieldSize(width, height);
 

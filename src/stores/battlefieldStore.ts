@@ -79,8 +79,7 @@ class BattlefieldStore {
         width: widthVal,
         height: heightVal,
         top: topVal,
-        left: leftVal,
-        transition: TRANSITION.get()
+        left: leftVal
       };
 
       return style;

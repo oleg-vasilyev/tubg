@@ -7,3 +7,11 @@
   background-image: url(../../../../media/images/stones.jpg);
   box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.623);
 }
+
+.final-area {
+  position: absolute;
+  box-sizing: border-box;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  z-index: 3;
+}

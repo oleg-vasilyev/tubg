@@ -6,6 +6,11 @@ export interface IBattlefieldProps {
   bfStore?: BattlefieldStoreType;
 }
 
+export interface IAreaProps {
+  bfStore?: BattlefieldStoreType;
+  type: string;
+}
+
 export interface ITankComponentProps {
   tankStore?: TankStoreType;
 }

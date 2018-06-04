@@ -2,9 +2,8 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { optionsStore } from 'stores/OptionsStore';
 // import { Simulation } from 'stores/simulation';
+import { Area } from '../area/area';
 import { BulletComponent } from '../bulletComponent/bulletComponent';
-import { FinalArea } from '../finalArea/finalArea';
-import { LivingArea } from '../livingArea/livingArea';
 import { IBattlefieldProps } from '../propsInterfaces';
 import { TankComponent } from '../tankComponent/tankComponent';
 import './battlefieldComponent.css';
@@ -62,8 +61,8 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
           onMouseMove={bfStore.onMouseMove}
         >
           <div className="dead-area" />
-          <LivingArea />
-          <FinalArea />
+          <Area type="living" />
+          <Area type="final" />
           {tanks}
           {bullets}
         </div>

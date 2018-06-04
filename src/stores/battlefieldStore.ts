@@ -1,4 +1,5 @@
 import { action, computed, observable } from 'mobx';
+import { MAX_SCALE, MIN_SCALE } from 'View/pages/animatedGame/constants';
 import { Tank } from '../classes/tank';
 import { Point } from '../zone/point';
 import { ZoneShape } from '../zone/zoneShape';
@@ -6,12 +7,8 @@ import { Bullet } from './../classes/bullet';
 import { BulletStore } from './bulletStore';
 import { TankStore } from './tankStore';
 
-
-const MIN_SCALE = 20;
-const MAX_SCALE = 40;
-
-export let SCALE_COEF = observable.box(MIN_SCALE);
-export let TRANSITION = observable.box(1);
+export let scaleCoef = observable.box(MIN_SCALE);
+export let transition = observable.box(1);
 
 class BattlefieldStore {
   @observable
@@ -60,29 +57,29 @@ class BattlefieldStore {
         y: e.clientY
       };
 
-      if (document.documentElement.clientWidth < (this.bfWidth * SCALE_COEF.get())) {
+      if (document.documentElement.clientWidth < (this.bfWidth * scaleCoef.get())) {
         const leftVal = (this.mousePosition.x + this.offset[0]);
 
         this.bfLeft = leftVal <=
           0 ?
           leftVal >=
-          (document.documentElement.clientWidth - this.bfWidth * SCALE_COEF.get()) ?
+          (document.documentElement.clientWidth - this.bfWidth * scaleCoef.get()) ?
           leftVal :
-          (document.documentElement.clientWidth - this.bfWidth * SCALE_COEF.get()) :
+          (document.documentElement.clientWidth - this.bfWidth * scaleCoef.get()) :
           0;
       } else {
         this.bfLeft = 0;
       }
 
-      if (document.documentElement.clientHeight < (this.bfHeight * SCALE_COEF.get())) {
+      if (document.documentElement.clientHeight < (this.bfHeight * scaleCoef.get())) {
         const topVal = (this.mousePosition.y + this.offset[1]);
 
         this.bfTop = topVal <=
           0 ?
           topVal >=
-          (document.documentElement.clientHeight - this.bfHeight * SCALE_COEF.get()) ?
+          (document.documentElement.clientHeight - this.bfHeight * scaleCoef.get()) ?
           topVal :
-          (document.documentElement.clientHeight - this.bfHeight * SCALE_COEF.get()) :
+          (document.documentElement.clientHeight - this.bfHeight * scaleCoef.get()) :
           0;
       } else {
         this.bfTop = 0;
@@ -93,11 +90,11 @@ class BattlefieldStore {
   @action
   public onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     e.preventDefault();
-    TRANSITION.set(0);
-    if (e.deltaY < 0 && (SCALE_COEF.get() < MAX_SCALE)) {
-      SCALE_COEF.set(SCALE_COEF.get() + 1);
-    } else if (e.deltaY > 0 && (SCALE_COEF.get() > MIN_SCALE)) {
-      SCALE_COEF.set(SCALE_COEF.get() - 1);
+    transition.set(0);
+    if (e.deltaY < 0 && (scaleCoef.get() < MAX_SCALE)) {
+      scaleCoef.set(scaleCoef.get() + 1);
+    } else if (e.deltaY > 0 && (scaleCoef.get() > MIN_SCALE)) {
+      scaleCoef.set(scaleCoef.get() - 1);
     }
   }
 
@@ -119,7 +116,7 @@ class BattlefieldStore {
     livingZone?: ZoneShape,
     finalZone?: ZoneShape
   ): void {
-    TRANSITION.set(1);
+    transition.set(1);
     parseTanks(tankList, this.tankStoreList);
     parseBullets(bulletList, this.bulletStoreList);
 

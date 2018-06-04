@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { ZoneShape } from 'src/zone/zoneShape';
-import { SCALE_COEF, TRANSITION } from 'stores/battlefieldStore';
+import { scaleCoef, transition } from 'stores/battlefieldStore';
 import { IAreaProps } from '../propsInterfaces';
 import './area.css';
 
@@ -25,10 +25,10 @@ export class Area extends React.Component<IAreaProps, {}> {
     let style = {};
 
     if (zone) {
-      const widthVal = this.getZoneWidth(zone) * SCALE_COEF.get();
-      const heightVal = this.getZoneHeight(zone) * SCALE_COEF.get();
-      const topVal = zone.upperLeftPoint.y * SCALE_COEF.get();
-      const leftVal = zone.upperLeftPoint.x * SCALE_COEF.get();
+      const widthVal = this.getZoneWidth(zone) * scaleCoef.get();
+      const heightVal = this.getZoneHeight(zone) * scaleCoef.get();
+      const topVal = zone.upperLeftPoint.y * scaleCoef.get();
+      const leftVal = zone.upperLeftPoint.x * scaleCoef.get();
 
       if (type === 'living') {
         style = {
@@ -37,7 +37,7 @@ export class Area extends React.Component<IAreaProps, {}> {
           top: `${topVal}px`,
           left: `${leftVal}px`,
           backgroundPosition: `-${leftVal}px -${topVal}px`,
-          transition: `${TRANSITION.get()}s`
+          transition: `${transition.get()}s`
         };
       } else if (type === 'final') {
         style = {

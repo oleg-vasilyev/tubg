@@ -1,5 +1,5 @@
 import { action, computed, observable } from 'mobx';
-import { SCALE_COEF, TRANSITION } from './battlefieldStore';
+import { scaleCoef, transition } from './battlefieldStore';
 
 export class BulletStore {
   @observable

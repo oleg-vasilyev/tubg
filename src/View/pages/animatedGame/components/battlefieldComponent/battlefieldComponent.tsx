@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { SCALE_COEF } from 'stores/battlefieldStore';
+import { scaleCoef } from 'stores/battlefieldStore';
 import { optionsStore } from 'stores/OptionsStore';
 import { Area } from '../area/area';
 import { BulletComponent } from '../bulletComponent/bulletComponent';
@@ -37,8 +37,8 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
     const { bfStore } = this.props;
 
     const battlefieldStyle = {
-      width: `${bfStore.bfWidth * SCALE_COEF.get()}px`,
-      height: `${bfStore.bfHeight * SCALE_COEF.get()}px`,
+      width: `${bfStore.bfWidth * scaleCoef.get()}px`,
+      height: `${bfStore.bfHeight * scaleCoef.get()}px`,
       top: `${bfStore.bfTop}px`,
       left: `${bfStore.bfLeft}px`
     };

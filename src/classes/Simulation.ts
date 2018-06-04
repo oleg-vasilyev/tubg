@@ -147,7 +147,7 @@ export class Simulation {
           }
           self.timeEnd = Math.min(self.timeEnd + self.simulationStepDuration, self.timeLimit);
           if (dt > 0) {
-            self.callStackCount = 0; //
+            self.callStackCount = 0;
             self.simulationTimeout = setTimeout(self.simulationStep.bind(self), dt);
           } else if (self.callStackCount >= self.callStackLimit) {
             self.simulationTimeout = setTimeout(self.simulationStep.bind(self), 1);

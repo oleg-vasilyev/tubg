@@ -10,7 +10,7 @@ export class CollisionSolution {
   public battlefield: Battlefield;
 
   public constructor(battlefield: Battlefield) {
-    this.wallList = [battlefield.startX, battlefield.finishX, battlefield.startY, battlefield.finishY];
+    this.wallList = [battlefield.startX, battlefield.startY, battlefield.finishX, battlefield.finishY];
     this.tankList = [];
     this.bulletList = [];
     this.battlefield = battlefield;

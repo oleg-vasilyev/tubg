@@ -17,5 +17,6 @@ export const CONFIG = {
     westAngle: 180,
     northAngle: 270,
     shrinkCoefficient: 2,
-    lastZoneSide: 5
+    lastZoneSide: 5,
+    shrinkStep: 3
   };

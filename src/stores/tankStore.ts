@@ -20,22 +20,6 @@ export class TankStore {
     this.health = health;
     this.direction = direction;
   }
-
-  @computed
-  public get tankStyle() {
-    const topVal = this.y * SCALE_COEF.get();
-    const leftVal = this.x * SCALE_COEF.get();
-    const angleVal = this.health <= 0 ? 0 : this.direction;
-
-    return {
-      width: SCALE_COEF,
-      height: SCALE_COEF,
-      top: topVal,
-      left: leftVal,
-      transform: angleVal,
-      transition: TRANSITION.get()
-    };
-  }
 }
 
 export type TankStoreType = TankStore;

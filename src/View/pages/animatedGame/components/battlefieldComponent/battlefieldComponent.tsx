@@ -1,7 +1,7 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { SCALE_COEF } from 'stores/battlefieldStore';
 import { optionsStore } from 'stores/OptionsStore';
-// import { Simulation } from 'stores/simulation';
 import { Area } from '../area/area';
 import { BulletComponent } from '../bulletComponent/bulletComponent';
 import { IBattlefieldProps } from '../propsInterfaces';
@@ -11,6 +11,7 @@ import './battlefieldComponent.css';
 @inject('bfStore')
 @observer
 export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}> {
+  // leave this comments to remember, how I'll use Simulation in future
   // private simulation: Simulation;
 
   public constructor(props: IBattlefieldProps) {
@@ -36,10 +37,10 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
     const { bfStore } = this.props;
 
     const battlefieldStyle = {
-      width: `${bfStore.battlefieldStyle.width}px`,
-      height: `${bfStore.battlefieldStyle.height}px`,
-      top: `${bfStore.battlefieldStyle.top}px`,
-      left: `${bfStore.battlefieldStyle.left}px`
+      width: `${bfStore.bfWidth * SCALE_COEF.get()}px`,
+      height: `${bfStore.bfHeight * SCALE_COEF.get()}px`,
+      top: `${bfStore.bfTop}px`,
+      left: `${bfStore.bfLeft}px`
     };
 
     const tanks = bfStore.tankStoreList.map((tankStore) => {

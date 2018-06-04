@@ -17,21 +17,6 @@ export class BulletStore {
     this.y = y;
     this.direction = direction;
   }
-
-  @computed
-  public get bulletStyle() {
-    const topVal = this.y * SCALE_COEF.get();
-    const leftVal = this.x * SCALE_COEF.get();
-
-    return {
-      width: SCALE_COEF,
-      height: SCALE_COEF,
-      top: topVal,
-      left: leftVal,
-      transform: this.direction,
-      transition: TRANSITION.get()
-    };
-  }
 }
 
 export type BulletStoreType = BulletStore;

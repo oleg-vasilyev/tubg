@@ -18,75 +18,24 @@ class BattlefieldStore {
   public tankStoreList: TankStore[] = [];
   @observable
   public bulletStoreList: BulletStore[] = [];
+  @observable
+  public livingZone: ZoneShape;
+  @observable
+  public finalZone: ZoneShape;
+  @observable
+  public bfWidth: number;
+  @observable
+  public bfHeight: number;
+  @observable
+  public bfTop: number = 0;
+  @observable
+  public bfLeft: number = 0;
 
   @observable
-  private livingZone: ZoneShape;
-  @observable
-  private finalZone: ZoneShape;
-  @observable
-  private bfWidth: number;
-  @observable
-  private bfHeight: number;
-  @observable
   private isDraggable: boolean = false;
-  @observable
-  private bfTop: number = 0;
-  @observable
-  private bfLeft: number = 0;
 
   private offset = [0, 0];
   private mousePosition = {x: 0, y: 0};
-
-  @computed
-  public get battlefieldStyle() {
-    const style =  {
-      width: this.bfWidth * SCALE_COEF.get(),
-      height: this.bfHeight * SCALE_COEF.get(),
-      top: this.bfTop,
-      left: this.bfLeft
-    };
-
-    return style;
-  }
-
-  @computed
-  public get livingAreaStyle() {
-    const widthVal = this.getZoneWidth(this.livingZone);
-    const heightVal = this.getZoneHeight(this.livingZone);
-    const topVal = this.livingZone.upperLeftPoint.y * SCALE_COEF.get();
-    const leftVal = this.livingZone.upperLeftPoint.x * SCALE_COEF.get();
-
-    const style = {
-      width: widthVal,
-      height: heightVal,
-      top: topVal,
-      left: leftVal,
-      transition: TRANSITION.get()
-    };
-
-    return style;
-  }
-
-  @computed
-  public get finalAreaStyle() {
-    if (this.finalZone) {
-      const widthVal = this.getZoneWidth(this.finalZone);
-      const heightVal = this.getZoneHeight(this.finalZone);
-      const topVal = this.finalZone.upperLeftPoint.y * SCALE_COEF.get();
-      const leftVal = this.finalZone.upperLeftPoint.x * SCALE_COEF.get();
-
-      const style = {
-        width: widthVal,
-        height: heightVal,
-        top: topVal,
-        left: leftVal
-      };
-
-      return style;
-    } else {
-      return null;
-    }
-  }
 
   @action
   public onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -178,13 +127,13 @@ class BattlefieldStore {
     this.finalZone = finalZone;
   }
 
-  private getZoneWidth(zone: ZoneShape): number {
+  public getZoneWidth(zone: ZoneShape): number {
     const width = (zone.lowerRightPoint.x - zone.upperLeftPoint.x + 1) * SCALE_COEF.get();
 
     return width;
   }
 
-  private getZoneHeight(zone: ZoneShape): number {
+  public getZoneHeight(zone: ZoneShape): number {
     const height = (zone.lowerRightPoint.y - zone.upperLeftPoint.y + 1) * SCALE_COEF.get();
 
     return height;

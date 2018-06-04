@@ -60,29 +60,29 @@ class BattlefieldStore {
         y: e.clientY
       };
 
-      if (document.body.clientWidth < (this.bfWidth * SCALE_COEF.get())) {
+      if (document.documentElement.clientWidth < (this.bfWidth * SCALE_COEF.get())) {
         const leftVal = (this.mousePosition.x + this.offset[0]);
 
         this.bfLeft = leftVal <=
           0 ?
           leftVal >=
-          (document.body.clientWidth - this.bfWidth * SCALE_COEF.get()) ?
+          (document.documentElement.clientWidth - this.bfWidth * SCALE_COEF.get()) ?
           leftVal :
-          (document.body.clientWidth - this.bfWidth * SCALE_COEF.get()) :
+          (document.documentElement.clientWidth - this.bfWidth * SCALE_COEF.get()) :
           0;
       } else {
         this.bfLeft = 0;
       }
 
-      if (document.body.clientHeight < (this.bfHeight * SCALE_COEF.get())) {
+      if (document.documentElement.clientHeight < (this.bfHeight * SCALE_COEF.get())) {
         const topVal = (this.mousePosition.y + this.offset[1]);
 
         this.bfTop = topVal <=
           0 ?
           topVal >=
-          (document.body.clientHeight - this.bfHeight * SCALE_COEF.get()) ?
+          (document.documentElement.clientHeight - this.bfHeight * SCALE_COEF.get()) ?
           topVal :
-          (document.body.clientHeight - this.bfHeight * SCALE_COEF.get()) :
+          (document.documentElement.clientHeight - this.bfHeight * SCALE_COEF.get()) :
           0;
       } else {
         this.bfTop = 0;

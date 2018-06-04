@@ -62,8 +62,8 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
           onMouseMove={bfStore.onMouseMove}
         >
           <div className="dead-area" />
-          <Area type="living" />
-          <Area type="final" />
+          <Area zone={bfStore.livingZone} type="living" />
+          <Area zone={bfStore.finalZone} type="final" />
           {tanks}
           {bullets}
         </div>

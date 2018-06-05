@@ -8,7 +8,8 @@ import { BulletStore } from './bulletStore';
 import { TankStore } from './tankStore';
 
 export let scaleCoef = observable.box(MIN_SCALE);
-export let transition = observable.box(1);
+// temporary nullify transition for testing
+export let transition = observable.box(0);
 
 class BattlefieldStore {
   @observable
@@ -116,7 +117,7 @@ class BattlefieldStore {
     livingZone?: ZoneShape,
     finalZone?: ZoneShape
   ): void {
-    transition.set(1);
+    transition.set(0);
     parseTanks(tankList, this.tankStoreList);
     parseBullets(bulletList, this.bulletStoreList);
 

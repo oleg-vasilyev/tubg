@@ -9,7 +9,7 @@ export class App extends React.Component {
     return (
       <div>
         <Switch>
-          <Route path='/main-menu' component={MainMenu} />
+          <Route path='/' component={MainMenu} />
           <Route exact path='/game' component={AnimatedGame} />
         </Switch>
       </div>

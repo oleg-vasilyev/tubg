@@ -51,7 +51,7 @@ export class Tank {
     this.deathCollision = false;
     this.bullets = [];
     this.historyState = [];
-    this.historyCommand = [];
+    this.historyCommand = [{move: false, shoot: false, rotate: this.direction}];
     this.enemyTracks = [];
     this.bulletTracks = [];
     this.wall = [];

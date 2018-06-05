@@ -88,39 +88,41 @@ export class Simulation {
 
   public start(): void {
     this.isRunning = true;
+    const self = this;
     this.activateAi(
       () => {
-        if (this.simulationTimeout) {
-          clearTimeout(this.simulationTimeout);
+        if (self.simulationTimeout) {
+          clearTimeout(self.simulationTimeout);
         }
-        for (const item of this.onStartCallback) {
+        for (const item of self.onStartCallback) {
           item();
         }
-        this.simulationStep();
+        self.simulationStep();
       }
     );
   }
 
   public run(): void {
     this.isRunning = true;
+    const self = this;
     this.activateAi(
       () => {
-        if (this.simulationTimeout) {
-          clearTimeout(this.simulationTimeout);
+        if (self.simulationTimeout) {
+          clearTimeout(self.simulationTimeout);
         }
-        this.simulationStep();
+        self.simulationStep();
       }
     );
   }
 
   public simulationStep(): void {
-    for (const item of this.tankList) {
+    const self = this;
+    for (const item of self.tankList) {
       item.madeMove = false;
     }
     const startTime: number = (new Date()).getTime();
-    const self = this;
-    this.updateModel();
-    this.updateAi(
+    self.updateModel();
+    self.updateAi(
       () => {
         if (self.simulationTimeout) {
           clearTimeout(self.simulationTimeout);
@@ -248,30 +250,31 @@ export class Simulation {
   }
 
   public runInSequence(done: () => void, error?: () => void): void {
-    if (this.aiList.length === 0) {
+    const self = this;
+    if (self.aiList.length === 0) {
       return;
     }
 
-    for (const item of this.aiList) {
-      let c: (d: () => void, e: () => void) => void;
+    for (const item of self.aiList) {
+      let c: () => void;
       if (item.status === 'activate') {
         // if (this.aiList[aiList.length - 1].aiWorker !== null) {
         //   c = this.aiList[aiList.length - 1].activate;
         // } else {
         //   c = this.aiList[aiList.length - 1].activateXHR;
         // }
-        c = item.activate;
+        c = () => { item.activate(done, error); };
       } else if (item.status === 'simulationStep') {
         // if (this.aiList[aiList.length - 1].aiWorker !== null) {
         //   c = this.aiList[aiList.length - 1].simulationStep;
         // } else {
         //   c = this.aiList[aiList.length - 1].simulationStepXHR;
         // }
-        c = item.simulationStep;
+        c = () => { item.simulationStep(done, error); };
       } else {
         continue;
       }
-      c.call(item, done, error);
+      c();
     }
 
   }
@@ -283,17 +286,18 @@ export class Simulation {
       const hitEnemyTest: boolean = this.collisionSolution.hitEnemyTestTank(tank);
       const hitBulletTest: boolean = this.collisionSolution.hitBulletTestTank(tank);
       const hitDeathTankTest: boolean = this.collisionSolution.hitDeathTankTestTank(tank);
-      if (hitWallTest) {
+      if (hitWallTest && tank.health > 0) {
         tank.health -= 1;
         tank.wallCollision = true;
       } else if (hitEnemyTest) {
         tank.onEnemyHit();
         tank.enemyCollision = true;
-      } else if (hitBulletTest) {
+      } else if (hitBulletTest && tank.health > 0) {
         tank.health = tank.health - CONFIG.bulletPower;
         tank.bulletCollision = true;
       } else if (hitDeathTankTest) {
         tank.x = tank.lastX;
+        tank.y = tank.lastY;
         tank.deathCollision = true;
       }
     }
@@ -308,16 +312,22 @@ export class Simulation {
     for (let i = 1; i < bullet.speed; i++) {
       const hitWallTest: boolean = this.collisionSolution.hitWallTestBullet(bullet);
       const hitEnemyTest: boolean = this.collisionSolution.hitEnemyTestBullet(bullet);
-      if (hitWallTest) {
+      if (hitWallTest && !bullet.destroyed) {
         bullet.onDestroy();
+        this.bulletList = this.bulletList.filter((item) => {
+          return item.id !== bullet.id;
+        });
         this.explodedBulletList.push(bullet);
         this.collisionSolution.removeBullet(bullet);
         this.eventStore.add('bullet_' + bullet.id, {
           type: 'explode',
           bull: bullet
         });
-      } else if (hitEnemyTest) {
+      } else if (hitEnemyTest && !bullet.destroyed) {
         bullet.onDestroy();
+        this.bulletList = this.bulletList.filter((item) => {
+          return item.id !== bullet.id;
+        });
         this.collisionSolution.removeBullet(bullet);
         this.eventStore.add('bullet_' + bullet.id, {
           type: 'explode',
@@ -334,6 +344,8 @@ export class Simulation {
   }
 
   public updateModel(): void {
+    // tslint:disable-next-line:no-console
+    console.log(this.allTankList);
     if (this.tankList.length <= 1) {
       this.stop();
       for (const item of this.onFinishCallback) {
@@ -343,9 +355,10 @@ export class Simulation {
       return;
     }
     for (const item of this.tankList) {
-     if (item.historyCommand[item.historyCommand.length - 1].move === true) {
+     if (item.historyCommand[item.historyCommand.length - 1].move && item.historyCommand[item.historyCommand.length - 1].move === true) {
         this.moveTank(item);
-     } else if (item.historyCommand[item.historyCommand.length - 1].shoot === true) {
+     } else if (item.historyCommand[item.historyCommand.length - 1].shoot &&
+      item.historyCommand[item.historyCommand.length - 1].shoot === true) {
         this.bulletList.push(this.createBullet(item));
      } else {
         this.rotateTank(item);
@@ -388,6 +401,9 @@ export class Simulation {
     this.collisionSolution.bulletList = this.bulletList;
     this.callStackCount++;
     for (const item of this.tankList) {
+      this.collisionSolution.scanTanks(item);
+      this.collisionSolution.scanBullets(item);
+      this.collisionSolution.scanWalls(item);
       item.genState();
     }
     if (this.callStackCount % CONFIG.shrinkStep === 0) {

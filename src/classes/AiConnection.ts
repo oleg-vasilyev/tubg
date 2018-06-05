@@ -57,13 +57,12 @@ export class AiConnection {
     return new Worker(aiIdent.getPathAi());
   }
 
-  public activate(resolve: () => void , reject?: () => void): void {
+  public activate(resolve: () => void, reject?: () => void): void {
     this.aiWorker = this.createWorker(this.identificatorAi);
     this.aiWorker.onerror = () => {
       // tslint:disable-next-line:no-string-throw
       throw 'Web Worker of ' + this.tank.name + ' returned an error';
     };
-
     this.aiWorker.onmessage = (commandEvent) => {
       this.isReady = true;
       const now = (new Date()).getTime();
@@ -72,11 +71,12 @@ export class AiConnection {
         this.perfomanceIssues = true;
         // tslint:disable-next-line:no-string-throw
         throw 'Simulation cannot be continued because ' + this.tank.name + ' #' + this.tank.id + ' has performance issues';
-
       }
       this.commandData = commandEvent.data;
+      this.tank.historyState.push(this.tank.state);
       this.tank.historyCommand.push(commandEvent.data);
       this.tank.madeMove = true;
+      resolve();
     };
     this.aiProcessingStart = (new Date()).getTime();
     this.aiProcessingResolveCallback = resolve;

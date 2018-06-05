@@ -66,7 +66,7 @@ export class CollisionSolution {
   public hitEnemyTestTank(tank: Tank): boolean {
     let hitEnemyTest: boolean = false;
     for (const item of this.tankList) {
-      if (item.x === tank.x && item.y === tank.y) {
+      if (item.id !== tank.id && item.x === tank.x && item.y === tank.y) {
         hitEnemyTest = true;
       }
     }
@@ -77,7 +77,7 @@ export class CollisionSolution {
   public hitBulletTestTank(tank: Tank): boolean {
     let hitBulletsTest: boolean = false;
     for (const item of this.bulletList) {
-      if (item.x === tank.x && item.y === tank.y) {
+      if (item.owner.id !== tank.id && item.x === tank.x && item.y === tank.y) {
         hitBulletsTest = true;
       }
     }
@@ -98,8 +98,8 @@ export class CollisionSolution {
 
   public scanTanks(tank: Tank): void {
     const vision: number[] = this.getVisionArray(tank);
+    tank.enemyTracks = [];
     for (const item of this.tankList) {
-      tank.enemyTracks = [];
       if (item.x >= vision[0] && item.x <= vision[1] && item.y >= vision[2] && item.y <= vision[3]) {
         tank.enemyTracks.push({
           id: item.id,
@@ -110,7 +110,6 @@ export class CollisionSolution {
         });
       }
     }
-
   }
 
   public scanBullets(tank: Tank): void {

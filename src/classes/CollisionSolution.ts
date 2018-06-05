@@ -100,7 +100,7 @@ export class CollisionSolution {
     const vision: number[] = this.getVisionArray(tank);
     tank.enemyTracks = [];
     for (const item of this.tankList) {
-      if (item.x >= vision[0] && item.x <= vision[1] && item.y >= vision[2] && item.y <= vision[3]) {
+      if (item.id !== tank.id && item.x >= vision[0] && item.x <= vision[1] && item.y >= vision[2] && item.y <= vision[3]) {
         tank.enemyTracks.push({
           id: item.id,
           x: item.x,

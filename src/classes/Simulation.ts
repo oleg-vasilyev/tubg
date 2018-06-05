@@ -34,6 +34,7 @@ export class Simulation {
   public bulletId: number;
   public tankId: number;
   public zone: Zone;
+  public countStep: number;
 
   public constructor(width: number, height: number) {
     this.aiList = [];
@@ -60,6 +61,8 @@ export class Simulation {
     this.bulletId = 1;
     this.tankId = 1;
     this.zone = new Zone(CONFIG.shrinkCoefficient, CONFIG.lastZoneSide);
+    this.madeMoveCount = 0;
+    this.countStep = 0;
   }
 
   public init(width: number, height: number): void {
@@ -397,14 +400,14 @@ export class Simulation {
 
     this.collisionSolution.tankList = this.tankList;
     this.collisionSolution.bulletList = this.bulletList;
-    this.callStackCount++;
+    this.countStep++;
     for (const item of this.tankList) {
       this.collisionSolution.scanTanks(item);
       this.collisionSolution.scanBullets(item);
       this.collisionSolution.scanWalls(item);
       item.genState();
     }
-    if (this.callStackCount % CONFIG.shrinkStep === 0) {
+    if (this.countStep % CONFIG.shrinkStep === 0) {
       this.zone.shrink(this.battlefield);
       const zoneShape = this.zone.currentZoneShape;
       const xMin = zoneShape.upperLeftPoint.x;

@@ -1,5 +1,5 @@
 export const CONFIG = {
-    tankSpeed: 5,
+    tankSpeed: 1,
     bulletSpeed: 10,
     bulletPower: 1,
     tankHealth: 1,

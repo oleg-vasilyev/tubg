@@ -142,7 +142,7 @@ export class Simulation {
             self.madeMoveCount++;
           }
         }
-        if (self.isRunning && self.madeMoveCount === self.tankList.length) {
+        if (self.isRunning) {
           const processingTime = (new Date()).getTime() - startTime;
           let dt = self.simulationStepDuration - processingTime;
           dt = dt / self.speedMultiplier;
@@ -154,10 +154,8 @@ export class Simulation {
           if (dt > 0) {
             self.callStackCount = 0;
             self.simulationTimeout = setTimeout(self.simulationStep.bind(self), dt);
-          } else if (self.callStackCount >= self.callStackLimit) {
-            self.simulationTimeout = setTimeout(self.simulationStep.bind(self), 1);
           } else {
-            self.simulationStep();
+            self.simulationTimeout = setTimeout(self.simulationStep.bind(self), 1);
           }
         }
       }
@@ -257,9 +255,8 @@ export class Simulation {
     if (self.aiList.length === 0) {
       return;
     }
-
+    let c: () => void;
     for (const item of self.aiList) {
-      let c: () => void;
       if (item.status === 'activate') {
         // if (this.aiList[aiList.length - 1].aiWorker !== null) {
         //   c = this.aiList[aiList.length - 1].activate;
@@ -277,9 +274,8 @@ export class Simulation {
       } else {
         continue;
       }
-      c();
     }
-
+    c();
   }
 
   public moveTank(tank: Tank): void {
@@ -418,4 +414,3 @@ export class Simulation {
     }
   }
 }
-

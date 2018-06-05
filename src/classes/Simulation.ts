@@ -344,8 +344,6 @@ export class Simulation {
   }
 
   public updateModel(): void {
-    // tslint:disable-next-line:no-console
-    console.log(this.allTankList);
     if (this.tankList.length <= 1) {
       this.stop();
       for (const item of this.onFinishCallback) {

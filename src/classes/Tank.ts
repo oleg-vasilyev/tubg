@@ -1,12 +1,11 @@
-import { IdentificatorAi, getRandomId } from './IdentificatorAi';
+import { IBulletTrack, ICommandAi, IState, ITankTrack  } from '../interfaces/interfaces';
 import { Bullet } from './Bullet';
-import { IState, ICommandAi, ITankTrack, IBulletTrack } from '../interfaces/interfaces';
 import { CONFIG } from './Config';
+import { IdentificatorAi } from './IdentificatorAi';
 
 /**
  *  @class
  * `@description Class of Battle Tank
- * 
  */
 export class Tank {
   public id: number;
@@ -23,18 +22,19 @@ export class Tank {
   public wallCollision: boolean;
   public enemyCollision: boolean;
   public bulletCollision: boolean;
-  public bullets: Array<Bullet>;
-  public historyState: Array<IState>;
-  public historyCommand: Array<ICommand>;
-  public enemyTracks: Array<ITankTrack>;
-  public bulletTracks: Array<IBulletTrack>;
-  public wall: Array<number>;
-
+  public deathCollision: boolean;
+  public bullets: Bullet[];
+  public historyState: IState[];
+  public historyCommand: ICommandAi[];
+  public enemyTracks: ITankTrack[];
+  public bulletTracks: IBulletTrack[];
+  public wall: number[] | null[];
+  public madeMove: boolean;
   /**
    * @param {identificatorAi} identificatorAi - identification of tank's AI Script
    * @param {Number} id - unique id of the tank
    */
-  constructor(identificatorAi: IdentificatorAi, id: number) {
+  public constructor(identificatorAi: IdentificatorAi, id: number) {
     this.id = id;
     this.name = identificatorAi.name;
     this.x = 0;
@@ -48,34 +48,36 @@ export class Tank {
     this.wallCollision = false;
     this.enemyCollision = false;
     this.bulletCollision = false;
+    this.deathCollision = false;
     this.bullets = [];
     this.historyState = [];
-    this.historyCommand = [];
+    this.historyCommand = [{move: false, shoot: false, rotate: this.direction}];
     this.enemyTracks = [];
     this.bulletTracks = [];
     this.wall = [];
     this.genState();
+    this.madeMove = false;
   }
 
-  getId(): number {
+  public getId(): number {
     return this.id;
   }
 
-  getName(): string {
+  public getName(): string {
     return this.name;
   }
 
-  getState(): IState {
+  public getState(): IState {
     return this.state;
   }
 
-  genState(): void {
+  public genState(): void {
     this.state = {
       x: this.x,
       y: this.y,
       direction: this.direction,
       health: this.health,
-      collisions: { 
+      collisions: {
         enemy: this.enemyCollision,
         wall: this.wallCollision,
         bullet: this.bulletCollision
@@ -88,94 +90,85 @@ export class Tank {
     };
   }
 
-  getScore(): number {
+  public getScore(): number {
     return this.score;
   }
 
-  killsScore(): void {
-    this.score += CONFIG.killsScore; 
+  public addKillsScore(): void {
+    this.score += CONFIG.killsScore;
   }
 
-  surviveScore(): void {
-    this.score += CONFIG.surviveScore; 
+  public surviveScore(): void {
+    this.score += CONFIG.surviveScore;
   }
 
-  getX(): number {
+  public getX(): number {
     return this.x;
   }
 
-  getY(): number {
+  public getY(): number {
     return this.y;
   }
 
-  getDirection(): number {
+  public getDirection(): number {
     return this.direction;
   }
 
-  onWall(): void {
+  public onWall(): void {
     this.wallCollision = true;
   }
 
-  onEnemy(): void {
+  public onEnemy(): void {
     this.enemyCollision = true;
   }
 
-  getEnemy(enemy: Tank): void {
-    let enemyTrack = {
+  public getEnemy(enemy: Tank): void {
+    const enemyTrack: ITankTrack = {
       id: enemy.id,
       x: enemy.x,
       y: enemy.y,
       direction: enemy.direction,
       health: enemy.health
-    }
+    };
     this.enemyTracks.push(enemyTrack);
   }
 
-  getBullet(bullet: Bullet): void {
-    let bulletTrack = {
+  public getBullet(bullet: Bullet): void {
+    const bulletTrack: IBulletTrack = {
       id: bullet.id,
       x: bullet.x,
       y: bullet.y,
       direction: bullet.direction
-    }
+    };
     this.bulletTracks.push(bulletTrack);
   }
 
-  onEnemyHit(): void {
+  public onEnemyHit(): void {
     this.health -= 1;
   }
 
-  onEnemyKillScore(): void {
+  public onEnemyKillScore(): void {
     this.score += CONFIG.onEnemykillScore;
   }
 
-  moveForward(): void {
+  public moveForward(): void {
     this.lastX = this.x;
     this.lastY = this.y;
-    this.x += Math.round(this.speed*Math.cos(this.direction*(Math.PI/180)));
-    this.y += Math.round(this.speed*Math.sin(this.direction*(Math.PI/180)));
+    this.x += Math.round(Math.cos(this.direction * (Math.PI / 180)));
+    this.y += Math.round(Math.sin(this.direction * (Math.PI / 180)));
   }
 
-  shoot(): void {
-    let bullet: Bullet = new Bullet(this, getRandomId());
-    if (this.bullets.length == 0) {
-      this.bullets = [bullet];
-    } else {
-      this.bullets.push(bullet);
-    }
-  }
-
-  rotate(direction: number): void {
+  public rotate(direction: number): void {
     this.direction = direction;
   }
 
-  setRandomDirection(): void {
-    let dirArray: Array<number> = [0, 90, 180, 270];
-    let dirKey: number = Math.floor(Math.random() * (dirArray.length - 0)) + 0;
+  public setRandomDirection(): void {
+    const dirArray: number[] = [CONFIG.eastAngle, CONFIG.southAngle, CONFIG.westAngle, CONFIG.northAngle];
+    const dirKey: number = Math.floor(Math.random() * (dirArray.length - 0)) + 0;
     this.direction = dirArray[dirKey];
   }
 
-  setRandomPos(minX: number, maxX: number, minY: number, maxY: number): void {
+  public setRandomPos(minX: number, maxX: number, minY: number, maxY: number): void {
     this.x = Math.floor(Math.random() * (maxX + 1 - minX)) + minX;
     this.y = Math.floor(Math.random() * (maxY + 1 - minY)) + minY;
   }

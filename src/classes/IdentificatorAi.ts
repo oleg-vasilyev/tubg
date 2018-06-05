@@ -1,10 +1,8 @@
-import { CONFIG } from './Config'
+import { CONFIG } from './Config';
 
 /**
- * 
- * `@class
+ *  @class
  *  @description Ai Identification
- * 
  */
 export class IdentificatorAi {
 
@@ -14,39 +12,39 @@ export class IdentificatorAi {
   public loadingLimit: number;
   public pathAi: string;
 
-  constructor(name: string, path: string) {
+  public constructor(name: string, path: string) {
     this.name = name;
     this.pathAi = path;
     this.id = getRandomId();
     this.initData = {};
-    this.loadingLimit = CONFIG.loadingLimit;
+    this.loadingLimit = CONFIG.aiProcessingLimit;
   }
 
   /**
    * @return name of the AI.
    */
-  getName(): string {
+  public getName(): string {
     return this.name;
   }
 
   /**
    * @return Maximum time for loading of AI(ms)
    */
-  getLoadingLimit(): number {
+  public getLoadingLimit(): number {
     return this.loadingLimit;
   }
 
   /**
    * @return path to file with code where the AI will be ran.
    */
-  getPathAi(): string {
+  public getPathAi(): string {
       return this.pathAi;
   }
 
   /**
    * @return optional initial data
    */
-  getInitData(): {} {
+  public getInitData(): {} {
     return this.initData;
   }
 
@@ -55,7 +53,7 @@ export class IdentificatorAi {
    * @param {object} initData - optional initial data.
    */
 
-  includeAi (tankName: string, initData: {}): void {
+  public includeAi(tankName: string, initData: {}): void {
     this.name = tankName;
     this.initData = initData !== undefined ? initData : {};
   }
@@ -63,7 +61,7 @@ export class IdentificatorAi {
 }
 
 export function getRandomId(): number {
-  let idRandomString: string = (new Date()).getTime().toString();
-  idRandomString = idRandomString.substr(idRandomString.length - 6, 6) + "" + Math.round(10000000 * Math.random());
-  return Number(idRandomString);
+  const thisTime: number = (new Date()).getTime();
+
+  return Number(thisTime);
 }

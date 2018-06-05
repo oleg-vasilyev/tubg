@@ -1,8 +1,22 @@
 export const CONFIG = {
-  tankSpeed: 5,
-  tankHealth: 1,
-  killsScore: 1,
-  surviveScore: 0.5,
-  onEnemykillScore: 2,
-  aiProcessingLimit: 100
-}
+    tankSpeed: 1,
+    bulletSpeed: 10,
+    bulletPower: 1,
+    tankHealth: 1,
+    killsScore: 1,
+    surviveScore: 0.5,
+    onEnemykillScore: 2,
+    aiProcessingLimit: 1000,
+    simulationTimeLimit: 50000,
+    simulationStepDuration: 20,
+    speedMultiplier: 100,
+    smallVisionSide: 5,
+    bigVisionSide: 15,
+    eastAngle: 0,
+    southAngle: 90,
+    westAngle: 180,
+    northAngle: 270,
+    shrinkCoefficient: 2,
+    lastZoneSide: 5,
+    shrinkStep: 3
+  };

@@ -1,0 +1,140 @@
+.bf {
+  position: relative;
+  margin: 0 auto;
+  border-radius: 10px;
+  background-image: url(../../../../media/images/stones.jpg);
+}
+
+.dead-area {
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  border-radius: 10px;
+  z-index: 1;
+  background-color: rgb(255, 82, 105);
+  box-shadow: inset 0px 0px 20px 5px rgb(36, 36, 36);
+}
+
+.range-label {
+  min-width: 100px;
+  width: 10%;
+  display: block;
+  color: white;
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+  z-index: 100;
+}
+
+.range-label__text {
+  width: 100%;
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+.slider {
+  display: block;
+  -webkit-appearance: none;
+  width: 100%;
+  z-index: 100;
+}
+
+.slider:focus {
+  outline: none;
+}
+
+.slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #ac51b5;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+.slider::-webkit-slider-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 20px;
+  width: 30px;
+  border-radius: 3px;
+  background: #65001c;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -6px;
+}
+
+.slider:focus::-webkit-slider-runnable-track {
+  background: #c459ce;
+}
+
+.slider::-moz-range-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #ac51b5;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+.slider::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 20px;
+  width: 30px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.slider::-ms-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+
+.slider::-ms-fill-lower {
+  background: #2a6495;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+.slider::-ms-fill-upper {
+  background: #ac51b5;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+.slider::-ms-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 20px;
+  width: 30px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.slider:focus::-ms-fill-lower {
+  background: #ac51b5;
+}
+
+.slider:focus::-ms-fill-upper {
+  background: #367ebd;
+}

@@ -19,8 +19,6 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
 
     const { bfStore, options } = props;
 
-    bfStore.clearState();
-
     const width = options.battleFieldWidth;
     const height = options.battleFieldHeight;
     const shrCoef = options.speedOfDethZone;
@@ -57,6 +55,15 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
     this.simulation.addTank(ident9);
 
     this.simulation.start();
+  }
+
+  public componentWillUnmount() {
+    this.simulation.stop();
+    this.props.bfStore.clearState();
+  }
+
+  public onRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.simulation.speedMultiplier = +e.target.value;
   }
 
   public render() {
@@ -100,10 +107,11 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
           <input
             className="slider"
             type="range"
-            min="10"
-            max="2000"
-            defaultValue="1000"
+            min="1"
+            max="20"
+            defaultValue="1"
             step="1"
+            onInput={this.onRangeChange}
           />
         </label>
       </div>

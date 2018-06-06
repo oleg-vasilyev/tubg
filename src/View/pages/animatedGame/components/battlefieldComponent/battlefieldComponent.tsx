@@ -1,7 +1,8 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { IdentificatorAi } from '../../../../../classes/IdentificatorAi';
+import { Simulation } from '../../../../../classes/Simulation';
 import { scaleCoef } from 'stores/battlefieldStore';
-import { optionsStore } from 'stores/OptionsStore';
 import { Area } from '../area/area';
 import { BulletComponent } from '../bulletComponent/bulletComponent';
 import { IBattlefieldProps } from '../propsInterfaces';
@@ -11,26 +12,33 @@ import './battlefieldComponent.css';
 @inject('bfStore')
 @observer
 export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}> {
-  // leave this comments to remember, how I'll use Simulation in future
-  // private simulation: Simulation;
+  private simulation: Simulation;
 
   public constructor(props: IBattlefieldProps) {
     super(props);
 
     const { bfStore, options } = props;
 
-    const width = options.battleFieldWidth;
-    const height = options.battleFieldHeight;
+    const width = options.battleFieldWidth as number;
+    const height = options.battleFieldHeight as number;
     const shrCoef = options.speedOfDethZone;
     const lastSide = options.dethZoneStopAreaSize;
 
     bfStore.setBattlefieldSize(width, height);
 
-    // this.simulation = new Simulation(width, height, shrCoef, lastSide);
+    this.simulation = new Simulation(width, height);
   }
 
   public componentDidMount() {
-    // this.simulation.start();
+    const ident = new IdentificatorAi('Stupid-1', './AIs/stupidBot.js');
+    const ident2 = new IdentificatorAi('Stupid-2', './AIs/stupidBot.js');
+    const ident3 = new IdentificatorAi('Stupid-3', './AIs/stupidBot.js');
+
+    this.simulation.addTank(ident);
+    this.simulation.addTank(ident2);
+    this.simulation.addTank(ident3);
+
+    this.simulation.start();
   }
 
   public render() {

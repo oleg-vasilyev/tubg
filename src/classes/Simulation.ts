@@ -1,3 +1,4 @@
+import { bfStore } from './../stores/battlefieldStore';
 import { Zone } from '../zone/zone';
 import { AiConnection } from './AiConnection';
 import { Battlefield } from './Battlefield';
@@ -416,6 +417,8 @@ export class Simulation {
       const yMax = zoneShape.lowerRightPoint.y;
       this.collisionSolution.wallList = [xMin, yMin, xMax, yMax];
     }
+
+    bfStore.setSimulationData(this.allTankList, this.bulletList, this.zone.currentZoneShape, this.zone.finalZoneShape);
   }
 }
 

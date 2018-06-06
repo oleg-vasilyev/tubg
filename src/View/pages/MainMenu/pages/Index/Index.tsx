@@ -12,11 +12,11 @@ export class Index extends React.Component {
           <li className='bt-main-menu__index-option-item'>
             <Link to='/game' className='bt-main-menu__index-options-link'>Start Game</Link>
           </li>
+          {/*<li className='bt-main-menu__index-option-item'>
+                      <Link to='/main-menu/players' className='bt-main-menu__index-options-link'>Set Players</Link>
+                    </li>*/}
           <li className='bt-main-menu__index-option-item'>
-            <Link to='/players' className='bt-main-menu__index-options-link'>Set Players</Link>
-          </li>
-          <li className='bt-main-menu__index-option-item'>
-            <Link to='/options' className='bt-main-menu__index-options-link'>Options</Link>
+            <Link to='/main-menu/options' className='bt-main-menu__index-options-link'>Options</Link>
           </li>
         </ul>
       </div>

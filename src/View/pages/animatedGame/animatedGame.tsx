@@ -7,9 +7,11 @@ import { BattlefieldComponent } from './components/battlefieldComponent/battlefi
 export class AnimatedGame extends React.Component {
   public render() {
     return (
-      <Provider bfStore={bfStore}>
-        <BattlefieldComponent options={optionsStore.options} />
-      </Provider>
+      <div className='animationGame'>
+        <Provider bfStore={bfStore}>
+          <BattlefieldComponent options={optionsStore.options} />
+        </Provider>
+      </div>
     );
   }
 }

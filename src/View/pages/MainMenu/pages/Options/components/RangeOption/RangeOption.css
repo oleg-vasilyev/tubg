@@ -1,0 +1,18 @@
+.bt-range-option {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  font-size: 20px;
+  background-color: #fff;
+}
+
+.bt-range-option__title {
+  width: 70%;
+  margin-right: 15px;
+}
+
+.bt-range-option__input {
+  flex-grow: 1;
+  padding: 2.5px 5px;
+  outline: none;
+}

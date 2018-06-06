@@ -1,4 +1,7 @@
-.dt-main-menu {
+.bt-main-menu {
+  height: 100vh;
+  overflow-x: hidden;
+  background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(http://backgroundcheckall.com/wp-content/uploads/2017/12/battlefield-background-5.jpg) center / cover;
 }
 
 .bt-main-menu__wrapper {

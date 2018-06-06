@@ -60,7 +60,7 @@ export const optionsValidation: optionsValidationInterface = {
     name: 'Bullet speed'
   },
   speedOfDethZone: {
-    defaultValue: 3,
+    defaultValue: 4,
     type: 'integer',
     range: {
       min: 0,
@@ -70,7 +70,7 @@ export const optionsValidation: optionsValidationInterface = {
     name: 'Speed of deth zone'
   },
   dethZoneStopAreaSize: {
-    defaultValue: 1,
+    defaultValue: 0,
     type: 'integer',
     range: {
       min: 0,
@@ -80,7 +80,7 @@ export const optionsValidation: optionsValidationInterface = {
     name: 'Deth zone stop area'
   },
   dethZoneShrinkScale: {
-    defaultValue: 1,
+    defaultValue: 2,
     type: 'float',
     range: {
       min: 1,

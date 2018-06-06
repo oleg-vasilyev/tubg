@@ -134,7 +134,7 @@ class BattlefieldStore {
 
   @action
   public clearState(): void {
-    transition.set(ZERO_TRANSITION);
+    transition.set(TRANSIRION);
     this.tankStoreList = [];
     this.bulletStoreList = [];
     this.livingZone = undefined;
@@ -146,6 +146,7 @@ class BattlefieldStore {
     this.isDraggable  = false;
     this.offset = [0, 0];
     this.mousePosition = { x: 0, y: 0 };
+    this.currentTransition = TRANSIRION;
   }
 }
 

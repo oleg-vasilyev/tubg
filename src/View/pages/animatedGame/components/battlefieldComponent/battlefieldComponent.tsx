@@ -19,10 +19,8 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
 
     const { bfStore, options } = props;
 
-    const width = options.battleFieldWidth;
-    const height = options.battleFieldHeight;
-    const shrCoef = options.speedOfDethZone;
-    const lastSide = options.dethZoneStopAreaSize;
+    const width = options.battleFieldWidth as number;
+    const height = options.battleFieldHeight as number;
 
     bfStore.setBattlefieldSize(width, height);
 

@@ -38,6 +38,7 @@ export class Simulation {
   public tankId: number;
   public zone: Zone;
   public countStep: number;
+  public shrinkStep: number;
   public onStepCompliteEvent: Subject<RendererDataContainer>;
 
   public constructor(options: OptionsInterface) {
@@ -48,7 +49,7 @@ export class Simulation {
     this.bulletList = [];
     this.explodedTankList = [];
     this.explodedBulletList = [];
-    this.battlefield = new Battlefield(options.battleFieldWidth, options.battleFieldHeight);
+    this.battlefield = new Battlefield(options.battleFieldWidth as number, options.battleFieldHeight as number);
     this.simulationTimeout = null;
     this.simulationStepDuration = CONFIG.simulationStepDuration;
     this.isRunning = false;
@@ -65,9 +66,10 @@ export class Simulation {
     this.callStackCount = 0;
     this.bulletId = 1;
     this.tankId = 1;
-    this.zone = new Zone(options.speedOfDethZone, options.dethZoneStopAreaSize, this.battlefield);
+    this.zone = new Zone(options.dethZoneShrinkScale as number, options.dethZoneStopAreaSize as number, this.battlefield);
     this.madeMoveCount = 0;
     this.countStep = 0;
+    this.shrinkStep = options.speedOfDethZone as number;
     this.onStepCompliteEvent = new Subject<RendererDataContainer>();
   }
 
@@ -374,7 +376,7 @@ export class Simulation {
       this.collisionSolution.scanWalls(item);
       item.genState();
     }
-    if (this.countStep % CONFIG.shrinkStep === 0) {
+    if (this.countStep % this.shrinkStep === 0) {
       this.zone.shrink();
       const zoneShape = this.zone.currentZoneShape;
       const xMin = zoneShape.upperLeftPoint.x;

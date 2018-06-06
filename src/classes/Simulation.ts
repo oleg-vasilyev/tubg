@@ -1,4 +1,4 @@
-import { bfStore } from 'stores/battlefieldStore';
+import { Observable, Subject } from "rxjs";
 import { Zone } from '../zone/zone';
 import { AiConnection } from './AiConnection';
 import { Battlefield } from './Battlefield';
@@ -7,6 +7,7 @@ import { CollisionSolution } from './CollisionSolution';
 import { CONFIG } from './Config';
 import { EventStore } from './EventStore';
 import { IdentificatorAi } from './IdentificatorAi';
+import { RendererDataContainer } from './rendererDataContainer';
 import { Tank } from './Tank';
 
 export class Simulation {
@@ -36,6 +37,7 @@ export class Simulation {
   public tankId: number;
   public zone: Zone;
   public countStep: number;
+  public onStepCompliteEvent: Subject<RendererDataContainer>;
 
   public constructor(width: number, height: number) {
     this.aiList = [];
@@ -64,6 +66,7 @@ export class Simulation {
     this.zone = new Zone(CONFIG.shrinkCoefficient, CONFIG.lastZoneSide, this.battlefield);
     this.madeMoveCount = 0;
     this.countStep = 0;
+    this.onStepCompliteEvent = new Subject<RendererDataContainer>();
   }
 
   public init(width: number, height: number): void {
@@ -379,6 +382,11 @@ export class Simulation {
       this.collisionSolution.wallList = [xMin, yMin, xMax, yMax];
     }
 
-    bfStore.setSimulationData(this.allTankList, this.bulletList, this.zone.currentZoneShape, this.zone.finalZoneShape);
+    // bfStore.setSimulationData(this.allTankList, this.bulletList, this.zone.currentZoneShape, this.zone.finalZoneShape);
+    this.onStepCompliteEvent.next(new RendererDataContainer(
+      this.allTankList,
+      this.bulletList,
+      this.zone.currentZoneShape,
+      this.zone.finalZoneShape));
   }
 }

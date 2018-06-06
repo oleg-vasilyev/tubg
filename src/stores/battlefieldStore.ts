@@ -123,6 +123,22 @@ class BattlefieldStore {
     this.livingZone = livingZone;
     this.finalZone = finalZone;
   }
+
+  @action
+  public clearState(): void {
+    transition.set(ZERO_TRANSITION);
+    this.tankStoreList = [];
+    this.bulletStoreList = [];
+    this.livingZone = undefined;
+    this.finalZone = undefined;
+    this.bfWidth = undefined;
+    this.bfHeight = undefined;
+    this.bfTop  = 0;
+    this.bfLeft  = 0;
+    this.isDraggable  = false;
+    this.offset = [0, 0];
+    this.mousePosition = { x: 0, y: 0 };
+  }
 }
 
 const parseTanks = (tankList: Tank[], tankStoreList: TankStore[]) => {

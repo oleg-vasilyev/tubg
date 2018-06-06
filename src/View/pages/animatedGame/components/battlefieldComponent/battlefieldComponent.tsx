@@ -19,6 +19,8 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
 
     const { bfStore, options } = props;
 
+    bfStore.clearState();
+
     const width = options.battleFieldWidth;
     const height = options.battleFieldHeight;
     const shrCoef = options.speedOfDethZone;
@@ -27,16 +29,32 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
     bfStore.setBattlefieldSize(width, height);
 
     this.simulation = new Simulation(width, height);
+
+    this.simulation.onStepCompliteEvent.subscribe((data) => {
+      bfStore.setSimulationData(data.tankList, data.bulletList, data.currentZoneShape, data.finalZoneShape);
+    });
   }
 
   public componentDidMount() {
-    const ident = new IdentificatorAi('Stupid-1', './AI/stupidBot.js');
+    const ident1 = new IdentificatorAi('Stupid-1', './AI/stupidBot.js');
     const ident2 = new IdentificatorAi('Stupid-2', './AI/stupidBot.js');
     const ident3 = new IdentificatorAi('Stupid-3', './AI/stupidBot.js');
+    const ident4 = new IdentificatorAi('Stupid-4', './AI/stupidBot.js');
+    const ident5 = new IdentificatorAi('Stupid-5', './AI/stupidBot.js');
+    const ident6 = new IdentificatorAi('Stupid-6', './AI/stupidBot.js');
+    const ident7 = new IdentificatorAi('Stupid-7', './AI/stupidBot.js');
+    const ident8 = new IdentificatorAi('Stupid-8', './AI/stupidBot.js');
+    const ident9 = new IdentificatorAi('Stupid-9', './AI/stupidBot.js');
 
-    this.simulation.addTank(ident);
+    this.simulation.addTank(ident1);
     this.simulation.addTank(ident2);
     this.simulation.addTank(ident3);
+    this.simulation.addTank(ident4);
+    this.simulation.addTank(ident5);
+    this.simulation.addTank(ident6);
+    this.simulation.addTank(ident7);
+    this.simulation.addTank(ident8);
+    this.simulation.addTank(ident9);
 
     this.simulation.start();
   }

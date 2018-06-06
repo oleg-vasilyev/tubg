@@ -13,10 +13,10 @@ export class MainMenu extends React.Component {
         <div className='bt-main-menu__wrapper'>
           <div className='bt-main-menu__content'>
             <Switch>
-              <Route exact={true} path='/main-menu/' component={Index} />
-              <Route exact={true} path='/main-menu/options' component={Options} />
-              <Route exact={true} path='/main-menu/players' component={Players} />
-              <Redirect from='/main-menu/' to='/main-menu/' />
+              <Route exact path='/main-menu' component={Index} />
+              <Route exact path='/main-menu/options' component={Options} />
+              {/* <Route exact path='/main-menu/players' component={Players} /> */}
+              <Redirect from='/*' to='/main-menu' />
             </Switch>
           </div>
         </div>

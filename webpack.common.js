@@ -3,6 +3,7 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopeWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -15,7 +16,8 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
-    new CopeWebpackPlugin([{from: 'src/AIs', to: 'AIs'}])
+    new CopeWebpackPlugin([{from: 'src/AIs', to: 'AIs'}]),
+    new CopyWebpackPlugin([{from: 'src/AI', to: 'AI'}])
   ],
   module: {
     rules: [

@@ -1,13 +1,14 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { scaleCoef } from 'stores/battlefieldStore';
 import { IdentificatorAi } from '../../../../../classes/IdentificatorAi';
 import { Simulation } from '../../../../../classes/Simulation';
-import { scaleCoef } from 'stores/battlefieldStore';
 import { Area } from '../area/area';
 import { BulletComponent } from '../bulletComponent/bulletComponent';
 import { IBattlefieldProps } from '../propsInterfaces';
 import { TankComponent } from '../tankComponent/tankComponent';
 import './battlefieldComponent.css';
+
 
 @inject('bfStore')
 @observer
@@ -30,15 +31,36 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
   }
 
   public componentDidMount() {
-    const ident = new IdentificatorAi('Stupid-1', './AIs/stupidBot.js');
-    const ident2 = new IdentificatorAi('Stupid-2', './AIs/stupidBot.js');
-    const ident3 = new IdentificatorAi('Stupid-3', './AIs/stupidBot.js');
+    const ident1 = new IdentificatorAi('Stupid-1', './AI/stupidBot.js');
+    const ident2 = new IdentificatorAi('Stupid-2', './AI/stupidBot.js');
+    const ident3 = new IdentificatorAi('Stupid-3', './AI/stupidBot.js');
+    const ident4 = new IdentificatorAi('Stupid-4', './AI/stupidBot.js');
+    const ident5 = new IdentificatorAi('Stupid-5', './AI/stupidBot.js');
+    const ident6 = new IdentificatorAi('Stupid-6', './AI/stupidBot.js');
+    const ident7 = new IdentificatorAi('Stupid-7', './AI/stupidBot.js');
+    const ident8 = new IdentificatorAi('Stupid-8', './AI/stupidBot.js');
+    const ident9 = new IdentificatorAi('Stupid-9', './AI/stupidBot.js');
 
-    this.simulation.addTank(ident);
+    this.simulation.addTank(ident1);
     this.simulation.addTank(ident2);
     this.simulation.addTank(ident3);
+    this.simulation.addTank(ident4);
+    this.simulation.addTank(ident5);
+    this.simulation.addTank(ident6);
+    this.simulation.addTank(ident7);
+    this.simulation.addTank(ident8);
+    this.simulation.addTank(ident9);
 
     this.simulation.start();
+  }
+
+  public componentWillUnmount() {
+    this.simulation.stop();
+    this.props.bfStore.clearState();
+  }
+
+  public onRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.simulation.speedMultiplier = +e.target.value;
   }
 
   public render() {
@@ -82,10 +104,11 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
           <input
             className="slider"
             type="range"
-            min="10"
-            max="2000"
-            defaultValue="1000"
+            min="1"
+            max="20"
+            defaultValue="1"
             step="1"
+            onInput={this.onRangeChange}
           />
         </label>
       </div>

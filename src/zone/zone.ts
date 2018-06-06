@@ -33,14 +33,19 @@ export class Zone {
    * @constructor
    * @param {number} shrinkCoefficient Coefficient of zone shrinking
    * @param {number} lastZoneSide Value of the last zone side
+   * @param {Battlefield} battlefield Game battlefield for processing
    * @this {Zone}
    * @description Constructor of the Zone class
    */
-  public constructor(shrinkCoefficient: number, lastZoneSide: number) {
+  public constructor(shrinkCoefficient: number, lastZoneSide: number, battlefield: Battlefield) {
     this._isFirstStage = true;
     this._isNewStage = true;
-    this._finalZoneShape = new ZoneShape();
-    this._currentZoneShape = new ZoneShape();
+
+    const upperLeftPoint = new Point(battlefield.startX, battlefield.startY);
+    const lowerRightPoint = new Point(battlefield.finishX, battlefield.finishY);
+
+    this._currentZoneShape = new ZoneShape(upperLeftPoint, lowerRightPoint);
+
     this._verticalDistancesRatio = 0;
     this._horizontalDistancesRatio = 0;
     this._topDistance = 0;
@@ -63,10 +68,11 @@ export class Zone {
    * upper left point, lower right point
    */
   public get finalZoneShape(): ZoneShape {
-    const zoneShape = new ZoneShape(
-      this._finalZoneShape.upperLeftPoint,
-      this._finalZoneShape.lowerRightPoint
-    );
+    const zoneShape = this._finalZoneShape ?
+      new ZoneShape(
+        this._finalZoneShape.upperLeftPoint,
+        this._finalZoneShape.lowerRightPoint
+      ) : undefined;
 
     return zoneShape;
   }
@@ -121,16 +127,9 @@ export class Zone {
 
   /**
    * @method
-   * @param {Battlefield} battlefield Game battlefield for processing
    * @description Main function of the zone algorithm
    */
-  public shrink(battlefield: Battlefield): void {
-    // verification of the first stage
-
-    if (this._isFirstStage) {
-      this.initializeFirstStage(battlefield);
-    }
-
+  public shrink(): void {
     // verification of the beginning of the new stage
 
     if (this._isNewStage) {
@@ -140,21 +139,6 @@ export class Zone {
     // continuation of the current stage
 
     this.continueCurrentStage();
-  }
-
-  /**
-   * @method
-   * @param {Battlefield} battlefield Game battlefield for processing
-   * @description Sets game battlefield shape as current zone shape
-   */
-  private initializeFirstStage(battlefield: Battlefield): void {
-    const upperLeftPoint = new Point(battlefield.startX, battlefield.startY);
-    const lowerRightPoint = new Point(battlefield.finishX, battlefield.finishY);
-
-    this._currentZoneShape.defineShape(upperLeftPoint, lowerRightPoint);
-
-    this._isFirstStage = false;
-    this._isNewStage = true;
   }
 
   /**
@@ -178,6 +162,7 @@ export class Zone {
    * @description Calculate parameters of the final zone
    */
   private calculateFinalZoneShape(): void {
+    this._finalZoneShape = new ZoneShape();
     const currentMinimalSide = this._currentZoneShape.getMinimalSide();
 
     let finalZoneSide = currentMinimalSide / this._shrinkCoefficient;

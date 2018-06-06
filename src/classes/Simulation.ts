@@ -61,7 +61,7 @@ export class Simulation {
     this.callStackCount = 0;
     this.bulletId = 1;
     this.tankId = 1;
-    this.zone = new Zone(CONFIG.shrinkCoefficient, CONFIG.lastZoneSide);
+    this.zone = new Zone(CONFIG.shrinkCoefficient, CONFIG.lastZoneSide, this.battlefield);
     this.madeMoveCount = 0;
     this.countStep = 0;
   }
@@ -370,7 +370,7 @@ export class Simulation {
       item.genState();
     }
     if (this.countStep % CONFIG.shrinkStep === 0) {
-      this.zone.shrink(this.battlefield);
+      this.zone.shrink();
       const zoneShape = this.zone.currentZoneShape;
       const xMin = zoneShape.upperLeftPoint.x;
       const yMin = zoneShape.upperLeftPoint.y;

@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { scaleCoef } from 'stores/battlefieldStore';
+import { scaleCoef, transition } from 'stores/battlefieldStore';
 import { IdentificatorAi } from '../../../../../classes/IdentificatorAi';
 import { Simulation } from '../../../../../classes/Simulation';
 import { Area } from '../area/area';
@@ -26,7 +26,7 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
 
     bfStore.setBattlefieldSize(width, height);
 
-    this.simulation = new Simulation(width, height);
+    this.simulation = new Simulation(options);
 
     this.simulation.onStepCompliteEvent.subscribe((data) => {
       bfStore.setSimulationData(data.tankList, data.bulletList, data.currentZoneShape, data.finalZoneShape);
@@ -64,6 +64,7 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
 
   public onRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.simulation.speedMultiplier = +e.target.value;
+    this.props.bfStore.changeTransition(+e.target.value);
   }
 
   public render() {

@@ -33,6 +33,7 @@ class BattlefieldStore {
 
   private offset = [0, 0];
   private mousePosition = {x: 0, y: 0};
+  private currentTransition = TRANSIRION;
 
   @action
   public onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -88,6 +89,13 @@ class BattlefieldStore {
   }
 
   @action
+  public changeTransition(coeff: number) {
+    const value = TRANSIRION / coeff;
+    transition.set(value);
+    this.currentTransition = value;
+  }
+
+  @action
   public onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     e.preventDefault();
     transition.set(ZERO_TRANSITION);
@@ -116,7 +124,7 @@ class BattlefieldStore {
     livingZone?: ZoneShape,
     finalZone?: ZoneShape
   ): void {
-    transition.set(TRANSIRION);
+    transition.set(this.currentTransition);
     parseTanks(tankList, this.tankStoreList);
     parseBullets(bulletList, this.bulletStoreList);
 

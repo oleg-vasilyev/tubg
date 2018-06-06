@@ -1,5 +1,6 @@
-import { Observable, Subject } from "rxjs";
+import { Subject } from "rxjs";
 import { Zone } from '../zone/zone';
+import { OptionsInterface } from './../interfaces/OptionsInterface';
 import { AiConnection } from './AiConnection';
 import { Battlefield } from './Battlefield';
 import { Bullet } from './Bullet';
@@ -39,14 +40,15 @@ export class Simulation {
   public countStep: number;
   public onStepCompliteEvent: Subject<RendererDataContainer>;
 
-  public constructor(width: number, height: number) {
+  public constructor(options: OptionsInterface) {
     this.aiList = [];
     this.allTankList = [];
+    (<any>window).allTankList = this.allTankList;
     this.tankList = [];
     this.bulletList = [];
     this.explodedTankList = [];
     this.explodedBulletList = [];
-    this.battlefield = new Battlefield(width, height);
+    this.battlefield = new Battlefield(options.battleFieldWidth, options.battleFieldHeight);
     this.simulationTimeout = null;
     this.simulationStepDuration = CONFIG.simulationStepDuration;
     this.isRunning = false;
@@ -63,7 +65,7 @@ export class Simulation {
     this.callStackCount = 0;
     this.bulletId = 1;
     this.tankId = 1;
-    this.zone = new Zone(CONFIG.shrinkCoefficient, CONFIG.lastZoneSide, this.battlefield);
+    this.zone = new Zone(options.speedOfDethZone, options.dethZoneStopAreaSize, this.battlefield);
     this.madeMoveCount = 0;
     this.countStep = 0;
     this.onStepCompliteEvent = new Subject<RendererDataContainer>();

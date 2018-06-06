@@ -93,74 +93,51 @@ export class Simulation {
   public start(): void {
     this.isRunning = true;
     const self = this;
-    this.activateAi(
-      () => {
-        if (self.simulationTimeout) {
-          clearTimeout(self.simulationTimeout);
-        }
-        for (const item of self.onStartCallback) {
-          item();
-        }
-        self.simulationStep();
-      }
-    );
+    this.activateAi();
   }
 
   public run(): void {
     this.isRunning = true;
     const self = this;
-    this.activateAi(
-      () => {
-        if (self.simulationTimeout) {
-          clearTimeout(self.simulationTimeout);
-        }
-        self.simulationStep();
-      }
-    );
+    this.activateAi();
   }
 
   public simulationStep(): void {
     const self = this;
+    function stepS(): void {
+      self.updateModel();
+      self.updateAi();
+    }
     for (const item of self.tankList) {
-      item.madeMove = false;
+     if (item.madeMove === true) {
+       this.madeMoveCount++;
+     }
     }
     const startTime: number = (new Date()).getTime();
-    self.updateModel();
-    self.updateAi(
-      () => {
-        if (self.simulationTimeout) {
-          clearTimeout(self.simulationTimeout);
-          self.simulationTimeout = null;
-        }
-        if (self.timeEnd >= self.timeLimit) {
-          self.stop();
-          for (const item of self.onFinishCallback) {
-            item();
-          }
-        }
-        for (const item of self.tankList) {
-          if (item.madeMove === true) {
-            self.madeMoveCount++;
-          }
-        }
-        if (self.isRunning) {
-          const processingTime = (new Date()).getTime() - startTime;
-          let dt = self.simulationStepDuration - processingTime;
-          dt = dt / self.speedMultiplier;
-          dt = Math.round(dt);
-          for (const item of self.onSimulationStepCallback) {
-            item();
-          }
-          self.timeEnd = Math.min(self.timeEnd + self.simulationStepDuration, self.timeLimit);
-          if (dt > 0) {
-            self.callStackCount = 0;
-            self.simulationTimeout = setTimeout(self.simulationStep.bind(self), dt);
-          } else {
-            self.simulationTimeout = setTimeout(self.simulationStep.bind(self), 1);
-          }
-        }
+    if (this.isRunning && this.madeMoveCount >= this.aiList.length) {
+      if (this.simulationTimeout) {
+        clearTimeout(this.simulationTimeout);
       }
-    );
+      for (const item of self.tankList) {
+        item.madeMove = false;
+      }
+      const now = (new Date()).getTime();
+      const processingTime = (new Date()).getTime() - startTime;
+      let dt = self.simulationStepDuration - processingTime;
+      dt = dt / self.speedMultiplier;
+      dt = Math.round(dt);
+      for (const item of self.onSimulationStepCallback) {
+        item();
+      }
+      self.timeEnd = Math.min(self.timeEnd + self.simulationStepDuration, self.timeLimit);
+      if (dt > 0) {
+        self.callStackCount = 0;
+        self.simulationTimeout = setTimeout(stepS.bind(self), dt);
+      } else {
+        self.simulationTimeout = setTimeout(stepS.bind(self), 1);
+      }
+
+    }
   }
 
   public addTank(identificatorAi: IdentificatorAi): AiConnection {
@@ -222,12 +199,28 @@ export class Simulation {
     this.onErrorCallback.push(callback);
   }
 
-  public activateAi(done: () => void, error?: () => void): void {
-    this.runInSequence(done, error);
+  public activateAi(): void {
+    const self = this;
+    if (self.aiList.length === 0) {
+      return;
+    }
+    let c: () => void;
+    for (const item of self.aiList) {
+      c = () => { item.activate(self); };
+      c();
+    }
   }
 
-  public updateAi(done: () => void, error?: () => void): void {
-    this.runInSequence(done, error);
+  public updateAi(): void {
+    const self = this;
+    if (self.aiList.length === 0) {
+      return;
+    }
+    let c: () => void;
+    for (const item of self.aiList) {
+      c = () => { item.simulationStep(); };
+      c();
+    }
   }
 
   public createAiConnection(tank: Tank, identificatorAi: IdentificatorAi): AiConnection {
@@ -249,34 +242,6 @@ export class Simulation {
     });
 
     return bul;
-  }
-
-  public runInSequence(done: () => void, error?: () => void): void {
-    const self = this;
-    if (self.aiList.length === 0) {
-      return;
-    }
-    let c: () => void;
-    for (const item of self.aiList) {
-      if (item.status === 'activate') {
-        // if (this.aiList[aiList.length - 1].aiWorker !== null) {
-        //   c = this.aiList[aiList.length - 1].activate;
-        // } else {
-        //   c = this.aiList[aiList.length - 1].activateXHR;
-        // }
-        c = () => { item.activate(done, error); };
-      } else if (item.status === 'simulationStep') {
-        // if (this.aiList[aiList.length - 1].aiWorker !== null) {
-        //   c = this.aiList[aiList.length - 1].simulationStep;
-        // } else {
-        //   c = this.aiList[aiList.length - 1].simulationStepXHR;
-        // }
-        c = () => { item.simulationStep(done, error); };
-      } else {
-        continue;
-      }
-    }
-    c();
   }
 
   public moveTank(tank: Tank): void {

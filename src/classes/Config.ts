@@ -8,7 +8,7 @@ export const CONFIG = {
     onEnemykillScore: 2,
     aiProcessingLimit: 1000,
     simulationTimeLimit: 500000,
-    simulationStepDuration: 1000,
+    simulationStepDuration: 100,
     speedMultiplier: 1,
     smallVisionSide: 5,
     bigVisionSide: 15,
@@ -18,5 +18,5 @@ export const CONFIG = {
     northAngle: 270,
     shrinkCoefficient: 2,
     lastZoneSide: 5,
-    shrinkStep: 3
+    shrinkStep: 10
   };

@@ -1,7 +1,9 @@
 import { ICallbackArg, ICommandAi } from '../interfaces/interfaces';
 import { CONFIG } from './Config';
 import { IdentificatorAi } from './IdentificatorAi';
+import { Simulation } from './Simulation';
 import { Tank } from './Tank';
+
 
 /**
  * @class of AI connection
@@ -57,7 +59,7 @@ export class AiConnection {
     return new Worker(aiIdent.getPathAi());
   }
 
-  public activate(resolve: () => void, reject?: () => void): void {
+  public activate(simulation: Simulation): void {
     this.aiWorker = this.createWorker(this.identificatorAi);
     this.aiWorker.onerror = () => {
       // tslint:disable-next-line:no-string-throw
@@ -76,12 +78,12 @@ export class AiConnection {
       this.tank.historyState.push(this.tank.state);
       this.tank.historyCommand.push(commandEvent.data);
       this.tank.madeMove = true;
-      resolve();
+      simulation.simulationStep();
     };
     this.aiProcessingStart = (new Date()).getTime();
-    this.aiProcessingResolveCallback = resolve;
-    this.aiProcessingRejectCallback = reject;
     this.aiWorker.postMessage({state: this.tank.state, type: 'init'});
+    // tslint:disable-next-line:no-console
+    console.log(simulation);
     this.status = 'simulationStep';
 }
 
@@ -92,7 +94,7 @@ export class AiConnection {
     }
   }
 
-  public simulationStep(resolve: () => void, reject?: () => void): void {
+  public simulationStep(): void {
     if (this.perfomanceIssues === true) {
       this.deactivate();
 
@@ -106,8 +108,6 @@ export class AiConnection {
     }
     this.aiProcessingStart = (new Date()).getTime();
     if (this.aiWorker) {
-      this.aiProcessingResolveCallback = resolve;
-      this.aiProcessingRejectCallback = reject;
       this.aiWorker.postMessage({state: this.tank.state, type: 'step'});
     }
   }

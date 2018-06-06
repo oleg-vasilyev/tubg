@@ -8,7 +8,7 @@ export const getSavedOptions = () => {
   try {
     options = JSON.parse(optionsStr);
   } catch {
-    options = undefined
+    options = {}
   }
 
   return options

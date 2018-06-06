@@ -60,3 +60,5 @@ typings/
 dist/
 
 .git/
+
+src/defaultBot

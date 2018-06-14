@@ -17,26 +17,30 @@ export class ScoreBoardComponent extends React.Component<IBattlefieldProps, {}> 
   render() {
     const scoreBoard = bfStore.tankStoreList.map((tankStore) => {
       return (
-      <tr> 
-        <td>{tankStore.id}</td>
-        <td>{tankStore.name}</td>
-        <td>{tankStore.health == 0 ? "dead" : "alive"}</td>
-        <td>{tankStore.score}</td>
-      </tr>
+        <tr key={tankStore.id}>
+          <td>{tankStore.id}</td>
+          <td>{tankStore.name}</td>
+          <td>{tankStore.health == 0 ? "dead" : "alive"}</td>
+          <td>{tankStore.score}</td>
+        </tr>
       );
     });
 
-    return(
+    return (
       <table
         className="scoreboard"
       >
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Life</th>
-          <th>Score</th>
-        </tr>
-        {scoreBoard}
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Life</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {scoreBoard}
+        </tbody>
       </table>
     );
   }

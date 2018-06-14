@@ -59,6 +59,7 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
   public componentWillUnmount() {
     this.simulation.stop();
     this.props.bfStore.clearState();
+    console.log ("game over");
   }
 
   public onRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {

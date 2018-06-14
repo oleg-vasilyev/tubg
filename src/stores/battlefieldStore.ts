@@ -169,6 +169,7 @@ const parseTanks = (tankList: Tank[], tankStoreList: TankStore[]) => {
       tankStoreList[i].y = tankList[i].y;
       tankStoreList[i].health = tankList[i].health;
       tankStoreList[i].direction = tankList[i].direction;
+      tankStoreList[i].score = tankList[i].score;
     }
   }
 };

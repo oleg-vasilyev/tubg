@@ -158,7 +158,9 @@ const parseTanks = (tankList: Tank[], tankStoreList: TankStore[]) => {
         tankList[i].x,
         tankList[i].y,
         tankList[i].health,
-        tankList[i].direction
+        tankList[i].direction,
+        tankList[i].score,
+        tankList[i].name,
       ));
     }
   } else {

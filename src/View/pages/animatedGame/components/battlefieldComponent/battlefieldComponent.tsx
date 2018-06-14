@@ -7,6 +7,7 @@ import { Area } from '../area/area';
 import { BulletComponent } from '../bulletComponent/bulletComponent';
 import { IBattlefieldProps } from '../propsInterfaces';
 import { TankComponent } from '../tankComponent/tankComponent';
+import { ScoreBoardComponent } from '../scoreBoard/scoreBoard';
 import './battlefieldComponent.css';
 
 @inject('bfStore')
@@ -113,6 +114,8 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
             onInput={this.onRangeChange}
           />
         </label>
+        <ScoreBoardComponent options={this.props.options}/>
+
       </div>
     );
   }

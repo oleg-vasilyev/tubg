@@ -17,8 +17,9 @@ export class ScoreBoardComponent extends React.Component<IBattlefieldProps, {}> 
 
   render() {
     const scoreBoard = bfStore.tankStoreList.sort((a: TankStore, b: TankStore) => { return b.score - a.score; }).map((tankStore) => {
+      const row_class : string = tankStore.health !== 1 ? "tubg-scoreboard__row tubg-scoreboard__row_dead" : "tubg-scoreboard__row";
       return (
-        <div className="tubg-scoreboard__row" key={tankStore.id}>
+        <div className={row_class} key={tankStore.id}>
           <div className="tubg-scoreboard__cell">{tankStore.id}</div>
           <div className="tubg-scoreboard__cell">{tankStore.name}</div>
           <div className="tubg-scoreboard__cell">{tankStore.health !== 1 ? "dead" : "alive"}</div>

@@ -50,6 +50,11 @@
   cursor: pointer;
 }
 
+.tubg-scoreboard__row_dead{
+  border: 1px solid red;
+  background-color: lightcoral;
+}
+
 .tubg-scoreboard__cell_header{
   font-weight: 800;
 }

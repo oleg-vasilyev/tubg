@@ -59,7 +59,7 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
   public componentWillUnmount() {
     this.simulation.stop();
     this.props.bfStore.clearState();
-    console.log ("game over");
+    console.log("game over");
   }
 
   public onRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +115,9 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
             onInput={this.onRangeChange}
           />
         </label>
-        <ScoreBoardComponent options={this.props.options}/>
+        <div className="bf-wrapper__scoreBoard">
+          <ScoreBoardComponent options={this.props.options} />
+        </div>
 
       </div>
     );

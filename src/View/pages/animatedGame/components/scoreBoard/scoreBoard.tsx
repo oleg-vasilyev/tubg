@@ -3,6 +3,7 @@ import * as React from 'react';
 import { IBattlefieldProps } from '../propsInterfaces';
 import './scoreBoard.css';
 import { bfStore } from 'stores/battlefieldStore';
+import { TankStore } from 'stores/tankStore';
 
 
 @inject('bfStore')
@@ -15,33 +16,35 @@ export class ScoreBoardComponent extends React.Component<IBattlefieldProps, {}> 
   }
 
   render() {
-    const scoreBoard = bfStore.tankStoreList.map((tankStore) => {
+    const scoreBoard = bfStore.tankStoreList.sort((a: TankStore, b: TankStore) => { return b.score - a.score; }).map((tankStore) => {
       return (
-        <tr key={tankStore.id}>
-          <td>{tankStore.id}</td>
-          <td>{tankStore.name}</td>
-          <td>{tankStore.health == 0 ? "dead" : "alive"}</td>
-          <td>{tankStore.score}</td>
-        </tr>
+        <div className="tubg-scoreboard__row" key={tankStore.id}>
+          <div className="tubg-scoreboard__cell">{tankStore.id}</div>
+          <div className="tubg-scoreboard__cell">{tankStore.name}</div>
+          <div className="tubg-scoreboard__cell">{tankStore.health == 0 ? "dead" : "alive"}</div>
+          <div className="tubg-scoreboard__cell">{tankStore.score}</div>
+        </div>
       );
     });
 
     return (
-      <table
-        className="scoreboard"
+      <div
+        className="tubg-scoreboard"
       >
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Life</th>
-            <th>Score</th>
-          </tr>
-        </thead>
-        <tbody>
+        <div
+          className="tubg-scoreboard__wrap"
+        >
+          <div
+            className="tubg-scoreboard__header"
+          >
+            <div className="tubg-scoreboard__cell tubg-scoreboard__cell_header">ID</div>
+            <div className="tubg-scoreboard__cell tubg-scoreboard__cell_header">Name</div>
+            <div className="tubg-scoreboard__cell tubg-scoreboard__cell_header">Life</div>
+            <div className="tubg-scoreboard__cell tubg-scoreboard__cell_header">Score</div>
+          </div>
           {scoreBoard}
-        </tbody>
-      </table>
+        </div>
+      </div>
     );
   }
 }

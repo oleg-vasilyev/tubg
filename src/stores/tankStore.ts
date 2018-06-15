@@ -12,13 +12,19 @@ export class TankStore {
   public health: number;
   @observable
   public direction: number;
+  @observable
+  public score: number;
+  @observable
+  public name: string;
 
-  public constructor(id: number, x: number, y: number, health: number, direction: number) {
+  public constructor(id: number, x: number, y: number, health: number, direction: number, score: number, name:string) {
     this.id = id;
     this.x = x;
     this.y = y;
     this.health = health;
     this.direction = direction;
+    this.score = score;
+    this.name = name;
   }
 }
 

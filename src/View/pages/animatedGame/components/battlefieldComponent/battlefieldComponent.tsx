@@ -1,36 +1,70 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { scaleCoef } from 'stores/battlefieldStore';
-import { optionsStore } from 'stores/OptionsStore';
+import { scaleCoef, transition } from 'stores/battlefieldStore';
+import { IdentificatorAi } from '../../../../../classes/IdentificatorAi';
+import { Simulation } from '../../../../../classes/Simulation';
 import { Area } from '../area/area';
 import { BulletComponent } from '../bulletComponent/bulletComponent';
 import { IBattlefieldProps } from '../propsInterfaces';
 import { TankComponent } from '../tankComponent/tankComponent';
+import { ScoreBoardComponent } from '../scoreBoard/scoreBoard';
 import './battlefieldComponent.css';
 
 @inject('bfStore')
 @observer
 export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}> {
-  // leave this comments to remember, how I'll use Simulation in future
-  // private simulation: Simulation;
+  private simulation: Simulation;
 
   public constructor(props: IBattlefieldProps) {
     super(props);
 
     const { bfStore, options } = props;
 
-    const width = options.battleFieldWidth;
-    const height = options.battleFieldHeight;
-    const shrCoef = options.speedOfDethZone;
-    const lastSide = options.dethZoneStopAreaSize;
+    const width = options.battleFieldWidth as number;
+    const height = options.battleFieldHeight as number;
 
     bfStore.setBattlefieldSize(width, height);
 
-    // this.simulation = new Simulation(width, height, shrCoef, lastSide);
+    this.simulation = new Simulation(options);
+
+    this.simulation.onStepCompliteEvent.subscribe((data) => {
+      bfStore.setSimulationData(data.tankList, data.bulletList, data.currentZoneShape, data.finalZoneShape);
+    });
   }
 
   public componentDidMount() {
-    // this.simulation.start();
+    const ident1 = new IdentificatorAi('Stupid-1', './AI/stupidBot.js');
+    const ident2 = new IdentificatorAi('Stupid-2', './AI/stupidBot.js');
+    const ident3 = new IdentificatorAi('Stupid-3', './AI/stupidBot.js');
+    const ident4 = new IdentificatorAi('Stupid-4', './AI/stupidBot.js');
+    const ident5 = new IdentificatorAi('Stupid-5', './AI/stupidBot.js');
+    const ident6 = new IdentificatorAi('Stupid-6', './AI/stupidBot.js');
+    const ident7 = new IdentificatorAi('Stupid-7', './AI/stupidBot.js');
+    const ident8 = new IdentificatorAi('Stupid-8', './AI/stupidBot.js');
+    const ident9 = new IdentificatorAi('Stupid-9', './AI/stupidBot.js');
+
+    this.simulation.addTank(ident1);
+    this.simulation.addTank(ident2);
+    this.simulation.addTank(ident3);
+    this.simulation.addTank(ident4);
+    this.simulation.addTank(ident5);
+    this.simulation.addTank(ident6);
+    this.simulation.addTank(ident7);
+    this.simulation.addTank(ident8);
+    this.simulation.addTank(ident9);
+
+    this.simulation.start();
+  }
+
+  public componentWillUnmount() {
+    this.simulation.stop();
+    this.props.bfStore.clearState();
+    console.log("game over");
+  }
+
+  public onRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.simulation.speedMultiplier = +e.target.value;
+    this.props.bfStore.changeTransition(+e.target.value);
   }
 
   public render() {
@@ -74,12 +108,17 @@ export class BattlefieldComponent extends React.Component<IBattlefieldProps, {}>
           <input
             className="slider"
             type="range"
-            min="10"
-            max="2000"
-            defaultValue="1000"
+            min="1"
+            max="20"
+            defaultValue="1"
             step="1"
+            onInput={this.onRangeChange}
           />
         </label>
+        <div className="bf-wrapper__scoreBoard">
+          <ScoreBoardComponent options={this.props.options} />
+        </div>
+
       </div>
     );
   }

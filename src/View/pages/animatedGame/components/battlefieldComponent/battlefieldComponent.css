@@ -1,3 +1,11 @@
+.bf-wrapper {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
+    url(https://images3.alphacoders.com/226/thumb-1920-226237.jpg) center / cover;
+}
+
 .bf {
   position: relative;
   margin: 0 auto;
@@ -137,4 +145,11 @@
 
 .slider:focus::-ms-fill-upper {
   background: #367ebd;
+}
+
+.bf-wrapper__scoreBoard{
+  z-index: 999;
+  position: absolute;
+  left: 50px;
+  top: 150px;
 }

@@ -1,0 +1,60 @@
+
+.tubg-scoreboard{
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  max-width: 20%;
+}
+
+.tubg-scoreboard__wrap{
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+  min-width: 300px;
+}
+
+.tubg-scoreboard__header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 5px;
+  min-height: 50px;
+  margin: 3px;
+  font-weight: bold;
+  border: 1px solid grey;
+  border-radius: 3px;
+  background-color: lightgrey;
+}
+
+.tubg-scoreboard__row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 15%;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: 1px solid blue;
+  background-color: lightblue;
+}
+
+.tubg-scoreboard__cell{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 20px;
+  margin: 2px;
+  padding-right: 2px;
+  cursor: pointer;
+}
+
+.tubg-scoreboard__row_dead{
+  border: 1px solid red;
+  background-color: lightcoral;
+}
+
+.tubg-scoreboard__cell_header{
+  font-weight: 800;
+}

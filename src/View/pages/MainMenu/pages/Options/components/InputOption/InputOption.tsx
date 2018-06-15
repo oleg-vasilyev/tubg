@@ -2,10 +2,10 @@ import * as React from 'react';
 import './InputOption.css';
 
 interface InputOptionProps {
-  title?: string;
-  onChange?: (event: any) => void;
+  title: string;
+  onChange: (event: any) => void;
   name: string;
-  value: number;
+  value: number | string;
 }
 
 export class InputOption extends React.Component<InputOptionProps> {

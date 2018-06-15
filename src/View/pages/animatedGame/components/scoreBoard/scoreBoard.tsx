@@ -21,12 +21,11 @@ export class ScoreBoardComponent extends React.Component<IBattlefieldProps, {}> 
         <div className="tubg-scoreboard__row" key={tankStore.id}>
           <div className="tubg-scoreboard__cell">{tankStore.id}</div>
           <div className="tubg-scoreboard__cell">{tankStore.name}</div>
-          <div className="tubg-scoreboard__cell">{tankStore.health == 0 ? "dead" : "alive"}</div>
+          <div className="tubg-scoreboard__cell">{tankStore.health !== 1 ? "dead" : "alive"}</div>
           <div className="tubg-scoreboard__cell">{tankStore.score}</div>
         </div>
       );
     });
-
     return (
       <div
         className="tubg-scoreboard"
